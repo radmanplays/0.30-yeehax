@@ -1,0 +1,3 @@
+/.gradle/
+/desktopRuntime/filesystem/
+/desktopRuntime/eclipseProject/bin/
