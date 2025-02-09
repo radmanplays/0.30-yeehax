@@ -120,7 +120,7 @@ public class LevelUtils {
 	
 	public static void save() {
 		
-		if(Minecraft.getMinecraft().level == null) {
+		if(Minecraft.getMinecraft().level == null || Minecraft.getMinecraft().networkManager != null) {
 			return;
 		}
 		

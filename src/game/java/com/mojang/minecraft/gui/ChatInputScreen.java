@@ -1,5 +1,8 @@
 package com.mojang.minecraft.gui;
 
+import com.mojang.minecraft.net.NetworkManager;
+import com.mojang.minecraft.net.PacketType;
+
 import net.lax1dude.eaglercraft.Keyboard;
 
 public final class ChatInputScreen extends GuiScreen {
@@ -24,6 +27,13 @@ public final class ChatInputScreen extends GuiScreen {
       if(var2 == 1) {
          this.minecraft.setCurrentScreen((GuiScreen)null);
       } else if(var2 == 28) {
+         NetworkManager var10000 = this.minecraft.networkManager;
+         String var4 = this.message.trim();
+         NetworkManager var3 = var10000;
+         if((var4 = var4.trim()).length() > 0) {
+            var3.netHandler.send(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), var4});
+         }
+
          this.minecraft.setCurrentScreen((GuiScreen)null);
       } else {
          if(var2 == 14 && this.message.length() > 0) {

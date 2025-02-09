@@ -6,6 +6,7 @@ import com.mojang.minecraft.level.liquid.LiquidType;
 import com.mojang.minecraft.level.tile.Block;
 import com.mojang.minecraft.level.tile.Tile$SoundType;
 import com.mojang.minecraft.model.Vec3D;
+import com.mojang.minecraft.net.PositionUpdate;
 import com.mojang.minecraft.phys.AABB;
 import com.mojang.minecraft.render.TextureManager;
 import com.mojang.util.MathHelper;
@@ -86,6 +87,20 @@ public abstract class Entity implements Serializable {
       this.bbWidth = var1;
       this.bbHeight = var2;
    }
+   
+   public void setPos(PositionUpdate var1) {
+	      if(var1.position) {
+	         this.setPos(var1.x, var1.y, var1.z);
+	      } else {
+	         this.setPos(this.x, this.y, this.z);
+	      }
+
+	      if(var1.rotation) {
+	         this.setRot(var1.yaw, var1.pitch);
+	      } else {
+	         this.setRot(this.yRot, this.xRot);
+	      }
+	   }
 
    protected void setRot(float var1, float var2) {
       this.yRot = var1;

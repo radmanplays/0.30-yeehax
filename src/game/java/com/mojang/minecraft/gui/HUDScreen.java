@@ -14,6 +14,8 @@ import net.lax1dude.eaglercraft.opengl.WorldRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.lax1dude.eaglercraft.Keyboard;
 import net.lax1dude.eaglercraft.Random;
 import org.lwjgl.opengl.GL11;
 
@@ -174,6 +176,36 @@ public final class HUDScreen extends Screen {
       var14 = this.width / 2;
       var15 = this.height / 2;
       this.hoveredPlayer = null;
+      if(Keyboard.isKeyDown(15) && this.mc.networkManager != null && this.mc.networkManager.isConnected()) {
+    	  Tessellator tessellator = Tessellator.getInstance();
+    	  WorldRenderer renderer = tessellator.getWorldRenderer();
+          List var22 = this.mc.networkManager.getPlayers();
+          GL11.glEnable(3042);
+          GL11.glDisable(3553);
+          GL11.glBlendFunc(770, 771);
+          renderer.begin(7, VertexFormat.POSITION_COLOR);
+          GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.7F);
+          renderer.pos((float)(var14 + 128), (float)(var15 - 68 - 12), 0.0f).color(0.0F, 0.0F, 0.0F, 0.7F).endVertex();
+          renderer.pos((float)(var14 - 128), (float)(var15 - 68 - 12), 0.0f).color(0.0F, 0.0F, 0.0F, 0.7F).endVertex();
+          renderer.pos((float)(var14 - 128), (float)(var15 + 68), 0.0f).color(0.2F, 0.2F, 0.2F, 0.8F).endVertex();
+          renderer.pos((float)(var14 + 128), (float)(var15 + 68), 0.0f).color(0.2F, 0.2F, 0.2F, 0.8F).endVertex();
+          tessellator.draw();
+          GL11.glDisable(3042);
+          GL11.glEnable(3553);
+          var23 = "Connected players:";
+          var5.render(var23, var14 - var5.getWidth(var23) / 2, var15 - 64 - 12, 16777215);
+
+          for(var11 = 0; var11 < var22.size(); ++var11) {
+             int var28 = var14 + var11 % 2 * 120 - 120;
+             int var17 = var15 - 64 + (var11 / 2 << 3);
+             if(var2 && var3 >= var28 && var4 >= var17 && var3 < var28 + 120 && var4 < var17 + 8) {
+                this.hoveredPlayer = (String)var22.get(var11);
+                var5.render((String)var22.get(var11), var28 + 2, var17, 16777215);
+             } else {
+                var5.render((String)var22.get(var11), var28, var17, 15658734);
+             }
+          }
+       }
    }
 
    public final void addChat(String var1) {

@@ -48,6 +48,11 @@ public class GameMode
 
 		if(block != null && success)
 		{
+			if(minecraft.isOnline())
+			{
+				minecraft.networkManager.sendBlockChange(x, y, z, 0, minecraft.player.inventory.getSelected());
+			}
+			
 			if(block.stepsound != Tile$SoundType.none)
 			{
 				level.playSound("step." + block.stepsound.name, (float)x, (float)y, (float)z, (block.stepsound.getVolume() + 1.0F) / 2.0F, block.stepsound.getPitch() * 0.8F);
