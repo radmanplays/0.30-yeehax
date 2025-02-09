@@ -1,0 +1,1 @@
+The folder is here because MakeOfflineDownload will fail if this folder is missing
