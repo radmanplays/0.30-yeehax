@@ -7,6 +7,9 @@ import com.mojang.minecraft.mob.ai.BasicAI;
 import com.mojang.minecraft.model.ModelManager;
 import com.mojang.minecraft.render.TextureManager;
 import com.mojang.util.MathHelper;
+
+import net.peyton.eagler.level.LevelUtils;
+
 import org.lwjgl.opengl.GL11;
 
 public class Mob extends Entity {
@@ -33,7 +36,7 @@ public class Mob extends Entity {
    public float rotOffs = 0.0F;
    public String modelName = null;
    protected float bobStrength = 1.0F;
-   protected int deathScore = 0;
+   public int deathScore = 0;
    public float renderOffset = 0.0F;
    public int health = 20;
    public int lastHealth;
@@ -46,7 +49,7 @@ public class Mob extends Entity {
    public int attackTime = 0;
    public float oTilt;
    public float tilt;
-   protected boolean dead = false;
+   public boolean dead = false;
    public AI ai;
 
 
@@ -382,6 +385,7 @@ public class Mob extends Entity {
          }
 
          this.dead = true;
+         LevelUtils.save();
       }
    }
 

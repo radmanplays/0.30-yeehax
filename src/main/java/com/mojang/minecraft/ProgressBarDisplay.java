@@ -1,17 +1,18 @@
 package com.mojang.minecraft;
 
-import com.mojang.minecraft.Minecraft;
-import com.mojang.minecraft.StopGameException;
-import com.mojang.minecraft.render.ShapeRenderer;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
+import net.lax1dude.eaglercraft.Display;
+import net.lax1dude.eaglercraft.EagRuntime;
+import net.lax1dude.eaglercraft.opengl.Tessellator;
+import net.lax1dude.eaglercraft.opengl.VertexFormat;
+import net.lax1dude.eaglercraft.opengl.WorldRenderer;
 
+import org.lwjgl.opengl.GL11;
 public final class ProgressBarDisplay {
 
    private String text = "";
    private Minecraft minecraft;
    private String title = "";
-   private long start = System.currentTimeMillis();
+   private long start = EagRuntime.steadyTimeMillis();
 
 
    public ProgressBarDisplay(Minecraft var1) {
@@ -49,50 +50,42 @@ public final class ProgressBarDisplay {
          throw new StopGameException();
       } else {
          long var2;
-         if((var2 = System.currentTimeMillis()) - this.start < 0L || var2 - this.start >= 20L) {
+         if((var2 = EagRuntime.steadyTimeMillis()) - this.start < 0L || var2 - this.start >= 20L) {
             this.start = var2;
             int var4 = this.minecraft.width * 240 / this.minecraft.height;
             int var5 = this.minecraft.height * 240 / this.minecraft.height;
             GL11.glClear(16640);
-            ShapeRenderer var6 = ShapeRenderer.instance;
+            Tessellator tess = Tessellator.getInstance();
+            WorldRenderer var6 = tess.getWorldRenderer();
             int var7 = this.minecraft.textureManager.load("/dirt.png");
             GL11.glBindTexture(3553, var7);
             float var10 = 32.0F;
-            var6.begin();
-            var6.color(4210752);
-            var6.vertexUV(0.0F, (float)var5, 0.0F, 0.0F, (float)var5 / var10);
-            var6.vertexUV((float)var4, (float)var5, 0.0F, (float)var4 / var10, (float)var5 / var10);
-            var6.vertexUV((float)var4, 0.0F, 0.0F, (float)var4 / var10, 0.0F);
-            var6.vertexUV(0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-            var6.end();
+            var6.begin(7, VertexFormat.POSITION_TEX_COLOR);
+            var6.pos(0.0F, (float)var5, 0.0F).tex(0.0F, (float)var5 / var10).color(4210752).endVertex();
+            var6.pos((float)var4, (float)var5, 0.0F).tex((float)var4 / var10, (float)var5 / var10).color(4210752).endVertex();
+            var6.pos((float)var4, 0.0F, 0.0F).tex((float)var4 / var10, 0.0F).color(4210752).endVertex();
+            var6.pos(0.0F, 0.0F, 0.0F).tex(0.0F, 0.0F).color(4210752).endVertex();
+            tess.draw();
             if(var1 >= 0) {
                var7 = var4 / 2 - 50;
                int var8 = var5 / 2 + 16;
                GL11.glDisable(3553);
-               var6.begin();
-               var6.color(8421504);
-               var6.vertex((float)var7, (float)var8, 0.0F);
-               var6.vertex((float)var7, (float)(var8 + 2), 0.0F);
-               var6.vertex((float)(var7 + 100), (float)(var8 + 2), 0.0F);
-               var6.vertex((float)(var7 + 100), (float)var8, 0.0F);
-               var6.color(8454016);
-               var6.vertex((float)var7, (float)var8, 0.0F);
-               var6.vertex((float)var7, (float)(var8 + 2), 0.0F);
-               var6.vertex((float)(var7 + var1), (float)(var8 + 2), 0.0F);
-               var6.vertex((float)(var7 + var1), (float)var8, 0.0F);
-               var6.end();
+               var6.begin(7, VertexFormat.POSITION_COLOR);
+               var6.pos((float)var7, (float)var8, 0.0F).color(8421504).endVertex();
+               var6.pos((float)var7, (float)(var8 + 2), 0.0F).color(8421504).endVertex();
+               var6.pos((float)(var7 + 100), (float)(var8 + 2), 0.0F).color(8421504).endVertex();
+               var6.pos((float)(var7 + 100), (float)var8, 0.0F).color(8421504).endVertex();
+               var6.pos((float)var7, (float)var8, 0.0F).color(8454016).endVertex();
+               var6.pos((float)var7, (float)(var8 + 2), 0.0F).color(8454016).endVertex();
+               var6.pos((float)(var7 + var1), (float)(var8 + 2), 0.0F).color(8454016).endVertex();
+               var6.pos((float)(var7 + var1), (float)var8, 0.0F).color(8454016).endVertex();
+               tess.draw();
                GL11.glEnable(3553);
             }
 
             this.minecraft.fontRenderer.render(this.title, (var4 - this.minecraft.fontRenderer.getWidth(this.title)) / 2, var5 / 2 - 4 - 16, 16777215);
             this.minecraft.fontRenderer.render(this.text, (var4 - this.minecraft.fontRenderer.getWidth(this.text)) / 2, var5 / 2 - 4 + 8, 16777215);
             Display.update();
-
-            try {
-               Thread.yield();
-            } catch (Exception var9) {
-               ;
-            }
          }
       }
    }

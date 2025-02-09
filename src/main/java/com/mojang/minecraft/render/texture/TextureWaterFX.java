@@ -1,7 +1,6 @@
 package com.mojang.minecraft.render.texture;
 
 import com.mojang.minecraft.level.tile.Block;
-import com.mojang.minecraft.render.texture.TextureFX;
 
 public final class TextureWaterFX extends TextureFX {
 
@@ -9,7 +8,6 @@ public final class TextureWaterFX extends TextureFX {
    private float[] blue = new float[256];
    private float[] green = new float[256];
    private float[] alpha = new float[256];
-   private int updates = 0;
 
 
    public TextureWaterFX() {
@@ -17,8 +15,6 @@ public final class TextureWaterFX extends TextureFX {
    }
 
    public final void animate() {
-      ++this.updates;
-
       int var1;
       int var2;
       float var3;

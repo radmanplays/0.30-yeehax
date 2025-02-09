@@ -1,28 +1,28 @@
 package com.mojang.minecraft;
 
 import com.mojang.minecraft.render.TextureManager;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Iterator;
-import javax.imageio.ImageIO;
-import org.lwjgl.input.Keyboard;
+
+import net.lax1dude.eaglercraft.EagRuntime;
+import net.lax1dude.eaglercraft.Keyboard;
+import net.lax1dude.eaglercraft.KeyboardConstants;
+import net.lax1dude.eaglercraft.internal.vfs2.VFile2;
+import net.lax1dude.eaglercraft.opengl.ImageData;
 
 public final class GameSettings
 {
-	public GameSettings(Minecraft minecraft, File minecraftFolder)
+	public GameSettings(Minecraft minecraft)
 	{
-		bindings = new KeyBinding[] {forwardKey, leftKey, backKey, rightKey, jumpKey, buildKey, chatKey, toggleFogKey, saveLocationKey, loadLocationKey};
+		bindings = new KeyBinding[] {forwardKey, leftKey, backKey, rightKey, jumpKey, buildKey, chatKey, toggleFogKey, saveLocationKey, loadLocationKey, gameModeKey};
 
 		settingCount = 8;
 
 		this.minecraft = minecraft;
 
-		settingsFile = new File(minecraftFolder, "options.txt");
+		settingsFile = new VFile2("options.txt");
 
 		load();
 	}
@@ -46,9 +46,10 @@ public final class GameSettings
 	public KeyBinding toggleFogKey = new KeyBinding("Toggle fog", 33);
 	public KeyBinding saveLocationKey = new KeyBinding("Save location", 28);
 	public KeyBinding loadLocationKey = new KeyBinding("Load location", 19);
+	public KeyBinding gameModeKey = new KeyBinding("Switch gamemode", KeyboardConstants.KEY_M);
 	public KeyBinding[] bindings;
 	private Minecraft minecraft;
-	private File settingsFile;
+	private VFile2 settingsFile;
 	public int settingCount;
 
 	public String getBinding(int key)
@@ -103,12 +104,12 @@ public final class GameSettings
 			Iterator iterator = this.minecraft.textureManager.textureImages.keySet().iterator();
 
 			int i;
-			BufferedImage image;
+			ImageData image;
 
 			while(iterator.hasNext())
 			{
 				i = (Integer)iterator.next();
-				image = (BufferedImage)textureManager.textureImages.get(Integer.valueOf(i));
+				image = (ImageData)textureManager.textureImages.get(Integer.valueOf(i));
 
 				textureManager.load(image, i);
 			}
@@ -121,17 +122,11 @@ public final class GameSettings
 
 				try
 				{
-					if(s.startsWith("##"))
-					{
-						image = TextureManager.load1(ImageIO.read(TextureManager.class.getResourceAsStream(s.substring(2))));
-					} else {
-						image = ImageIO.read(TextureManager.class.getResourceAsStream(s));
-					}
-
+					image = ImageData.loadImageFile(EagRuntime.getResourceStream(s)).swapRB();
 					i = (Integer)textureManager.textures.get(s);
 
 					textureManager.load(image, i);
-				} catch (IOException var6) {
+				} catch (Exception var6) {
 					var6.printStackTrace();
 				}
 			}
@@ -164,8 +159,7 @@ public final class GameSettings
 		{
 			if(settingsFile.exists())
 			{
-				FileReader fileReader = new FileReader(settingsFile);
-				BufferedReader reader = new BufferedReader(fileReader);
+				BufferedReader reader = new BufferedReader(new InputStreamReader(settingsFile.getInputStream()));
 
 				String line = null;
 
@@ -234,8 +228,7 @@ public final class GameSettings
 	private void save()
 	{
 		try {
-			FileWriter fileWriter = new FileWriter(this.settingsFile);
-			PrintWriter writer = new PrintWriter(fileWriter);
+			PrintWriter writer = new PrintWriter(settingsFile.getOutputStream());
 
 			writer.println("music:" + music);
 			writer.println("sound:" + sound);

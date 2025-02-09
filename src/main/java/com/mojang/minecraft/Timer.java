@@ -1,12 +1,14 @@
 package com.mojang.minecraft;
 
+import net.lax1dude.eaglercraft.EagRuntime;
+
 public class Timer
 {
 	public Timer(float tps)
 	{
 		this.tps = tps;
-		lastSysClock = System.currentTimeMillis();
-		lastHRClock = System.nanoTime() / 1000000L;
+		lastSysClock = EagRuntime.steadyTimeMillis();
+		lastHRClock = EagRuntime.nanoTime();
 	}
 
 	float tps;

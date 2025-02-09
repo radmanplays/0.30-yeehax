@@ -7,7 +7,9 @@ import com.mojang.minecraft.level.generator.noise.OctaveNoise;
 import com.mojang.minecraft.level.tile.Block;
 import com.mojang.util.MathHelper;
 import java.util.ArrayList;
-import java.util.Random;
+
+import net.lax1dude.eaglercraft.EagRuntime;
+import net.lax1dude.eaglercraft.Random;
 
 public final class LevelGenerator {
 
@@ -345,7 +347,7 @@ public final class LevelGenerator {
       Level var65;
       (var65 = new Level()).waterLevel = this.waterLevel;
       var65.setData(var2, 64, var3, this.blocks);
-      var65.createTime = System.currentTimeMillis();
+      var65.createTime = EagRuntime.steadyTimeMillis();
       var65.creator = var1;
       var65.name = "A Nice World";
       int[] var52 = var9;

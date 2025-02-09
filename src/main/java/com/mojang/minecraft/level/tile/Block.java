@@ -8,8 +8,12 @@ import com.mojang.minecraft.model.Vec3D;
 import com.mojang.minecraft.particle.ParticleManager;
 import com.mojang.minecraft.particle.TerrainParticle;
 import com.mojang.minecraft.phys.AABB;
-import com.mojang.minecraft.render.ShapeRenderer;
-import java.util.Random;
+
+import net.lax1dude.eaglercraft.opengl.Tessellator;
+import net.lax1dude.eaglercraft.opengl.VertexFormat;
+import net.lax1dude.eaglercraft.opengl.WorldRenderer;
+
+import net.lax1dude.eaglercraft.Random;
 
 public class Block
 {
@@ -136,29 +140,23 @@ public class Block
 		this.tickDelay[id] = tickDelay;
 	}
 
-	public void renderFullbright(ShapeRenderer shapeRenderer)
+	public void renderFullbright(WorldRenderer shapeRenderer)
 	{
 		float red = 0.5F;
 		float green = 0.8F;
 		float blue = 0.6F;
 
-		shapeRenderer.color(red, red, red);
-		renderInside(shapeRenderer, -2, 0, 0, 0);
+		renderInsideWithColor(shapeRenderer, -2, 0, 0, 0, red, red, red, 1.0f);
 
-		shapeRenderer.color(1.0F, 1.0F, 1.0F);
-		renderInside(shapeRenderer, -2, 0, 0, 1);
+		renderInsideWithColor(shapeRenderer, -2, 0, 0, 1, 1.0F, 1.0F, 1.0F, 1.0f);
 
-		shapeRenderer.color(green, green, green);
-		renderInside(shapeRenderer, -2, 0, 0, 2);
+		renderInsideWithColor(shapeRenderer, -2, 0, 0, 2, green, green, green, 1.0f);
 
-		shapeRenderer.color(green, green, green);
-		renderInside(shapeRenderer, -2, 0, 0, 3);
+		renderInsideWithColor(shapeRenderer, -2, 0, 0, 3, green, green, green, 1.0f);
 
-		shapeRenderer.color(blue, blue, blue);
-		renderInside(shapeRenderer, -2, 0, 0, 4);
+		renderInsideWithColor(shapeRenderer, -2, 0, 0, 4, blue, blue, blue, 1.0f);
 
-		shapeRenderer.color(blue, blue, blue);
-		renderInside(shapeRenderer, -2, 0, 0, 5);
+		renderInsideWithColor(shapeRenderer, -2, 0, 0, 5, blue, blue, blue, 1.0f);
 	}
 
 	protected float getBrightness(Level level, int x, int y, int z)
@@ -176,15 +174,29 @@ public class Block
 		return textureId;
 	}
 
-	public void renderInside(ShapeRenderer shapeRenderer, int x, int y, int z, int side)
+	public void renderInside(WorldRenderer shapeRenderer, int x, int y, int z, int side)
 	{
 		int textureID1 = getTextureId(side);
 
 		renderSide(shapeRenderer, x, y, z, side, textureID1);
 	}
+	
+	public void renderInsideWithColor(WorldRenderer shapeRenderer, int x, int y, int z, int side, float r, float g, float b, float a)
+	{
+		int textureID1 = getTextureId(side);
+
+		renderSide(shapeRenderer, x, y, z, side, textureID1, r, b, g, a);
+	}
+	
+	public void renderInsideWithNormals(WorldRenderer shapeRenderer, int x, int y, int z, int side, float normalx, float normaly, float normalz)
+	{
+		int textureID1 = getTextureId(side);
+
+		renderSide(shapeRenderer, x, y, z, side, textureID1, normalx, normaly, normalz);
+	}
 
 	// TODO.
-	public void renderSide(ShapeRenderer shapeRenderer, int x, int y, int z, int side, int textureID)
+	public void renderSide(WorldRenderer shapeRenderer, int x, int y, int z, int side, int textureID)
 	{
 		int var7 = textureID % 16 << 4;
 		int var8 = textureID / 16 << 4;
@@ -209,40 +221,154 @@ public class Block
 		float var12 = (float)z + this.z1;
 		float var13 = (float)z + this.z2;
 		if(side == 0) {
-			shapeRenderer.vertexUV(var16, var18, var13, var9, var11);
-			shapeRenderer.vertexUV(var16, var18, var12, var9, var10);
-			shapeRenderer.vertexUV(var14, var18, var12, var17, var10);
-			shapeRenderer.vertexUV(var14, var18, var13, var17, var11);
+			shapeRenderer.pos(var16, var18, var13).tex(var9, var11).endVertex();
+			shapeRenderer.pos(var16, var18, var12).tex(var9, var10).endVertex();
+			shapeRenderer.pos(var14, var18, var12).tex(var17, var10).endVertex();
+			shapeRenderer.pos(var14, var18, var13).tex(var17, var11).endVertex();
 		} else if(side == 1) {
-			shapeRenderer.vertexUV(var14, var15, var13, var17, var11);
-			shapeRenderer.vertexUV(var14, var15, var12, var17, var10);
-			shapeRenderer.vertexUV(var16, var15, var12, var9, var10);
-			shapeRenderer.vertexUV(var16, var15, var13, var9, var11);
+			shapeRenderer.pos(var14, var15, var13).tex(var17, var11).endVertex();
+			shapeRenderer.pos(var14, var15, var12).tex(var17, var10).endVertex();
+			shapeRenderer.pos(var16, var15, var12).tex(var9, var10).endVertex();
+			shapeRenderer.pos(var16, var15, var13).tex(var9, var11).endVertex();
 		} else if(side == 2) {
-			shapeRenderer.vertexUV(var16, var15, var12, var17, var10);
-			shapeRenderer.vertexUV(var14, var15, var12, var9, var10);
-			shapeRenderer.vertexUV(var14, var18, var12, var9, var11);
-			shapeRenderer.vertexUV(var16, var18, var12, var17, var11);
+			shapeRenderer.pos(var16, var15, var12).tex(var17, var10).endVertex();
+			shapeRenderer.pos(var14, var15, var12).tex(var9, var10).endVertex();
+			shapeRenderer.pos(var14, var18, var12).tex(var9, var11).endVertex();
+			shapeRenderer.pos(var16, var18, var12).tex(var17, var11).endVertex();
 		} else if(side == 3) {
-			shapeRenderer.vertexUV(var16, var15, var13, var9, var10);
-			shapeRenderer.vertexUV(var16, var18, var13, var9, var11);
-			shapeRenderer.vertexUV(var14, var18, var13, var17, var11);
-			shapeRenderer.vertexUV(var14, var15, var13, var17, var10);
+			shapeRenderer.pos(var16, var15, var13).tex(var9, var10).endVertex();
+			shapeRenderer.pos(var16, var18, var13).tex(var9, var11).endVertex();
+			shapeRenderer.pos(var14, var18, var13).tex(var17, var11).endVertex();
+			shapeRenderer.pos(var14, var15, var13).tex(var17, var10).endVertex();
 		} else if(side == 4) {
-			shapeRenderer.vertexUV(var16, var15, var13, var17, var10);
-			shapeRenderer.vertexUV(var16, var15, var12, var9, var10);
-			shapeRenderer.vertexUV(var16, var18, var12, var9, var11);
-			shapeRenderer.vertexUV(var16, var18, var13, var17, var11);
+			shapeRenderer.pos(var16, var15, var13).tex(var17, var10).endVertex();
+			shapeRenderer.pos(var16, var15, var12).tex(var9, var10).endVertex();
+			shapeRenderer.pos(var16, var18, var12).tex(var9, var11).endVertex();
+			shapeRenderer.pos(var16, var18, var13).tex(var17, var11).endVertex();
 		} else if(side == 5) {
-			shapeRenderer.vertexUV(var14, var18, var13, var9, var11);
-			shapeRenderer.vertexUV(var14, var18, var12, var17, var11);
-			shapeRenderer.vertexUV(var14, var15, var12, var17, var10);
-			shapeRenderer.vertexUV(var14, var15, var13, var9, var10);
+			shapeRenderer.pos(var14, var18, var13).tex(var9, var11).endVertex();
+			shapeRenderer.pos(var14, var18, var12).tex(var17, var11).endVertex();
+			shapeRenderer.pos(var14, var15, var12).tex(var17, var10).endVertex();
+			shapeRenderer.pos(var14, var15, var13).tex(var9, var10).endVertex();
+		}
+	}
+	
+	public void renderSide(WorldRenderer shapeRenderer, int x, int y, int z, int side, int textureID, float r, float g, float b, float a)
+	{
+		int var7 = textureID % 16 << 4;
+		int var8 = textureID / 16 << 4;
+		float var9 = (float)var7 / 256.0F;
+		float var17 = ((float)var7 + 15.99F) / 256.0F;
+		float var10 = (float)var8 / 256.0F;
+		float var11 = ((float)var8 + 15.99F) / 256.0F;
+		if(side >= 2 && textureID < 240) {
+			if(this.y1 >= 0.0F && this.y2 <= 1.0F) {
+				var10 = ((float)var8 + this.y1 * 15.99F) / 256.0F;
+				var11 = ((float)var8 + this.y2 * 15.99F) / 256.0F;
+			} else {
+				var10 = (float)var8 / 256.0F;
+				var11 = ((float)var8 + 15.99F) / 256.0F;
+			}
+		}
+
+		float var16 = (float)x + this.x1;
+		float var14 = (float)x + this.x2;
+		float var18 = (float)y + this.y1;
+		float var15 = (float)y + this.y2;
+		float var12 = (float)z + this.z1;
+		float var13 = (float)z + this.z2;
+		if(side == 0) {
+			shapeRenderer.pos(var16, var18, var13).tex(var9, var11).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var16, var18, var12).tex(var9, var10).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var14, var18, var12).tex(var17, var10).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var14, var18, var13).tex(var17, var11).color(r, g, b, a).endVertex();
+		} else if(side == 1) {
+			shapeRenderer.pos(var14, var15, var13).tex(var17, var11).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var14, var15, var12).tex(var17, var10).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var16, var15, var12).tex(var9, var10).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var16, var15, var13).tex(var9, var11).color(r, g, b, a).endVertex();
+		} else if(side == 2) {
+			shapeRenderer.pos(var16, var15, var12).tex(var17, var10).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var14, var15, var12).tex(var9, var10).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var14, var18, var12).tex(var9, var11).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var16, var18, var12).tex(var17, var11).color(r, g, b, a).endVertex();
+		} else if(side == 3) {
+			shapeRenderer.pos(var16, var15, var13).tex(var9, var10).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var16, var18, var13).tex(var9, var11).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var14, var18, var13).tex(var17, var11).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var14, var15, var13).tex(var17, var10).color(r, g, b, a).endVertex();
+		} else if(side == 4) {
+			shapeRenderer.pos(var16, var15, var13).tex(var17, var10).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var16, var15, var12).tex(var9, var10).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var16, var18, var12).tex(var9, var11).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var16, var18, var13).tex(var17, var11).color(r, g, b, a).endVertex();
+		} else if(side == 5) {
+			shapeRenderer.pos(var14, var18, var13).tex(var9, var11).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var14, var18, var12).tex(var17, var11).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var14, var15, var12).tex(var17, var10).color(r, g, b, a).endVertex();
+			shapeRenderer.pos(var14, var15, var13).tex(var9, var10).color(r, g, b, a).endVertex();
+		}
+	}
+	
+	public void renderSide(WorldRenderer shapeRenderer, int x, int y, int z, int side, int textureID, float normalx, float normaly, float normalz)
+	{
+		int var7 = textureID % 16 << 4;
+		int var8 = textureID / 16 << 4;
+		float var9 = (float)var7 / 256.0F;
+		float var17 = ((float)var7 + 15.99F) / 256.0F;
+		float var10 = (float)var8 / 256.0F;
+		float var11 = ((float)var8 + 15.99F) / 256.0F;
+		if(side >= 2 && textureID < 240) {
+			if(this.y1 >= 0.0F && this.y2 <= 1.0F) {
+				var10 = ((float)var8 + this.y1 * 15.99F) / 256.0F;
+				var11 = ((float)var8 + this.y2 * 15.99F) / 256.0F;
+			} else {
+				var10 = (float)var8 / 256.0F;
+				var11 = ((float)var8 + 15.99F) / 256.0F;
+			}
+		}
+
+		float var16 = (float)x + this.x1;
+		float var14 = (float)x + this.x2;
+		float var18 = (float)y + this.y1;
+		float var15 = (float)y + this.y2;
+		float var12 = (float)z + this.z1;
+		float var13 = (float)z + this.z2;
+		if(side == 0) {
+			shapeRenderer.pos(var16, var18, var13).tex(var9, var11).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var16, var18, var12).tex(var9, var10).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var14, var18, var12).tex(var17, var10).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var14, var18, var13).tex(var17, var11).normal(normalx, normaly, normalz).endVertex();
+		} else if(side == 1) {
+			shapeRenderer.pos(var14, var15, var13).tex(var17, var11).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var14, var15, var12).tex(var17, var10).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var16, var15, var12).tex(var9, var10).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var16, var15, var13).tex(var9, var11).normal(normalx, normaly, normalz).endVertex();
+		} else if(side == 2) {
+			shapeRenderer.pos(var16, var15, var12).tex(var17, var10).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var14, var15, var12).tex(var9, var10).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var14, var18, var12).tex(var9, var11).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var16, var18, var12).tex(var17, var11).normal(normalx, normaly, normalz).endVertex();
+		} else if(side == 3) {
+			shapeRenderer.pos(var16, var15, var13).tex(var9, var10).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var16, var18, var13).tex(var9, var11).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var14, var18, var13).tex(var17, var11).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var14, var15, var13).tex(var17, var10).normal(normalx, normaly, normalz).endVertex();
+		} else if(side == 4) {
+			shapeRenderer.pos(var16, var15, var13).tex(var17, var10).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var16, var15, var12).tex(var9, var10).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var16, var18, var12).tex(var9, var11).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var16, var18, var13).tex(var17, var11).normal(normalx, normaly, normalz).endVertex();
+		} else if(side == 5) {
+			shapeRenderer.pos(var14, var18, var13).tex(var9, var11).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var14, var18, var12).tex(var17, var11).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var14, var15, var12).tex(var17, var10).normal(normalx, normaly, normalz).endVertex();
+			shapeRenderer.pos(var14, var15, var13).tex(var9, var10).normal(normalx, normaly, normalz).endVertex();
 		}
 	}
 
 	// TODO.
-	public final void renderSide(ShapeRenderer var1, int var2, int var3, int var4, int var5) {
+	public final void renderSide(WorldRenderer var1, int var2, int var3, int var4, int var5) {
 		int var6;
 		float var7;
 		float var8 = (var7 = (float)((var6 = this.getTextureId(var5)) % 16) / 16.0F) + 0.0624375F;
@@ -255,45 +381,45 @@ public class Block
 		float var12 = (float)var4 + this.z1;
 		float var13 = (float)var4 + this.z2;
 		if(var5 == 0) {
-			var1.vertexUV(var14, var11, var13, var8, var9);
-			var1.vertexUV(var14, var11, var12, var8, var16);
-			var1.vertexUV(var10, var11, var12, var7, var16);
-			var1.vertexUV(var10, var11, var13, var7, var9);
+			var1.pos(var14, var11, var13).tex(var8, var9).endVertex();
+			var1.pos(var14, var11, var12).tex(var8, var16).endVertex();
+			var1.pos(var10, var11, var12).tex(var7, var16).endVertex();
+			var1.pos(var10, var11, var13).tex(var7, var9).endVertex();
 		}
 
 		if(var5 == 1) {
-			var1.vertexUV(var10, var15, var13, var7, var9);
-			var1.vertexUV(var10, var15, var12, var7, var16);
-			var1.vertexUV(var14, var15, var12, var8, var16);
-			var1.vertexUV(var14, var15, var13, var8, var9);
+			var1.pos(var10, var15, var13).tex(var7, var9).endVertex();
+			var1.pos(var10, var15, var12).tex(var7, var16).endVertex();
+			var1.pos(var14, var15, var12).tex(var8, var16).endVertex();
+			var1.pos(var14, var15, var13).tex(var8, var9).endVertex();
 		}
 
 		if(var5 == 2) {
-			var1.vertexUV(var10, var11, var12, var8, var9);
-			var1.vertexUV(var14, var11, var12, var7, var9);
-			var1.vertexUV(var14, var15, var12, var7, var16);
-			var1.vertexUV(var10, var15, var12, var8, var16);
+			var1.pos(var10, var11, var12).tex(var8, var9).endVertex();
+			var1.pos(var14, var11, var12).tex(var7, var9).endVertex();
+			var1.pos(var14, var15, var12).tex(var7, var16).endVertex();
+			var1.pos(var10, var15, var12).tex(var8, var16).endVertex();
 		}
 
 		if(var5 == 3) {
-			var1.vertexUV(var14, var15, var13, var8, var16);
-			var1.vertexUV(var14, var11, var13, var8, var9);
-			var1.vertexUV(var10, var11, var13, var7, var9);
-			var1.vertexUV(var10, var15, var13, var7, var16);
+			var1.pos(var14, var15, var13).tex(var8, var16).endVertex();
+			var1.pos(var14, var11, var13).tex(var8, var9).endVertex();
+			var1.pos(var10, var11, var13).tex(var7, var9).endVertex();
+			var1.pos(var10, var15, var13).tex(var7, var16).endVertex();
 		}
 
 		if(var5 == 4) {
-			var1.vertexUV(var10, var11, var13, var8, var9);
-			var1.vertexUV(var10, var11, var12, var7, var9);
-			var1.vertexUV(var10, var15, var12, var7, var16);
-			var1.vertexUV(var10, var15, var13, var8, var16);
+			var1.pos(var10, var11, var13).tex(var8, var9).endVertex();
+			var1.pos(var10, var11, var12).tex(var7, var9).endVertex();
+			var1.pos(var10, var15, var12).tex(var7, var16).endVertex();
+			var1.pos(var10, var15, var13).tex(var8, var16).endVertex();
 		}
 
 		if(var5 == 5) {
-			var1.vertexUV(var14, var15, var13, var7, var16);
-			var1.vertexUV(var14, var15, var12, var8, var16);
-			var1.vertexUV(var14, var11, var12, var8, var9);
-			var1.vertexUV(var14, var11, var13, var7, var9);
+			var1.pos(var14, var15, var13).tex(var7, var16).endVertex();
+			var1.pos(var14, var15, var12).tex(var8, var16).endVertex();
+			var1.pos(var14, var11, var12).tex(var8, var9).endVertex();
+			var1.pos(var14, var11, var13).tex(var7, var9).endVertex();
 		}
 
 	}
@@ -439,38 +565,28 @@ public class Block
 		}
 	}
 
-	public void renderPreview(ShapeRenderer var1) {
-		var1.begin();
+	public void renderPreview(WorldRenderer var1, Tessellator tess) {
+		var1.begin(7, VertexFormat.POSITION_TEX_NORMAL);
 
 		for(int var2 = 0; var2 < 6; ++var2) {
 			if(var2 == 0) {
-				var1.normal(0.0F, 1.0F, 0.0F);
+				this.renderInsideWithNormals(var1, 0, 0, 0, var2, 0.0F, 1.0F, 0.0F);
+			}else if(var2 == 1) {
+				this.renderInsideWithNormals(var1, 0, 0, 0, var2, 0.0F, -1.0F, 0.0F);
+			}else if(var2 == 2) {
+				this.renderInsideWithNormals(var1, 0, 0, 0, var2, 0.0F, 0.0F, 1.0F);
+			}else if(var2 == 3) {
+				this.renderInsideWithNormals(var1, 0, 0, 0, var2, 0.0F, 0.0F, -1.0F);
+			}else if(var2 == 4) {
+				this.renderInsideWithNormals(var1, 0, 0, 0, var2, 1.0F, 0.0F, 0.0F);
+			}else if(var2 == 5) {
+				this.renderInsideWithNormals(var1, 0, 0, 0, var2, -1.0F, 0.0F, 0.0F);
+			} else {
+				this.renderInside(var1, 0, 0, 0, var2);
 			}
-
-			if(var2 == 1) {
-				var1.normal(0.0F, -1.0F, 0.0F);
-			}
-
-			if(var2 == 2) {
-				var1.normal(0.0F, 0.0F, 1.0F);
-			}
-
-			if(var2 == 3) {
-				var1.normal(0.0F, 0.0F, -1.0F);
-			}
-
-			if(var2 == 4) {
-				var1.normal(1.0F, 0.0F, 0.0F);
-			}
-
-			if(var2 == 5) {
-				var1.normal(-1.0F, 0.0F, 0.0F);
-			}
-
-			this.renderInside(var1, 0, 0, 0, var2);
 		}
 
-		var1.end();
+		tess.draw();
 	}
 
 	public final boolean canExplode() {
@@ -581,7 +697,7 @@ public class Block
 
 	public void explode(Level var1, int var2, int var3, int var4) {}
 
-	public boolean render(Level var1, int var2, int var3, int var4, ShapeRenderer var5) {
+	public boolean render(Level var1, int var2, int var3, int var4, WorldRenderer var5) {
 		boolean var6 = false;
 		float var7 = 0.5F;
 		float var8 = 0.8F;
@@ -589,43 +705,37 @@ public class Block
 		float var10;
 		if(this.canRenderSide(var1, var2, var3 - 1, var4, 0)) {
 			var10 = this.getBrightness(var1, var2, var3 - 1, var4);
-			var5.color(var7 * var10, var7 * var10, var7 * var10);
-			this.renderInside(var5, var2, var3, var4, 0);
+			this.renderInsideWithColor(var5, var2, var3, var4, 0, var7 * var10, var7 * var10, var7 * var10, 1.0f);
 			var6 = true;
 		}
 
 		if(this.canRenderSide(var1, var2, var3 + 1, var4, 1)) {
 			var10 = this.getBrightness(var1, var2, var3 + 1, var4);
-			var5.color(var10 * 1.0F, var10 * 1.0F, var10 * 1.0F);
-			this.renderInside(var5, var2, var3, var4, 1);
+			this.renderInsideWithColor(var5, var2, var3, var4, 1, var10 * 1.0F, var10 * 1.0F, var10 * 1.0F, 1.0f);
 			var6 = true;
 		}
 
 		if(this.canRenderSide(var1, var2, var3, var4 - 1, 2)) {
 			var10 = this.getBrightness(var1, var2, var3, var4 - 1);
-			var5.color(var8 * var10, var8 * var10, var8 * var10);
-			this.renderInside(var5, var2, var3, var4, 2);
+			this.renderInsideWithColor(var5, var2, var3, var4, 2, var8 * var10, var8 * var10, var8 * var10, 1.0f);
 			var6 = true;
 		}
 
 		if(this.canRenderSide(var1, var2, var3, var4 + 1, 3)) {
 			var10 = this.getBrightness(var1, var2, var3, var4 + 1);
-			var5.color(var8 * var10, var8 * var10, var8 * var10);
-			this.renderInside(var5, var2, var3, var4, 3);
+			this.renderInsideWithColor(var5, var2, var3, var4, 3, var8 * var10, var8 * var10, var8 * var10, 1.0f);
 			var6 = true;
 		}
 
 		if(this.canRenderSide(var1, var2 - 1, var3, var4, 4)) {
 			var10 = this.getBrightness(var1, var2 - 1, var3, var4);
-			var5.color(var9 * var10, var9 * var10, var9 * var10);
-			this.renderInside(var5, var2, var3, var4, 4);
+			this.renderInsideWithColor(var5, var2, var3, var4, 4, var9 * var10, var9 * var10, var9 * var10, 1.0f);
 			var6 = true;
 		}
 
 		if(this.canRenderSide(var1, var2 + 1, var3, var4, 5)) {
 			var10 = this.getBrightness(var1, var2 + 1, var3, var4);
-			var5.color(var9 * var10, var9 * var10, var9 * var10);
-			this.renderInside(var5, var2, var3, var4, 5);
+			this.renderInsideWithColor(var5, var2, var3, var4, 5, var9 * var10, var9 * var10, var9 * var10, 1.0f);
 			var6 = true;
 		}
 

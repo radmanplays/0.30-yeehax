@@ -1,6 +1,6 @@
 package com.mojang.minecraft.level.generator.noise;
 
-import java.util.Random;
+import net.lax1dude.eaglercraft.Random;
 
 public class PerlinNoise extends Noise
 {

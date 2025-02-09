@@ -3,7 +3,7 @@ package com.mojang.minecraft.level.tile;
 import com.mojang.minecraft.level.Level;
 import com.mojang.minecraft.level.tile.Block;
 import com.mojang.minecraft.level.tile.FlowerBlock;
-import java.util.Random;
+import net.lax1dude.eaglercraft.Random;
 
 public final class SaplingBlock extends FlowerBlock {
 

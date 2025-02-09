@@ -3,16 +3,20 @@ package com.mojang.minecraft.render;
 import com.mojang.minecraft.level.Level;
 import com.mojang.minecraft.level.tile.Block;
 import com.mojang.minecraft.player.Player;
-import com.mojang.minecraft.render.Frustrum;
-import com.mojang.minecraft.render.ShapeRenderer;
 import com.mojang.util.MathHelper;
+
+import net.lax1dude.eaglercraft.opengl.Tessellator;
+import net.lax1dude.eaglercraft.opengl.VertexFormat;
+import net.lax1dude.eaglercraft.opengl.WorldRenderer;
+
 import org.lwjgl.opengl.GL11;
 
 public final class Chunk {
 
    private Level level;
    private int baseListId = -1;
-   private static ShapeRenderer renderer = ShapeRenderer.instance;
+   private static Tessellator tessellator = Tessellator.getInstance();
+   private static WorldRenderer renderer = tessellator.getWorldRenderer();
    public static int chunkUpdates = 0;
    private int x;
    private int y;
@@ -54,7 +58,7 @@ public final class Chunk {
          boolean var8 = false;
          boolean var9 = false;
          GL11.glNewList(this.baseListId + var7, 4864);
-         renderer.begin();
+         renderer.begin(7, VertexFormat.POSITION_TEX_COLOR);
 
          for(int var10 = var1; var10 < var4; ++var10) {
             for(int var11 = var2; var11 < var5; ++var11) {
@@ -72,7 +76,7 @@ public final class Chunk {
             }
          }
 
-         renderer.end();
+         tessellator.draw();
          GL11.glEndList();
          if(var9) {
             this.dirty[var7] = false;

@@ -1,11 +1,6 @@
 package com.mojang.minecraft.gui;
 
-import com.mojang.minecraft.gui.Button;
-import com.mojang.minecraft.gui.GenerateLevelScreen;
-import com.mojang.minecraft.gui.GuiScreen;
-import com.mojang.minecraft.gui.LoadLevelScreen;
-import com.mojang.minecraft.gui.OptionsScreen;
-import com.mojang.minecraft.gui.SaveLevelScreen;
+import net.peyton.eagler.level.LevelUtils;
 
 public final class PauseScreen extends GuiScreen {
 
@@ -16,17 +11,10 @@ public final class PauseScreen extends GuiScreen {
       this.buttons.add(new Button(2, this.width / 2 - 100, this.height / 4 + 48, "Save level.."));
       this.buttons.add(new Button(3, this.width / 2 - 100, this.height / 4 + 72, "Load level.."));
       this.buttons.add(new Button(4, this.width / 2 - 100, this.height / 4 + 120, "Back to game"));
-      if(this.minecraft.session == null) {
-         ((Button)this.buttons.get(2)).active = false;
-         ((Button)this.buttons.get(3)).active = false;
-      }
-
-      if(this.minecraft.networkManager != null) {
-         ((Button)this.buttons.get(1)).active = false;
-         ((Button)this.buttons.get(2)).active = false;
-         ((Button)this.buttons.get(3)).active = false;
-      }
-
+      ((Button)this.buttons.get(2)).active = false;
+      ((Button)this.buttons.get(3)).active = false;
+      
+      LevelUtils.save();
    }
 
    protected final void onButtonClick(Button var1) {
@@ -38,17 +26,8 @@ public final class PauseScreen extends GuiScreen {
          this.minecraft.setCurrentScreen(new GenerateLevelScreen(this));
       }
 
-      if(this.minecraft.session != null) {
-         if(var1.id == 2) {
-            this.minecraft.setCurrentScreen(new SaveLevelScreen(this));
-         }
-
-         if(var1.id == 3) {
-            this.minecraft.setCurrentScreen(new LoadLevelScreen(this));
-         }
-      }
-
       if(var1.id == 4) {
+    	 LevelUtils.save();
          this.minecraft.setCurrentScreen((GuiScreen)null);
          this.minecraft.grabMouse();
       }

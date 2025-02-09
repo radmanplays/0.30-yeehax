@@ -3,9 +3,10 @@ package com.mojang.minecraft.level.tile;
 import com.mojang.minecraft.level.Level;
 import com.mojang.minecraft.level.liquid.LiquidType;
 import com.mojang.minecraft.phys.AABB;
-import com.mojang.minecraft.render.ShapeRenderer;
 
-import java.util.Random;
+import net.lax1dude.eaglercraft.opengl.WorldRenderer;
+
+import net.lax1dude.eaglercraft.Random;
 
 public class LiquidBlock extends Block {
 
@@ -115,7 +116,7 @@ public class LiquidBlock extends Block {
       return x >= 0 && y >= 0 && z >= 0 && x < level.width && z < level.height?((var6 = level.getTile(x, y, z)) != this.movingId && var6 != this.stillId?(side == 1 && (level.getTile(x - 1, y, z) == 0 || level.getTile(x + 1, y, z) == 0 || level.getTile(x, y, z - 1) == 0 || level.getTile(x, y, z + 1) == 0)?true:super.canRenderSide(level, x, y, z, side)):false):false;
    }
 
-   public final void renderInside(ShapeRenderer shapeRenderer, int x, int y, int z, int side) {
+   public final void renderInside(WorldRenderer shapeRenderer, int x, int y, int z, int side) {
       super.renderInside(shapeRenderer, x, y, z, side);
       super.renderSide(shapeRenderer, x, y, z, side);
    }

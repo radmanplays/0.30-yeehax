@@ -1,10 +1,13 @@
 package com.mojang.minecraft.gui;
 
 import com.mojang.minecraft.SessionData;
-import com.mojang.minecraft.gui.GuiScreen;
 import com.mojang.minecraft.level.tile.Block;
-import com.mojang.minecraft.render.ShapeRenderer;
 import com.mojang.minecraft.render.TextureManager;
+
+import net.lax1dude.eaglercraft.opengl.Tessellator;
+import net.lax1dude.eaglercraft.opengl.VertexFormat;
+import net.lax1dude.eaglercraft.opengl.WorldRenderer;
+
 import org.lwjgl.opengl.GL11;
 
 public final class BlockSelectScreen extends GuiScreen {
@@ -36,7 +39,8 @@ public final class BlockSelectScreen extends GuiScreen {
 
       drawCenteredString(this.fontRenderer, "Select block", this.width / 2, 40, 16777215);
       TextureManager var7 = this.minecraft.textureManager;
-      ShapeRenderer var8 = ShapeRenderer.instance;
+      Tessellator tess = Tessellator.getInstance();
+      WorldRenderer var8 = tess.getWorldRenderer();
       var2 = var7.load("/terrain.png");
       GL11.glBindTexture(3553, var2);
 
@@ -56,9 +60,9 @@ public final class BlockSelectScreen extends GuiScreen {
 
          GL11.glTranslatef(-1.5F, 0.5F, 0.5F);
          GL11.glScalef(-1.0F, -1.0F, -1.0F);
-         var8.begin();
+         var8.begin(7, VertexFormat.POSITION_TEX_COLOR);
          var4.renderFullbright(var8);
-         var8.end();
+         tess.draw();
          GL11.glPopMatrix();
       }
 

@@ -2,25 +2,23 @@ package com.mojang.minecraft.render;
 
 import com.mojang.minecraft.GameSettings;
 import com.mojang.minecraft.render.texture.TextureFX;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
+
+import net.lax1dude.eaglercraft.EagRuntime;
+import net.lax1dude.eaglercraft.internal.buffer.ByteBuffer;
+import net.lax1dude.eaglercraft.opengl.EaglercraftGPU;
+import net.lax1dude.eaglercraft.opengl.ImageData;
+import net.lax1dude.eaglercraft.opengl.RealOpenGLEnums;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.imageio.ImageIO;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 public class TextureManager {
 
    public HashMap textures = new HashMap();
    public HashMap textureImages = new HashMap();
-   public IntBuffer idBuffer = BufferUtils.createIntBuffer(1);
-   public ByteBuffer textureBuffer = BufferUtils.createByteBuffer(262144);
+   public ByteBuffer textureBuffer = GLAllocation.createDirectByteBuffer(262144);
    public List animations = new ArrayList();
    public GameSettings settings;
 
@@ -34,52 +32,27 @@ public class TextureManager {
       if((var2 = (Integer)this.textures.get(var1)) != null) {
          return var2.intValue();
       } else {
-         try {
-            this.idBuffer.clear();
-            GL11.glGenTextures(this.idBuffer);
-            int var4 = this.idBuffer.get(0);
-            if(var1.startsWith("##")) {
-               this.load(load1(ImageIO.read(TextureManager.class.getResourceAsStream(var1.substring(2)))), var4);
-            } else {
-               this.load(ImageIO.read(TextureManager.class.getResourceAsStream(var1)), var4);
-            }
+         //try {
+            int var4 = GL11.generateTexture();
+            this.load(ImageData.loadImageFile(EagRuntime.getResourceStream(var1)).swapRB(), var4);
 
             this.textures.put(var1, Integer.valueOf(var4));
             return var4;
-         } catch (IOException var3) {
-            throw new RuntimeException("!!");
-         }
+         //} catch (Exception var3) {
+           // throw new RuntimeException("!!");
+         //}
       }
    }
 
-   public static BufferedImage load1(BufferedImage var0) {
-      int var1 = var0.getWidth() / 16;
-      BufferedImage var2;
-      Graphics var3 = (var2 = new BufferedImage(16, var0.getHeight() * var1, 2)).getGraphics();
-
-      for(int var4 = 0; var4 < var1; ++var4) {
-         var3.drawImage(var0, -var4 << 4, var4 * var0.getHeight(), (ImageObserver)null);
-      }
-
-      var3.dispose();
-      return var2;
-   }
-
-   public final int load(BufferedImage var1) {
-      this.idBuffer.clear();
-      GL11.glGenTextures(this.idBuffer);
-      int var2 = this.idBuffer.get(0);
-      this.load(var1, var2);
-      this.textureImages.put(Integer.valueOf(var2), var1);
-      return var2;
-   }
-
-   public void load(BufferedImage var1, int var2) {
+   public void load(ImageData var1, int var2) {
+	  GL11.glAlphaFunc(516, 0.1F);
       GL11.glBindTexture(3553, var2);
-      GL11.glTexParameteri(3553, 10241, 9728);
-      GL11.glTexParameteri(3553, 10240, 9728);
-      var2 = var1.getWidth();
-      int var3 = var1.getHeight();
+      GL11.glTexParameteri(3553 /* GL_TEXTURE_2D */, 10241 /* GL_TEXTURE_MIN_FILTER */, 9728 /* GL_NEAREST */);
+		GL11.glTexParameteri(3553 /* GL_TEXTURE_2D */, 10240 /* GL_TEXTURE_MAG_FILTER */, 9728 /* GL_NEAREST */);
+		GL11.glTexParameteri(3553 /* GL_TEXTURE_2D */, 10242 /* GL_TEXTURE_WRAP_S */, 10497 /* GL_REPEAT */);
+		GL11.glTexParameteri(3553 /* GL_TEXTURE_2D */, 10243 /* GL_TEXTURE_WRAP_T */, 10497 /* GL_REPEAT */);
+      var2 = var1.width;
+      int var3 = var1.height;
       int[] var4 = new int[var2 * var3];
       byte[] var5 = new byte[var2 * var3 << 2];
       var1.getRGB(0, 0, var2, var3, var4, 0, var2);
@@ -94,8 +67,6 @@ public class TextureManager {
             var8 = (var7 * 30 + var8 * 70) / 100;
             var9 = (var7 * 30 + var9 * 70) / 100;
             var7 = var10;
-            var8 = var8;
-            var9 = var9;
          }
 
          var5[var11 << 2] = (byte)var7;
@@ -107,7 +78,9 @@ public class TextureManager {
       this.textureBuffer.clear();
       this.textureBuffer.put(var5);
       this.textureBuffer.position(0).limit(var5.length);
-      GL11.glTexImage2D(3553, 0, 6408, var2, var3, 0, 6408, 5121, this.textureBuffer);
+      EaglercraftGPU.glTexImage2D(RealOpenGLEnums.GL_TEXTURE_2D, 0, RealOpenGLEnums.GL_RGBA8, var1.width, var1.height, 0,RealOpenGLEnums. GL_RGBA, RealOpenGLEnums.GL_UNSIGNED_BYTE,
+				(ByteBuffer) textureBuffer);
+      //GL11.glTexImage2D(3553, 0, 6408, var2, var3, 0, 6408, 5121, this.textureBuffer);
    }
 
    public final void registerAnimation(TextureFX var1) {

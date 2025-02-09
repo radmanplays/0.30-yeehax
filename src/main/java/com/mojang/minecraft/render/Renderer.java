@@ -7,11 +7,12 @@ import com.mojang.minecraft.level.liquid.LiquidType;
 import com.mojang.minecraft.level.tile.Block;
 import com.mojang.minecraft.model.Vec3D;
 import com.mojang.minecraft.player.Player;
-import com.mojang.minecraft.render.HeldBlock;
 import com.mojang.util.MathHelper;
-import java.nio.FloatBuffer;
-import java.util.Random;
-import org.lwjgl.BufferUtils;
+import net.lax1dude.eaglercraft.internal.buffer.FloatBuffer;
+import net.lax1dude.eaglercraft.opengl.EaglercraftGPU;
+import net.lax1dude.eaglercraft.opengl.GlStateManager;
+
+import net.lax1dude.eaglercraft.Random;
 import org.lwjgl.opengl.GL11;
 
 public final class Renderer {
@@ -24,14 +25,12 @@ public final class Renderer {
    public int levelTicks;
    public Entity entity = null;
    public Random random = new Random();
-   private volatile int unused1 = 0;
-   private volatile int unused2 = 0;
-   private FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
    public float fogRed;
    public float fogBlue;
    public float fogGreen;
-
-
+   
+   private final FloatBuffer fogColorBuffer = GLAllocation.createDirectFloatBuffer(16);
+   
    public Renderer(Minecraft var1) {
       this.minecraft = var1;
       this.heldBlock = new HeldBlock(var1);
@@ -76,22 +75,33 @@ public final class Renderer {
 
    public final void setLighting(boolean var1) {
       if(!var1) {
-         GL11.glDisable(2896);
-         GL11.glDisable(16384);
+    	  disableStandardItemLighting();
       } else {
-         GL11.glEnable(2896);
-         GL11.glEnable(16384);
-         GL11.glEnable(2903);
-         GL11.glColorMaterial(1032, 5634);
-         float var4 = 0.7F;
-         float var2 = 0.3F;
-         Vec3D var3 = (new Vec3D(0.0F, -1.0F, 0.5F)).normalize();
-         GL11.glLight(16384, 4611, this.createBuffer(var3.x, var3.y, var3.z, 0.0F));
-         GL11.glLight(16384, 4609, this.createBuffer(var2, var2, var2, 1.0F));
-         GL11.glLight(16384, 4608, this.createBuffer(0.0F, 0.0F, 0.0F, 1.0F));
-         GL11.glLightModel(2899, this.createBuffer(var4, var4, var4, 1.0F));
+    	  GlStateManager.pushMatrix();
+  		GlStateManager.rotate(-30.0F, 0.0F, 1.0F, 0.0F);
+  		GlStateManager.rotate(165.0F, 1.0F, 0.0F, 0.0F);
+    	  enableStandardItemLighting();
+    	  GlStateManager.popMatrix();
       }
    }
+   
+   private static final Vec3D LIGHT0_POS = (new Vec3D(0.20000000298023224F, 1.0F, -0.699999988079071F)).normalize();
+	private static final Vec3D LIGHT1_POS = (new Vec3D(-0.20000000298023224F, 1.0F, 0.699999988079071F)).normalize();
+   
+   public static void disableStandardItemLighting() {
+		GlStateManager.disableLighting();
+		GlStateManager.disableMCLight(0);
+		GlStateManager.disableMCLight(1);
+		GlStateManager.disableColorMaterial();
+	}
+   
+   public static void enableStandardItemLighting() {
+		GlStateManager.enableLighting();
+		GlStateManager.enableMCLight(0, 0.6f, -LIGHT0_POS.x, -LIGHT0_POS.y, -LIGHT0_POS.z, 0.0D);
+		GlStateManager.enableMCLight(1, 0.6f, -LIGHT1_POS.x, -LIGHT1_POS.y, -LIGHT1_POS.z, 0.0D);
+		GlStateManager.setMCLightAmbient(0.4f, 0.4f, 0.4f);
+		GlStateManager.enableColorMaterial();
+	}
 
    public final void enableGuiMode() {
       int var1 = this.minecraft.width * 240 / this.minecraft.height;
@@ -108,63 +118,31 @@ public final class Renderer {
    public void updateFog() {
       Level var1 = this.minecraft.level;
       Player var2 = this.minecraft.player;
-      GL11.glFog(2918, this.createBuffer(this.fogRed, this.fogBlue, this.fogGreen, 1.0F));
       GL11.glNormal3f(0.0F, -1.0F, 0.0F);
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+      EaglercraftGPU.glFog(2918, this.setFogColorBuffer(this.fogRed, this.fogGreen, this.fogBlue, 1.0F));
       Block var5;
       if((var5 = Block.blocks[var1.getTile((int)var2.x, (int)(var2.y + 0.12F), (int)var2.z)]) != null && var5.getLiquidType() != LiquidType.NOT_LIQUID) {
          LiquidType var6 = var5.getLiquidType();
          GL11.glFogi(2917, 2048);
-         float var3;
-         float var4;
-         float var7;
-         float var8;
          if(var6 == LiquidType.WATER) {
-            GL11.glFogf(2914, 0.1F);
-            var7 = 0.4F;
-            var8 = 0.4F;
-            var3 = 0.9F;
-            if(this.minecraft.settings.anaglyph) {
-               var4 = (var7 * 30.0F + var8 * 59.0F + var3 * 11.0F) / 100.0F;
-               var8 = (var7 * 30.0F + var8 * 70.0F) / 100.0F;
-               var3 = (var7 * 30.0F + var3 * 70.0F) / 100.0F;
-               var7 = var4;
-               var8 = var8;
-               var3 = var3;
-            }
-
-            GL11.glLightModel(2899, this.createBuffer(var7, var8, var3, 1.0F));
+            GL11.setFogDensity(0.1f);
          } else if(var6 == LiquidType.LAVA) {
-            GL11.glFogf(2914, 2.0F);
-            var7 = 0.4F;
-            var8 = 0.3F;
-            var3 = 0.3F;
-            if(this.minecraft.settings.anaglyph) {
-               var4 = (var7 * 30.0F + var8 * 59.0F + var3 * 11.0F) / 100.0F;
-               var8 = (var7 * 30.0F + var8 * 70.0F) / 100.0F;
-               var3 = (var7 * 30.0F + var3 * 70.0F) / 100.0F;
-               var7 = var4;
-               var8 = var8;
-               var3 = var3;
-            }
-
-            GL11.glLightModel(2899, this.createBuffer(var7, var8, var3, 1.0F));
+            GL11.setFogDensity(2.0f);
          }
       } else {
-         GL11.glFogi(2917, 9729);
-         GL11.glFogf(2915, 0.0F);
-         GL11.glFogf(2916, this.fogEnd);
-         GL11.glLightModel(2899, this.createBuffer(1.0F, 1.0F, 1.0F, 1.0F));
+         GL11.setFogStart(0.0f);
+         GL11.setFogEnd(this.fogEnd);
       }
 
-      GL11.glEnable(2903);
-      GL11.glColorMaterial(1028, 4608);
+      GL11.enableColorMaterial();
+      GL11.enableFog();
    }
-
-   private FloatBuffer createBuffer(float var1, float var2, float var3, float var4) {
-      this.buffer.clear();
-      this.buffer.put(var1).put(var2).put(var3).put(var4);
-      this.buffer.flip();
-      return this.buffer;
-   }
+   
+   private FloatBuffer setFogColorBuffer(float red, float green, float blue, float alpha) {
+		this.fogColorBuffer.clear();
+		this.fogColorBuffer.put(red).put(green).put(blue).put(alpha);
+		this.fogColorBuffer.flip();
+		return this.fogColorBuffer;
+	}
 }

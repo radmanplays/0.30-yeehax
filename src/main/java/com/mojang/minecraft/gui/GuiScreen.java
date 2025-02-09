@@ -6,8 +6,8 @@ import com.mojang.minecraft.gui.FontRenderer;
 import com.mojang.minecraft.gui.Screen;
 import java.util.ArrayList;
 import java.util.List;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
+import net.lax1dude.eaglercraft.Keyboard;
+import net.lax1dude.eaglercraft.Mouse;
 import org.lwjgl.opengl.GL11;
 
 public class GuiScreen extends Screen {
@@ -18,7 +18,6 @@ public class GuiScreen extends Screen {
    protected List buttons = new ArrayList();
    public boolean grabsMouse = false;
    protected FontRenderer fontRenderer;
-
 
    public void render(int var1, int var2) {
       for(int var3 = 0; var3 < this.buttons.size(); ++var3) {
@@ -110,7 +109,7 @@ public class GuiScreen extends Screen {
       }
 
    }
-
+   
    public void tick() {}
 
    public void onClose() {}

@@ -1,17 +1,17 @@
 package com.mojang.minecraft.render;
 
-import com.mojang.minecraft.render.Frustrum;
 import com.mojang.util.MathHelper;
-import java.nio.FloatBuffer;
-import org.lwjgl.BufferUtils;
+import net.lax1dude.eaglercraft.internal.buffer.FloatBuffer;
+import net.lax1dude.eaglercraft.opengl.RealOpenGLEnums;
+
 import org.lwjgl.opengl.GL11;
 
 public final class FrustrumImpl extends Frustrum {
 
    private static FrustrumImpl instance = new FrustrumImpl();
-   private FloatBuffer projectionBuff = BufferUtils.createFloatBuffer(16);
-   private FloatBuffer modelviewBuff = BufferUtils.createFloatBuffer(16);
-   private FloatBuffer unused = BufferUtils.createFloatBuffer(16);
+   private FloatBuffer projectionBuff = GLAllocation.createDirectFloatBuffer(16);
+   private FloatBuffer modelviewBuff = GLAllocation.createDirectFloatBuffer(16);
+   private FloatBuffer unused = GLAllocation.createDirectFloatBuffer(16);
 
 
    public static Frustrum update() {
@@ -19,8 +19,8 @@ public final class FrustrumImpl extends Frustrum {
       instance.projectionBuff.clear();
       var0.modelviewBuff.clear();
       var0.unused.clear();
-      GL11.glGetFloat(2983, var0.projectionBuff);
-      GL11.glGetFloat(2982, var0.modelviewBuff);
+      GL11.glGetFloat(RealOpenGLEnums.GL_PROJECTION_MATRIX, var0.projectionBuff);
+      GL11.glGetFloat(RealOpenGLEnums.GL_MODELVIEW_MATRIX, var0.modelviewBuff);
       var0.projectionBuff.flip().limit(16);
       var0.projectionBuff.get(var0.projection);
       var0.modelviewBuff.flip().limit(16);

@@ -1,11 +1,8 @@
 package com.mojang.minecraft.gui;
 
-import com.mojang.minecraft.gui.Button;
-import com.mojang.minecraft.gui.GenerateLevelScreen;
-import com.mojang.minecraft.gui.GuiScreen;
-import com.mojang.minecraft.gui.LoadLevelScreen;
-import com.mojang.minecraft.gui.OptionsScreen;
 import org.lwjgl.opengl.GL11;
+
+import net.peyton.eagler.level.LevelUtils;
 
 public final class GameOverScreen extends GuiScreen {
 
@@ -13,10 +10,8 @@ public final class GameOverScreen extends GuiScreen {
       this.buttons.clear();
       this.buttons.add(new Button(1, this.width / 2 - 100, this.height / 4 + 72, "Generate new level..."));
       this.buttons.add(new Button(2, this.width / 2 - 100, this.height / 4 + 96, "Load level.."));
-      if(this.minecraft.session == null) {
-         ((Button)this.buttons.get(2)).active = false;
-      }
-
+      ((Button)this.buttons.get(1)).active = false;
+      LevelUtils.save();
    }
 
    protected final void onButtonClick(Button var1) {
@@ -27,11 +22,6 @@ public final class GameOverScreen extends GuiScreen {
       if(var1.id == 1) {
          this.minecraft.setCurrentScreen(new GenerateLevelScreen(this));
       }
-
-      if(this.minecraft.session != null && var1.id == 2) {
-         this.minecraft.setCurrentScreen(new LoadLevelScreen(this));
-      }
-
    }
 
    public final void render(int var1, int var2) {

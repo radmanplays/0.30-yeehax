@@ -3,18 +3,18 @@ package com.mojang.minecraft.gui;
 import com.mojang.minecraft.ChatLine;
 import com.mojang.minecraft.Minecraft;
 import com.mojang.minecraft.gamemode.SurvivalGameMode;
-import com.mojang.minecraft.gui.ChatInputScreen;
-import com.mojang.minecraft.gui.FontRenderer;
-import com.mojang.minecraft.gui.Screen;
 import com.mojang.minecraft.level.tile.Block;
 import com.mojang.minecraft.player.Inventory;
-import com.mojang.minecraft.render.ShapeRenderer;
 import com.mojang.minecraft.render.TextureManager;
 import com.mojang.util.MathHelper;
+
+import net.lax1dude.eaglercraft.opengl.Tessellator;
+import net.lax1dude.eaglercraft.opengl.VertexFormat;
+import net.lax1dude.eaglercraft.opengl.WorldRenderer;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import org.lwjgl.input.Keyboard;
+import net.lax1dude.eaglercraft.Random;
 import org.lwjgl.opengl.GL11;
 
 public final class HUDScreen extends Screen {
@@ -22,10 +22,11 @@ public final class HUDScreen extends Screen {
    public List chat = new ArrayList();
    private Random random = new Random();
    private Minecraft mc;
-   private int width;
-   private int height;
    public String hoveredPlayer = null;
    public int ticks = 0;
+   
+   private int width;
+   private int height;
 
 
    public HUDScreen(Minecraft var1, int var2, int var3) {
@@ -39,7 +40,8 @@ public final class HUDScreen extends Screen {
       this.mc.renderer.enableGuiMode();
       TextureManager var6 = this.mc.textureManager;
       GL11.glBindTexture(3553, this.mc.textureManager.load("/gui/gui.png"));
-      ShapeRenderer var7 = ShapeRenderer.instance;
+      Tessellator tess = Tessellator.getInstance();
+      WorldRenderer var7 = tess.getWorldRenderer();
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       GL11.glEnable(3042);
       Inventory var8 = this.mc.player.inventory;
@@ -134,9 +136,9 @@ public final class HUDScreen extends Screen {
             GL11.glScalef(-1.0F, -1.0F, -1.0F);
             int var20 = var6.load("/terrain.png");
             GL11.glBindTexture(3553, var20);
-            var7.begin();
+            var7.begin(7, VertexFormat.POSITION_TEX_COLOR);
             Block.blocks[var15].renderFullbright(var7);
-            var7.end();
+            tess.draw();
             GL11.glPopMatrix();
             if(var8.count[var12] > 1) {
                var23 = "" + var8.count[var12];
@@ -151,7 +153,7 @@ public final class HUDScreen extends Screen {
       }
 
       if(this.mc.gamemode instanceof SurvivalGameMode) {
-         String var24 = "Score: &e" + this.mc.player.getScore();
+         String var24 = "Score: " + this.mc.player.getScore();
          var5.render(var24, this.width - var5.getWidth(var24) - 2, 2, 16777215);
          var5.render("Arrows: " + this.mc.player.arrows, this.width / 2 + 8, this.height - 33, 16777215);
       }
@@ -172,36 +174,6 @@ public final class HUDScreen extends Screen {
       var14 = this.width / 2;
       var15 = this.height / 2;
       this.hoveredPlayer = null;
-      if(Keyboard.isKeyDown(15) && this.mc.networkManager != null && this.mc.networkManager.isConnected()) {
-         List var22 = this.mc.networkManager.getPlayers();
-         GL11.glEnable(3042);
-         GL11.glDisable(3553);
-         GL11.glBlendFunc(770, 771);
-         GL11.glBegin(7);
-         GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.7F);
-         GL11.glVertex2f((float)(var14 + 128), (float)(var15 - 68 - 12));
-         GL11.glVertex2f((float)(var14 - 128), (float)(var15 - 68 - 12));
-         GL11.glColor4f(0.2F, 0.2F, 0.2F, 0.8F);
-         GL11.glVertex2f((float)(var14 - 128), (float)(var15 + 68));
-         GL11.glVertex2f((float)(var14 + 128), (float)(var15 + 68));
-         GL11.glEnd();
-         GL11.glDisable(3042);
-         GL11.glEnable(3553);
-         var23 = "Connected players:";
-         var5.render(var23, var14 - var5.getWidth(var23) / 2, var15 - 64 - 12, 16777215);
-
-         for(var11 = 0; var11 < var22.size(); ++var11) {
-            int var28 = var14 + var11 % 2 * 120 - 120;
-            int var17 = var15 - 64 + (var11 / 2 << 3);
-            if(var2 && var3 >= var28 && var4 >= var17 && var3 < var28 + 120 && var4 < var17 + 8) {
-               this.hoveredPlayer = (String)var22.get(var11);
-               var5.renderNoShadow((String)var22.get(var11), var28 + 2, var17, 16777215);
-            } else {
-               var5.renderNoShadow((String)var22.get(var11), var28, var17, 15658734);
-            }
-         }
-      }
-
    }
 
    public final void addChat(String var1) {
@@ -212,4 +184,9 @@ public final class HUDScreen extends Screen {
       }
 
    }
+   
+//   public void onResize(Minecraft mc, int width, int height) {
+//		this.width = width;
+//		this.height = height;
+//	}
 }
