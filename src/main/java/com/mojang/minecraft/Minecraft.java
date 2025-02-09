@@ -804,15 +804,15 @@ public final class Minecraft implements Runnable {
                               GL11.glCallList(var89.listId + 1);
                               GL11.glDisable(3042);
                               GL11.glEnable(3042);
-//                              GL11.glColorMask(false, false, false, false);
-//                              GL11.glColorMask(true, true, true, true);
-//                              if(var82.minecraft.settings.anaglyph) {
-//                                 if(var77 == 0) {
-//                                    GL11.glColorMask(false, true, true, false);
-//                                 } else {
-//                                    GL11.glColorMask(true, false, false, false);
-//                                 }
-//                              }
+                              GL11.glColorMask(false, false, false, false);
+                              GL11.glColorMask(true, true, true, true);
+                              if(var82.minecraft.settings.anaglyph) {
+                                 if(var77 == 0) {
+                                    GL11.glColorMask(false, true, true, false);
+                                 } else {
+                                    GL11.glColorMask(true, false, false, false);
+                                 }
+                              }
 
                               var120 = var89.sortChunks(var126, 1);
                               if(var120 > 0) {

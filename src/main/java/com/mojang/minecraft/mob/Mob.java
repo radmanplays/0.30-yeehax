@@ -1,14 +1,13 @@
 package com.mojang.minecraft.mob;
 
 import com.mojang.minecraft.Entity;
+
 import com.mojang.minecraft.level.Level;
 import com.mojang.minecraft.mob.ai.AI;
 import com.mojang.minecraft.mob.ai.BasicAI;
 import com.mojang.minecraft.model.ModelManager;
 import com.mojang.minecraft.render.TextureManager;
 import com.mojang.util.MathHelper;
-
-import net.peyton.eagler.level.LevelUtils;
 
 import org.lwjgl.opengl.GL11;
 
@@ -385,7 +384,6 @@ public class Mob extends Entity {
          }
 
          this.dead = true;
-         LevelUtils.save();
       }
    }
 

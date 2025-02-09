@@ -8,7 +8,7 @@ public class Timer
 	{
 		this.tps = tps;
 		lastSysClock = EagRuntime.steadyTimeMillis();
-		lastHRClock = EagRuntime.nanoTime();
+		lastHRClock = EagRuntime.nanoTime() / 1000000L;
 	}
 
 	float tps;
