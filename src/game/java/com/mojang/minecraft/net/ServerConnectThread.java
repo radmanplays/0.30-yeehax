@@ -6,13 +6,12 @@ import com.mojang.net.NetworkHandler;
 
 public class ServerConnectThread extends Thread
 {
-	public ServerConnectThread(NetworkManager networkManager, String server, int port, String username, String key, Minecraft minecraft) {
+	public ServerConnectThread(NetworkManager networkManager, String server, String username, String key, Minecraft minecraft) {
 		super();
 
 		netManager = networkManager;
 
 		this.server = server;
-		this.port = port;
 
 		this.username = username;
 		this.key = key;
@@ -24,7 +23,7 @@ public class ServerConnectThread extends Thread
 	public void run()
 	{
 		try {
-			netManager.netHandler = new NetworkHandler(server, port);
+			netManager.netHandler = new NetworkHandler(server);
 			netManager.netHandler.netManager = netManager;
 
 			netManager.netHandler.send(PacketType.IDENTIFICATION, new Object[]{Byte.valueOf((byte)7), this.username, this.key, Integer.valueOf(0)});
@@ -42,7 +41,6 @@ public class ServerConnectThread extends Thread
 	}
 
 	private String server;
-	private int port;
 
 	private String username;
 	private String key;

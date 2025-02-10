@@ -90,14 +90,14 @@ public final class Minecraft implements Runnable {
    public MovingObjectPosition selected;
    public GameSettings settings;
    String server;
-   int port;
-   volatile boolean running;
+   public volatile boolean running;
    public String debug;
    public boolean hasMouse;
    private int lastClick;
    public boolean raining;
    private boolean enableGLErrorChecking = false;
    private static Minecraft mc;
+   public boolean mpRestart = false;
 
 
    public Minecraft(int var3, int var4, boolean var5) {
@@ -109,8 +109,6 @@ public final class Minecraft implements Runnable {
       this.online = false;
       new HumanoidModel(0.0F);
       this.selected = null;
-      this.server = null;
-      this.port = 0;
       this.running = false;
       this.debug = "";
       this.hasMouse = false;
@@ -283,7 +281,7 @@ public final class Minecraft implements Runnable {
          this.hud = new HUDScreen(this, this.width, this.height);
          if(this.server != null && this.session != null) {
         	 this.gamemode = new CreativeGameMode(this);
-        	 this.networkManager = new NetworkManager(this, this.server, this.port, this.session.username, this.session.mppass);
+        	 this.networkManager = new NetworkManager(this, this.server, this.session.username, this.session.mppass);
          }
 
       long var13 = EagRuntime.steadyTimeMillis();
@@ -1209,7 +1207,7 @@ public final class Minecraft implements Runnable {
              NetworkManager var20 = this.networkManager;
              if(this.networkManager.successful) {
                 NetworkHandler var18 = var20.netHandler;
-                if(var20.netHandler.connected) {
+                if(this.networkManager.isConnected()) {
                    try {
                       NetworkHandler var22 = var20.netHandler;
                       var20.netHandler.read(var22.in);
@@ -1406,7 +1404,7 @@ public final class Minecraft implements Runnable {
                             }
                          }
 
-                         if(!var22.connected) {
+                         if(!this.networkManager.isConnected()) {
                             break;
                          }
 
@@ -1440,7 +1438,7 @@ public final class Minecraft implements Runnable {
              }
           }
        }
-
+      
       if(this.currentScreen == null && this.player != null && this.player.health <= 0) {
          this.setCurrentScreen((GuiScreen)null);
       }
@@ -1757,6 +1755,13 @@ public final class Minecraft implements Runnable {
       }
 
       System.gc();
+   }
+   
+   public void startNetworkManager(String serverIP, SessionData session) {
+	   this.gamemode = new CreativeGameMode(this);
+	   this.networkManager = new NetworkManager(this, serverIP, session.username, session.mppass);
+	   this.server = serverIP;
+	   this.session = session;
    }
    
    public static Minecraft getMinecraft() {

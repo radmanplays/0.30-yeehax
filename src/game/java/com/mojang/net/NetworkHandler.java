@@ -1,8 +1,10 @@
 package com.mojang.net;
 
+import com.mojang.minecraft.Minecraft;
 import com.mojang.minecraft.net.NetworkManager;
 import com.mojang.minecraft.net.PacketType;
 
+import net.lax1dude.eaglercraft.EagRuntime;
 import net.lax1dude.eaglercraft.internal.EnumEaglerConnectionState;
 import net.lax1dude.eaglercraft.internal.PlatformNetworking;
 
@@ -12,19 +14,25 @@ import java.util.List;
 
 public final class NetworkHandler {
 
-   public volatile boolean connected;
    public ByteBuffer in = ByteBuffer.allocate(1048576);
    public ByteBuffer out = ByteBuffer.allocate(1048576);
    public NetworkManager netManager;
    private byte[] stringBytes = new byte[64];
 
 
-   public NetworkHandler(String server, int port) {
-	   String serveraddress = server.replace("wss://", "").replace("ws://", "").split(":")[0] + ":" + port;
+   public NetworkHandler(String server) {
+	   if(server.contains("ws://")) {
+		   if(EagRuntime.requireSSL()) {
+			   server = server.replace("ws://", "wss://");
+		   }
+	   } else if(!server.contains("://")) {
+		   server = EagRuntime.requireSSL() ? "wss://" + server : "ws://" + server;
+	   }
+	   
 	   this.in.clear();
 	   this.out.clear();
-		   
-	   PlatformNetworking.startPlayConnection("ws://" + serveraddress);
+	   
+	   PlatformNetworking.startPlayConnection(server);
 		   
 	   boolean connected = false;
 	   boolean connectionFailed = false;
@@ -36,17 +44,33 @@ public final class NetworkHandler {
 			   connected = true;
 		   }
 	   }
-	   this.connected = connected;
+	   
+	   if(connectionFailed && server.contains("ws://")) {
+		   server = server.replace("ws://", "wss://");
+	   }
+	   
+	   connected = false;
+	   connectionFailed = false;
+	   PlatformNetworking.startPlayConnection(server);
+	   
+	   while(!connected && !connectionFailed) {
+		   EnumEaglerConnectionState state = PlatformNetworking.playConnectionState();
+		   if(state == EnumEaglerConnectionState.FAILED) {
+			   connectionFailed = true;
+		   } else if(state == EnumEaglerConnectionState.CONNECTED) {
+			   connected = true;
+		   }
+	   }
    }
 
    public final void close() {
 	   PlatformNetworking.playDisconnect();
 
-      this.connected = false;
+	   this.netManager.isConnected();
    }
 
    public final void send(PacketType var1, Object ... var2) {
-      if(this.connected) {
+      if(this.netManager.isConnected()) {
          this.out.put(var1.opcode);
 
          for(int var3 = 0; var3 < var2.length; ++var3) {
@@ -54,7 +78,7 @@ public final class NetworkHandler {
             Object var4 = var2[var3];
             Class<?> var5 = var10001;
             NetworkHandler var6 = this;
-            if(this.connected) {
+            if(this.netManager.isConnected()) {
                try {
                   if(var5 == Long.TYPE) {
                      var6.out.putLong(((Long)var4).longValue());
@@ -104,7 +128,7 @@ public final class NetworkHandler {
    }
 
    public Object readObject(Class<?> var1) {
-      if(!this.connected) {
+      if(!this.netManager.isConnected()) {
          return null;
       } else {
          try {
@@ -139,7 +163,6 @@ public final class NetworkHandler {
    
    public void read(ByteBuffer in2) {
 	   if(PlatformNetworking.playConnectionState() != EnumEaglerConnectionState.CONNECTED) {
-		   this.connected = false;
 		   return;
 	   }
 	   
@@ -147,14 +170,13 @@ public final class NetworkHandler {
 	   
 	   if(packets != null) {
 		   for(byte[] bytes : packets) {
-			   in.put(bytes);
+			   in2.put(bytes);
 		   }
 	   }
    }
 
    public void write(ByteBuffer out2) {
 	   if(PlatformNetworking.playConnectionState() != EnumEaglerConnectionState.CONNECTED) {
-		   this.connected = false;
 		   return;
 	   }
 	   

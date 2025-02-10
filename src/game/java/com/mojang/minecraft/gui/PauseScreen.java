@@ -1,5 +1,7 @@
 package com.mojang.minecraft.gui;
 
+import com.mojang.minecraft.SessionData;
+
 import net.peyton.eagler.level.LevelUtils;
 
 public final class PauseScreen extends GuiScreen {
@@ -8,16 +10,12 @@ public final class PauseScreen extends GuiScreen {
       this.buttons.clear();
       this.buttons.add(new Button(0, this.width / 2 - 100, this.height / 4, "Options..."));
       this.buttons.add(new Button(1, this.width / 2 - 100, this.height / 4 + 24, "Generate new level..."));
-      this.buttons.add(new Button(2, this.width / 2 - 100, this.height / 4 + 48, "Save level.."));
-      this.buttons.add(new Button(3, this.width / 2 - 100, this.height / 4 + 72, "Load level.."));
+      this.buttons.add(new Button(3, this.width / 2 - 100, this.height / 4 + 48, "Multiplayer..."));
       this.buttons.add(new Button(4, this.width / 2 - 100, this.height / 4 + 120, "Back to game"));
-      ((Button)this.buttons.get(2)).active = false;
-      ((Button)this.buttons.get(3)).active = false;
       
       if(this.minecraft.networkManager != null) {
           ((Button)this.buttons.get(1)).active = false;
           ((Button)this.buttons.get(2)).active = false;
-          ((Button)this.buttons.get(3)).active = false;
        }
       
       LevelUtils.save();
@@ -30,6 +28,10 @@ public final class PauseScreen extends GuiScreen {
 
       if(var1.id == 1) {
          this.minecraft.setCurrentScreen(new GenerateLevelScreen(this));
+      }
+      
+      if(var1.id == 3) {
+    	  this.minecraft.setCurrentScreen(new MultiplayerMenu());
       }
 
       if(var1.id == 4) {
