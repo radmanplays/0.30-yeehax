@@ -1,6 +1,10 @@
 package yeehax.Modules;
 
+import com.mojang.minecraft.Minecraft;
+
 public class Mod {
+	protected static final Minecraft mc = Minecraft.getMinecraft();
+	
 	public String name;
 	public boolean enabled;
 
