@@ -38,6 +38,7 @@ public class Mod {
 	}
 	
 	public void toggle() {
+		enabled = !enabled;
 		if (enabled) {
 			onEnable();
 		}else {

@@ -7,7 +7,7 @@ public class Fly extends Mod{
 
 	public Fly()
 	{
-		super("Yee Hax Fly+", KeyboardConstants.KEY_F);
+		super("Yee Hax Fly+", KeyboardConstants.KEY_P);
 	}
 
 	@Override

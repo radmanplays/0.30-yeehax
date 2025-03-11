@@ -3,6 +3,8 @@ package com.mojang.minecraft.player;
 import com.mojang.minecraft.GameSettings;
 import com.mojang.minecraft.Minecraft;
 
+import yeehax.YeeHax;
+
 
 public class InputHandlerImpl extends InputHandler
 {
@@ -90,6 +92,7 @@ public class InputHandlerImpl extends InputHandler
 	    if (key == settings.flyKey.key) { 
 	        if (state) {
 	            flyEnabled = !flyEnabled;
+	            YeeHax.modManager.fly.toggle();
 	            System.out.println("Fly mod " + (flyEnabled ? "enabled" : "disabled"));
 	        }
 	    }

@@ -11,6 +11,7 @@ import com.mojang.util.MathHelper;
 import net.lax1dude.eaglercraft.opengl.Tessellator;
 import net.lax1dude.eaglercraft.opengl.VertexFormat;
 import net.lax1dude.eaglercraft.opengl.WorldRenderer;
+import yeehax.YeeHax;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,9 +150,12 @@ public final class HUDScreen extends Screen {
          }
       }
 
-      var5.render("0.30", 2, 2, 16777215);
+      var5.render("YeeHax 0.30", 2, 2, 16777215);
       if(this.mc.settings.showFrameRate) {
          var5.render(this.mc.debug, 2, 12, 16777215);
+      }
+      if(YeeHax.modManager.fly.isEnabled()) {
+    	  var5.render("YeeHax Fly+", 2, 12, 0xff0000);
       }
 
       if(this.mc.gamemode instanceof SurvivalGameMode) {
