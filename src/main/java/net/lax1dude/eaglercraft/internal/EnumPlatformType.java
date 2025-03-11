@@ -17,7 +17,7 @@ package net.lax1dude.eaglercraft.internal;
  * 
  */
 public enum EnumPlatformType {
-	DESKTOP("Desktop"), JAVASCRIPT("HTML5");
+	DESKTOP("Desktop"), JAVASCRIPT("HTML5"), WASM_GC("WASM-GC");
 
 	private final String name;
 

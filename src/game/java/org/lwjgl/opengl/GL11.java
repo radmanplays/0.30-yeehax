@@ -12,7 +12,7 @@ public class GL11 extends EaglercraftGPU {
 	
 	public static final int GL_TEXTURE_2D = RealOpenGLEnums.GL_TEXTURE_2D;
 	
-	public static final void glEnable(int p1) {
+	public static void glEnable(int p1) {
 		switch (p1) {
 		case GL_DEPTH_TEST:
 			GL11.enableDepth();
@@ -54,7 +54,7 @@ public class GL11 extends EaglercraftGPU {
 		}
 	}
 	
-	public static final void glDisable(int p1) {
+	public static void glDisable(int p1) {
 		switch (p1) {
 		case GL_DEPTH_TEST:
 			GL11.disableDepth();
@@ -96,82 +96,82 @@ public class GL11 extends EaglercraftGPU {
 		}
 	}
 	
-	public static final void glShadeModel(int i) {
+	public static void glShadeModel(int i) {
 		GL11.shadeModel(i);
 	}
 	
-	public static final void glClearDepth(float f) {
+	public static void glClearDepth(float f) {
 		GL11.clearDepth(f);
 	}
 	
-	public static final void glClearDepth(double d) {
+	public static void glClearDepth(double d) {
 		GL11.clearDepth((float)d);
 	}
 	
-	public static final void glDepthFunc(int f) {
+	public static void glDepthFunc(int f) {
 		GL11.depthFunc(f);
 	}
 
-	public static final void glAlphaFunc(int i, float f) {
+	public static void glAlphaFunc(int i, float f) {
 		GL11.alphaFunc(i, f);
 	}
 
-	public static final void glCullFace(int i) {
+	public static void glCullFace(int i) {
 		GL11.cullFace(i);
 	}
 
-	public static final void glMatrixMode(int i) {
+	public static void glMatrixMode(int i) {
 		GL11.matrixMode(i);
 	}
 
-	public static final void glLoadIdentity() {
+	public static void glLoadIdentity() {
 		GL11.loadIdentity();
 	}
 
-	public static final void glViewport(int i, int j, int width, int height) {
+	public static void glViewport(int i, int j, int width, int height) {
 		GL11.viewport(i, j, width, height);
 	}
 
-	public static final void glColorMask(boolean b, boolean c, boolean d, boolean e) {
+	public static void glColorMask(boolean b, boolean c, boolean d, boolean e) {
 		GL11.colorMask(b, c, d, e);
 	}
 
-	public static final void glClearColor(float fogRed, float fogBlue, float fogGreen, float f) {
+	public static void glClearColor(float fogRed, float fogBlue, float fogGreen, float f) {
 		GL11.clearColor(fogRed, fogBlue, fogGreen, f);
 	}
 
-	public static final void glClear(int i) {
+	public static void glClear(int i) {
 		GL11.clear(i);
 	}
 
-	public static final void glTranslatef(float f, float g, float h) {
+	public static void glTranslatef(float f, float g, float h) {
 		GL11.translate(f, g, h);
 	}
 
-	public static final void glRotatef(float f, float g, float h, float i) {
+	public static void glRotatef(float f, float g, float h, float i) {
 		GL11.rotate(f, g, h, i);
 	}
 
-	public static final void glColor4f(float f, float g, float h, float i) {
+	public static void glColor4f(float f, float g, float h, float i) {
 		GL11.color(f, g, h, i);
 	}
 
-	public static final void glBindTexture(int i, int var110) {
+	public static void glBindTexture(int i, int var110) {
 		if(i != GL_TEXTURE_2D) {
 			throw new RuntimeException("Only 2D texture types are supported!");
 		}
 		GL11.bindTexture(var110);
 	}
 
-	public static final void glBlendFunc(int i, int j) {
+	public static void glBlendFunc(int i, int j) {
 		GL11.blendFunc(i, j);
 	}
 
-	public static final void glPushMatrix() {
+	public static void glPushMatrix() {
 		GL11.pushMatrix();
 	}
 	
-	public static final void glPopMatrix() {
+	public static void glPopMatrix() {
 		GL11.popMatrix();
 	}
 
@@ -213,7 +213,7 @@ public class GL11 extends EaglercraftGPU {
 //		uploader.func_181679_a(renderer);
 //	}
 
-	public static final void glCallLists(IntBuffer p1) {
+	public static void glCallLists(IntBuffer p1) {
 		while(p1.hasRemaining()) {
 			glCallList(p1.get());
 		}

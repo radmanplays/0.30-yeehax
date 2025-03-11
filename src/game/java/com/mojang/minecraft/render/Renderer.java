@@ -124,7 +124,6 @@ public final class Renderer {
       Block var5;
       if((var5 = Block.blocks[var1.getTile((int)var2.x, (int)(var2.y + 0.12F), (int)var2.z)]) != null && var5.getLiquidType() != LiquidType.NOT_LIQUID) {
          LiquidType var6 = var5.getLiquidType();
-         GL11.glFogi(2917, 2048);
          if(var6 == LiquidType.WATER) {
             GL11.setFogDensity(0.1f);
          } else if(var6 == LiquidType.LAVA) {

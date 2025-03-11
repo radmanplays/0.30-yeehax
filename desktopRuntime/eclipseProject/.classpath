@@ -19,5 +19,8 @@
 	<classpathentry kind="lib" path="deps_fix/lwjgl-opengles.jar"/>
 	<classpathentry kind="lib" path="deps_fix/soundsystem-20120107.jar"/>
 	<classpathentry kind="lib" path="deps_fix/UnsafeMemcpy.jar"/>
+	<classpathentry kind="lib" path="deps_fix/teavm-interop-0.6.1.jar"/>
+	<classpathentry kind="lib" path="deps_fix/teavm-jso-0.6.1.jar"/>
+	<classpathentry kind="lib" path="deps_fix/teavm-jso-apis-0.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

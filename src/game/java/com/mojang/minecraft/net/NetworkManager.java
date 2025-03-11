@@ -4,10 +4,10 @@ import com.mojang.minecraft.Minecraft;
 import com.mojang.minecraft.gui.ErrorScreen;
 import com.mojang.net.NetworkHandler;
 
+import net.lax1dude.eaglercraft.EaglerOutputStream;
 import net.lax1dude.eaglercraft.internal.EnumEaglerConnectionState;
 import net.lax1dude.eaglercraft.internal.PlatformNetworking;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,15 +18,12 @@ public class NetworkManager
 	public NetworkManager(Minecraft minecraft, String server, String username, String key)
 	{
 		minecraft.online = true;
-
 		this.minecraft = minecraft;
-
 		players = new HashMap<Byte, NetworkPlayer>();
-
-		new ServerConnectThread(this, server, username, key, minecraft).start();
+		this.netHandler = new NetworkHandler(this);
 	}
 
-	public ByteArrayOutputStream levelData;
+	public EaglerOutputStream levelData;
 
 	public NetworkHandler netHandler;
 
@@ -55,7 +52,11 @@ public class NetworkManager
 
 	public boolean isConnected()
 	{
-		return netHandler != null && PlatformNetworking.playConnectionState() == EnumEaglerConnectionState.CONNECTED;
+		return netHandler != null && netHandler.webSocket != null && netHandler.webSocket.getState() == EnumEaglerConnectionState.CONNECTED;
+	}
+	
+	public boolean didConnectionClose() {
+		return successful && this.netHandler != null && netHandler.webSocket != null && netHandler.webSocket.getState() != EnumEaglerConnectionState.CONNECTED;
 	}
 
 	public List getPlayers()

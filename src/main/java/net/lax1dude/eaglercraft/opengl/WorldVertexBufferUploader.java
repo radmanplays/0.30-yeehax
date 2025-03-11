@@ -19,7 +19,7 @@ import net.lax1dude.eaglercraft.internal.buffer.ByteBuffer;
  * 
  */
 public class WorldVertexBufferUploader {
-	public void func_181679_a(WorldRenderer parWorldRenderer) {
+	public static void func_181679_a(WorldRenderer parWorldRenderer) {
 		int cunt = parWorldRenderer.getVertexCount();
 		if (cunt > 0) {
 			VertexFormat fmt = parWorldRenderer.getVertexFormat();
@@ -27,6 +27,19 @@ public class WorldVertexBufferUploader {
 			buf.position(0).limit(cunt * fmt.attribStride);
 			EaglercraftGPU.renderBuffer(buf, fmt.eaglercraftAttribBits, parWorldRenderer.getDrawMode(), cunt);
 			parWorldRenderer.reset();
+		}
+	}
+	
+	public static void uploadDisplayList(int displayList, WorldRenderer worldRenderer) {
+		int cunt = worldRenderer.getVertexCount();
+		if (cunt > 0) {
+			VertexFormat fmt = worldRenderer.getVertexFormat();
+			ByteBuffer buf = worldRenderer.getByteBuffer();
+			buf.position(0).limit(cunt * fmt.attribStride);
+			EaglercraftGPU.uploadListDirect(displayList, buf, fmt.eaglercraftAttribBits, worldRenderer.getDrawMode(), cunt);
+			worldRenderer.reset();
+		}else {
+			EaglercraftGPU.flushDisplayList(displayList);
 		}
 	}
 }

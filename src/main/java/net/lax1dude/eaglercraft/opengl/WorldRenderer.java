@@ -404,7 +404,7 @@ public class WorldRenderer {
 		this.byteBuffer.putFloat(i + 8, (float) (parDouble3 + this.zOffset));
 		return this;
 	}
-	
+
 	/**
 	 * sets the normal of the previous 4 verticies in the buffer
 	 */
@@ -593,7 +593,7 @@ public class WorldRenderer {
 			}
 		}
 	}
-
+	
 	public WorldRenderer color(int var1) {
 		int var2 = var1 >>> 16 & 255;
 		int var3 = var1 >>> 8 & 255;

@@ -111,5 +111,4 @@ public abstract class ByteBuffer implements Buffer {
 	public abstract boolean hasArray();
 
 	public abstract byte[] array();
-
 }

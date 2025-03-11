@@ -1,6 +1,5 @@
 package net.lax1dude.eaglercraft.opengl;
 
-
 /**
  * + This portion of EaglercraftX contains deobfuscated Minecraft 1.8 source
  * code.
@@ -26,7 +25,6 @@ package net.lax1dude.eaglercraft.opengl;
  */
 public class Tessellator {
 	private WorldRenderer worldRenderer;
-	private WorldVertexBufferUploader vboUploader = new WorldVertexBufferUploader();
 
 	public static final int GL_TRIANGLES = RealOpenGLEnums.GL_TRIANGLES;
 	public static final int GL_TRIANGLE_STRIP = RealOpenGLEnums.GL_TRIANGLE_STRIP;
@@ -39,7 +37,7 @@ public class Tessellator {
 	/**
 	 * + The static instance of the Tessellator.
 	 */
-	private static final Tessellator instance = new Tessellator(50593792);
+	private static final Tessellator instance = new Tessellator(2097152);
 
 	public static Tessellator getInstance() {
 		return instance;
@@ -55,7 +53,12 @@ public class Tessellator {
 	 */
 	public void draw() {
 		this.worldRenderer.finishDrawing();
-		this.vboUploader.func_181679_a(this.worldRenderer);
+		WorldVertexBufferUploader.func_181679_a(this.worldRenderer);
+	}
+	
+	public void uploadDisplayList(int displayList) {
+		this.worldRenderer.finishDrawing();
+		WorldVertexBufferUploader.uploadDisplayList(displayList, this.worldRenderer);
 	}
 
 	public WorldRenderer getWorldRenderer() {

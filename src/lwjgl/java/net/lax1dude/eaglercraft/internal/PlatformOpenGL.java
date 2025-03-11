@@ -265,12 +265,12 @@ public class PlatformOpenGL {
 		return new OpenGLObjects.TextureGL(glGenTextures());
 	}
 
-	public static final IBufferArrayGL _wglGenVertexArrays() {
+	public static final IVertexArrayGL _wglGenVertexArrays() {
 		switch (vertexArrayImpl) {
 		case VAO_IMPL_CORE:
-			return new OpenGLObjects.BufferArrayGL(glGenVertexArrays());
+			return new OpenGLObjects.VertexArrayGL(glGenVertexArrays());
 		case VAO_IMPL_OES:
-			return new OpenGLObjects.BufferArrayGL(glGenVertexArraysOES());
+			return new OpenGLObjects.VertexArrayGL(glGenVertexArraysOES());
 		default:
 			throw new UnsupportedOperationException();
 		}
@@ -304,8 +304,8 @@ public class PlatformOpenGL {
 		glDeleteTextures(((OpenGLObjects.TextureGL) obj).ptr);
 	}
 
-	public static final void _wglDeleteVertexArrays(IBufferArrayGL obj) {
-		int ptr = ((OpenGLObjects.BufferArrayGL) obj).ptr;
+	public static final void _wglDeleteVertexArrays(IVertexArrayGL obj) {
+		int ptr = ((OpenGLObjects.VertexArrayGL) obj).ptr;
 		switch (vertexArrayImpl) {
 		case VAO_IMPL_CORE:
 			glDeleteVertexArrays(ptr);
@@ -376,8 +376,8 @@ public class PlatformOpenGL {
 				data == null ? 0l : EaglerLWJGLAllocator.getAddress(data));
 	}
 
-	public static final void _wglBindVertexArray(IBufferArrayGL obj) {
-		int ptr = obj == null ? 0 : ((OpenGLObjects.BufferArrayGL) obj).ptr;
+	public static final void _wglBindVertexArray(IVertexArrayGL obj) {
+		int ptr = obj == null ? 0 : ((OpenGLObjects.VertexArrayGL) obj).ptr;
 		switch (vertexArrayImpl) {
 		case VAO_IMPL_CORE:
 			glBindVertexArray(ptr);

@@ -925,4 +925,42 @@ public class ArrayUtils {
 	private static int max0(final int other) {
 		return Math.max(0, other);
 	}
+	
+	 public static void reverse(final byte[] array) {
+	        if (array != null) {
+	            reverse(array, 0, array.length);
+	        }
+	    }
+
+	    /**
+	     * Reverses the order of the given array in the given range.
+	     * <p>
+	     * This method does nothing for a {@code null} input array.
+	     * </p>
+	     *
+	     * @param array
+	     *            the array to reverse, may be {@code null}
+	     * @param startIndexInclusive
+	     *            the starting index. Undervalue (&lt;0) is promoted to 0, overvalue (&gt;array.length) results in no
+	     *            change.
+	     * @param endIndexExclusive
+	     *            elements up to endIndex-1 are reversed in the array. Undervalue (&lt; start index) results in no
+	     *            change. Overvalue (&gt;array.length) is demoted to array length.
+	     * @since 3.2
+	     */
+	    public static void reverse(final byte[] array, final int startIndexInclusive, final int endIndexExclusive) {
+	        if (array == null) {
+	            return;
+	        }
+	        int i = Math.max(startIndexInclusive, 0);
+	        int j = Math.min(array.length, endIndexExclusive) - 1;
+	        byte tmp;
+	        while (j > i) {
+	            tmp = array[j];
+	            array[j] = array[i];
+	            array[i] = tmp;
+	            j--;
+	            i++;
+	        }
+	    }
 }

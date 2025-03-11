@@ -1,5 +1,9 @@
 package net.lax1dude.eaglercraft.internal;
 
+import java.util.List;
+
+import org.json.JSONObject;
+
 /**
  * Copyright (c) 2022-2024 lax1dude. All Rights Reserved.
  * 
@@ -18,19 +22,82 @@ package net.lax1dude.eaglercraft.internal;
  */
 public interface IClientConfigAdapter {
 
+	public static class DefaultServer {
+
+		public final String name;
+		public final String addr;
+		public final boolean hideAddress;
+
+		public DefaultServer(String name, String addr, boolean hideAddress) {
+			this.name = name;
+			this.addr = addr;
+			this.hideAddress = hideAddress;
+		}
+
+	}
+
+	String getDefaultLocale();
+
+	List<DefaultServer> getDefaultServerList();
+
+	String getServerToJoin();
+
 	String getWorldsDB();
+
+	String getResourcePacksDB();
+
+	JSONObject getIntegratedServerOpts();
 
 	boolean isCheckGLErrors();
 
+	boolean isCheckShaderGLErrors();
+
+	boolean isDemo();
+
+	boolean allowUpdateSvc();
+
+	boolean allowUpdateDL();
+
+	boolean isEnableDownloadOfflineButton();
+
+	String getDownloadOfflineButtonLink();
+
+	boolean useSpecialCursors();
+
+	boolean isLogInvalidCerts();
+
+	boolean isCheckRelaysForUpdates();
+
+	boolean isEnableSignatureBadge();
+
+	boolean isAllowVoiceClient();
+
+	boolean isAllowFNAWSkins();
+
 	String getLocalStorageNamespace();
 
-	String getServerToJoin();
-	
+	boolean isEnableMinceraft();
+
+	boolean isEnableServerCookies();
+
+	boolean isAllowServerRedirects();
+
+	boolean isOpenDebugConsoleOnLaunch();
+
+	boolean isForceWebViewSupport();
+
+	boolean isEnableWebViewCSP();
+
+	boolean isAllowBootMenu();
+
+	boolean isForceProfanityFilter();
+
 	boolean isEaglerNoDelay();
 
 	boolean isRamdiskMode();
 
 	boolean isEnforceVSync();
-	
+
 	IClientConfigAdapterHooks getHooks();
+
 }

@@ -51,6 +51,7 @@ import com.jcraft.jzlib.GZIPInputStream;
 import com.jcraft.jzlib.GZIPOutputStream;
 import com.jcraft.jzlib.Inflater;
 import com.jcraft.jzlib.InflaterInputStream;
+import com.mojang.minecraft.Minecraft;
 
 import net.lax1dude.eaglercraft.internal.buffer.ByteBuffer;
 import net.lax1dude.eaglercraft.internal.buffer.EaglerArrayBufferAllocator;

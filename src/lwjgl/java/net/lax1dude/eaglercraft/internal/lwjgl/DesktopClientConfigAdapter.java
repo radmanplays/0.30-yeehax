@@ -1,5 +1,7 @@
 package net.lax1dude.eaglercraft.internal.lwjgl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.json.JSONObject;
@@ -28,10 +30,18 @@ public class DesktopClientConfigAdapter implements IClientConfigAdapter {
 
 	public static final IClientConfigAdapter instance = new DesktopClientConfigAdapter();
 
+	public final List<DefaultServer> defaultServers = new ArrayList<>();
+
 	private final DesktopClientConfigAdapterHooks hooks = new DesktopClientConfigAdapterHooks();
 
+	@Override
 	public String getDefaultLocale() {
 		return "en_US";
+	}
+
+	@Override
+	public List<DefaultServer> getDefaultServerList() {
+		return defaultServers;
 	}
 
 	@Override
@@ -44,10 +54,12 @@ public class DesktopClientConfigAdapter implements IClientConfigAdapter {
 		return "worlds";
 	}
 
+	@Override
 	public String getResourcePacksDB() {
 		return "resourcePacks";
 	}
 
+	@Override
 	public JSONObject getIntegratedServerOpts() {
 		return new JSONObject("{\"container\":null,\"worldsDB\":\"worlds\"}");
 	}
@@ -57,102 +69,127 @@ public class DesktopClientConfigAdapter implements IClientConfigAdapter {
 		return false;
 	}
 
+	@Override
 	public boolean isCheckShaderGLErrors() {
 		return false;
 	}
 
+	@Override
 	public boolean isDemo() {
 		return EaglercraftVersion.forceDemoMode;
 	}
 
+	@Override
 	public boolean allowUpdateSvc() {
 		return false;
 	}
 
+	@Override
 	public boolean allowUpdateDL() {
 		return false;
 	}
 
+	@Override
 	public boolean isEnableDownloadOfflineButton() {
 		return false;
 	}
 
+	@Override
 	public String getDownloadOfflineButtonLink() {
 		return null;
 	}
 
+	@Override
 	public boolean useSpecialCursors() {
 		return false;
 	}
 
+	@Override
 	public boolean isLogInvalidCerts() {
 		return false;
 	}
 
+	@Override
 	public boolean isCheckRelaysForUpdates() {
 		return false;
 	}
 
+	@Override
 	public boolean isEnableSignatureBadge() {
 		return false;
 	}
 
+	@Override
 	public boolean isAllowVoiceClient() {
 		return false;
 	}
 
+	@Override
 	public boolean isAllowFNAWSkins() {
 		return true;
 	}
 
+	@Override
 	public String getLocalStorageNamespace() {
 		return EaglercraftVersion.localStorageNamespace;
 	}
 
+	@Override
 	public boolean isEnableMinceraft() {
 		return true;
 	}
 
+	@Override
 	public boolean isEnableServerCookies() {
 		return true;
 	}
 
+	@Override
 	public boolean isAllowServerRedirects() {
 		return true;
 	}
 
+	@Override
 	public boolean isOpenDebugConsoleOnLaunch() {
 		return false;
 	}
 
+	@Override
 	public boolean isForceWebViewSupport() {
 		return false;
 	}
 
+	@Override
 	public boolean isEnableWebViewCSP() {
 		return true;
 	}
 
+	@Override
 	public boolean isAllowBootMenu() {
 		return false;
 	}
 
+	@Override
 	public boolean isForceProfanityFilter() {
 		return false;
 	}
 
+	@Override
 	public boolean isEaglerNoDelay() {
 		return false;
 	}
 
+	@Override
 	public boolean isRamdiskMode() {
 		return false;
 	}
 
+	@Override
 	public boolean isEnforceVSync() {
 		return false;
 	}
 
+	@Override
 	public IClientConfigAdapterHooks getHooks() {
 		return hooks;
 	}

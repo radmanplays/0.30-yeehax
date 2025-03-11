@@ -1,6 +1,6 @@
 package net.lax1dude.eaglercraft.opengl;
 
-import net.lax1dude.eaglercraft.internal.IBufferArrayGL;
+import net.lax1dude.eaglercraft.internal.IVertexArrayGL;
 import net.lax1dude.eaglercraft.internal.IBufferGL;
 import net.lax1dude.eaglercraft.opengl.FixedFunctionShader.FixedFunctionState;
 
@@ -21,7 +21,7 @@ import net.lax1dude.eaglercraft.opengl.FixedFunctionShader.FixedFunctionState;
  */
 public class HighPolyMesh {
 
-	IBufferArrayGL vertexArray;
+	IVertexArrayGL vertexArray;
 	IBufferGL vertexBuffer;
 	IBufferGL indexBuffer;
 
@@ -30,7 +30,7 @@ public class HighPolyMesh {
 
 	boolean hasTexture;
 
-	public HighPolyMesh(IBufferArrayGL vertexArray, IBufferGL vertexBuffer, IBufferGL indexBuffer, int vertexCount,
+	public HighPolyMesh(IVertexArrayGL vertexArray, IBufferGL vertexBuffer, IBufferGL indexBuffer, int vertexCount,
 			int indexCount, boolean hasTexture) {
 		this.vertexArray = vertexArray;
 		this.vertexBuffer = vertexBuffer;
