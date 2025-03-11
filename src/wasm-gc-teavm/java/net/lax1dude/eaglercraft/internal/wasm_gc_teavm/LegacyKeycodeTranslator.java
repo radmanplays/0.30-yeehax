@@ -16,11 +16,11 @@
 
 package net.lax1dude.eaglercraft.internal.wasm_gc_teavm;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import com.google.common.collect.Sets;
 
 public class LegacyKeycodeTranslator {
 
@@ -52,9 +52,15 @@ public class LegacyKeycodeTranslator {
 
 	}
 
-	private static final Set<String> numpadVolatile = Sets.newHashSet(
+	private static final Set<String> numpadVolatile = newHashSet(
 			"Comma", "Minus", "Period", "Slash", "Equal", "Enter", "Digit0", "Digit1", "Digit2", "Digit3",
 			"Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "IntlYen");
+	
+	public static <E extends Object> HashSet<E> newHashSet(E... elements) {
+	    HashSet<E> set = new HashSet<E>(elements.length);
+	    Collections.addAll(set, elements);
+	    return set;
+	  }
 
 	private final Map<String,LegacyKeycode> codeLookupBase = new HashMap<>();
 	private final Map<String,LegacyKeycode> codeLookupLayout = new HashMap<>();

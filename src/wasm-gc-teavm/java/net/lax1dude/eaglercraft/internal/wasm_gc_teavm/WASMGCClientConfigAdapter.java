@@ -20,12 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.lax1dude.eaglercraft.EaglercraftVersion;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.teavm.jso.JSObject;
 import org.teavm.jso.core.JSArrayReader;
-
-import com.google.common.collect.Lists;
 
 import net.lax1dude.eaglercraft.internal.IClientConfigAdapter;
 import net.lax1dude.eaglercraft.internal.IClientConfigAdapterHooks;
@@ -55,7 +51,6 @@ public class WASMGCClientConfigAdapter implements IClientConfigAdapter {
 	private boolean enableMinceraft = true;
 	private boolean enableServerCookies = true;
 	private boolean allowServerRedirects = true;
-	private boolean crashOnUncaughtExceptions = false;
 	private boolean openDebugConsoleOnLaunch = false;
 	private boolean fixDebugConsoleUnloadListener = false;
 	private boolean forceWebViewSupport = false;
@@ -95,7 +90,6 @@ public class WASMGCClientConfigAdapter implements IClientConfigAdapter {
 		enableMinceraft = eaglercraftXOpts.getEnableMinceraft(true);
 		enableServerCookies = !demoMode && eaglercraftXOpts.getEnableServerCookies(true);
 		allowServerRedirects = eaglercraftXOpts.getAllowServerRedirects(true);
-		crashOnUncaughtExceptions = eaglercraftXOpts.getCrashOnUncaughtExceptions(false);
 		openDebugConsoleOnLaunch = eaglercraftXOpts.getOpenDebugConsoleOnLaunch(false);
 		fixDebugConsoleUnloadListener = eaglercraftXOpts.getFixDebugConsoleUnloadListener(false);
 		forceWebViewSupport = eaglercraftXOpts.getForceWebViewSupport(false);
@@ -158,11 +152,6 @@ public class WASMGCClientConfigAdapter implements IClientConfigAdapter {
 	@Override
 	public String getResourcePacksDB() {
 		return resourcePacksDB;
-	}
-
-	@Override
-	public JSONObject getIntegratedServerOpts() {
-		return null;
 	}
 
 	@Override
@@ -342,65 +331,4 @@ public class WASMGCClientConfigAdapter implements IClientConfigAdapter {
 	public IClientConfigAdapterHooks getHooks() {
 		return hooks;
 	}
-
-	public JSONObject toJSONObject() {
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("lang", defaultLocale);
-		jsonObject.put("joinServer", serverToJoin);
-		jsonObject.put("worldsDB", worldsDB);
-		jsonObject.put("resourcePacksDB", resourcePacksDB);
-		jsonObject.put("checkGLErrors", checkGLErrors);
-		jsonObject.put("checkShaderGLErrors", checkShaderGLErrors);
-		jsonObject.put("demoMode", demoMode);
-		jsonObject.put("enableDownloadOfflineButton", isEnableDownloadOfflineButton);
-		jsonObject.put("downloadOfflineButtonLink", downloadOfflineButtonLink);
-		jsonObject.put("html5CursorSupport", useSpecialCursors);
-		jsonObject.put("allowVoiceClient", allowVoiceClient);
-		jsonObject.put("allowFNAWSkins", allowFNAWSkins);
-		jsonObject.put("localStorageNamespace", localStorageNamespace);
-		jsonObject.put("enableMinceraft", enableMinceraft);
-		jsonObject.put("enableServerCookies", enableServerCookies);
-		jsonObject.put("allowServerRedirects", allowServerRedirects);
-		jsonObject.put("crashOnUncaughtExceptions", crashOnUncaughtExceptions);
-		jsonObject.put("openDebugConsoleOnLaunch", openDebugConsoleOnLaunch);
-		jsonObject.put("fixDebugConsoleUnloadListener", fixDebugConsoleUnloadListener);
-		jsonObject.put("forceWebViewSupport", forceWebViewSupport);
-		jsonObject.put("enableWebViewCSP", enableWebViewCSP);
-		jsonObject.put("autoFixLegacyStyleAttr", autoFixLegacyStyleAttr);
-		jsonObject.put("forceProfanityFilter", forceProfanityFilter);
-		jsonObject.put("forceWebGL1", forceWebGL1);
-		jsonObject.put("forceWebGL2", forceWebGL2);
-		jsonObject.put("allowExperimentalWebGL1", allowExperimentalWebGL1);
-		jsonObject.put("useWebGLExt", useWebGLExt);
-		jsonObject.put("useJOrbisAudioDecoder", useJOrbisAudioDecoder);
-		jsonObject.put("useXHRFetch", useXHRFetch);
-		jsonObject.put("useVisualViewport", useVisualViewport);
-		jsonObject.put("deobfStackTraces", deobfStackTraces);
-		jsonObject.put("disableBlobURLs", disableBlobURLs);
-		jsonObject.put("eaglerNoDelay", eaglerNoDelay);
-		jsonObject.put("ramdiskMode", ramdiskMode);
-		jsonObject.put("singleThreadMode", singleThreadMode);
-		jsonObject.put("enforceVSync", enforceVSync);
-		JSONArray serversArr = new JSONArray();
-		for(int i = 0, l = defaultServers.size(); i < l; ++i) {
-			DefaultServer srv = defaultServers.get(i);
-			JSONObject obj = new JSONObject();
-			obj.put("addr", srv.addr);
-			obj.put("hideAddr", srv.hideAddress);
-			obj.put("name", srv.name);
-			serversArr.put(obj);
-		}
-		jsonObject.put("servers", serversArr);
-		return jsonObject;
-	}
-
-	@Override
-	public String toString() {
-		return toJSONObject().toString();
-	}
-
-	public String toStringFormatted() {
-		return toJSONObject().toString(4);
-	}
-
 }
