@@ -160,12 +160,9 @@
 
 package com.mojang.minecraft.gui;
 
-import java.nio.IntBuffer;
-
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.minecraft.GameSettings;
-import com.mojang.minecraft.render.GLAllocation;
 import com.mojang.minecraft.render.TextureManager;
 
 import net.lax1dude.eaglercraft.EagRuntime;
@@ -185,7 +182,6 @@ public class FontRenderer {
          throw new RuntimeException(var13);
       }
 		int i = var14.width;
-		int j = var14.height;
 		int ai[] = var14.pixels;
 		for (int k = 0; k < 256; k++) {
 			int l = k % 16;
@@ -352,7 +348,6 @@ public class FontRenderer {
 	private int charWidth[];
 	public int fontTexture;
 	private int fontDisplayLists;
-	private IntBuffer buffer;
 	
 	public static final char formatChar = '\247';
 }

@@ -113,7 +113,7 @@ public class Arrow extends Entity
 					collision = true;
 				}
 
-				List blockMapEntitiesList = level.blockMap.getEntities(this, unknown5);
+				List<Entity> blockMapEntitiesList = level.blockMap.getEntities(this, unknown5);
 
 				for(int currentEntity = 0; currentEntity < blockMapEntitiesList.size(); currentEntity++)
 				{

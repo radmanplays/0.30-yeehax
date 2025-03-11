@@ -8,8 +8,6 @@ public enum EnumOS
 	macos("macos", 3),
 	unknown("unknown", 4);
 
-	private static final EnumOS[] values = new EnumOS[] {linux, solaris, windows, macos, unknown};
-
 	private EnumOS(String name, int id)
 	{
 	}

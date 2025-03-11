@@ -1,11 +1,7 @@
 package com.mojang.minecraft.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import com.mojang.minecraft.SessionData;
-
 import net.lax1dude.eaglercraft.Keyboard;
-import net.lax1dude.eaglercraft.Mouse;
 
 public class MultiplayerMenu extends GuiScreen {
 	

@@ -21,7 +21,7 @@ import org.lwjgl.opengl.GL11;
 
 public final class HUDScreen extends Screen {
 
-   public List chat = new ArrayList();
+   public List<ChatLine> chat = new ArrayList<ChatLine>();
    private Random random = new Random();
    private Minecraft mc;
    public String hoveredPlayer = null;
@@ -179,7 +179,7 @@ public final class HUDScreen extends Screen {
       if(Keyboard.isKeyDown(15) && this.mc.networkManager != null && this.mc.networkManager.isConnected()) {
     	  Tessellator tessellator = Tessellator.getInstance();
     	  WorldRenderer renderer = tessellator.getWorldRenderer();
-          List var22 = this.mc.networkManager.getPlayers();
+          List<String> var22 = this.mc.networkManager.getPlayers();
           GL11.glEnable(3042);
           GL11.glDisable(3553);
           GL11.glBlendFunc(770, 771);

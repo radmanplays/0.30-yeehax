@@ -3,7 +3,7 @@ package com.mojang.minecraft.render;
 import com.mojang.minecraft.player.Player;
 import java.util.Comparator;
 
-public class ChunkDirtyDistanceComparator implements Comparator
+public class ChunkDirtyDistanceComparator implements Comparator<Object>
 {
 	public ChunkDirtyDistanceComparator(Player player)
 	{

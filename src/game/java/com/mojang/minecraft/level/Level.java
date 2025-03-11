@@ -3,17 +3,14 @@ package com.mojang.minecraft.level;
 import com.mojang.minecraft.Entity;
 import com.mojang.minecraft.Minecraft;
 import com.mojang.minecraft.MovingObjectPosition;
-import com.mojang.minecraft.level.BlockMap;
-import com.mojang.minecraft.level.NextTickListEntry;
 import com.mojang.minecraft.level.liquid.LiquidType;
 import com.mojang.minecraft.level.tile.Block;
+import com.mojang.minecraft.mob.Mob;
 import com.mojang.minecraft.model.Vec3D;
 import com.mojang.minecraft.particle.ParticleManager;
 import com.mojang.minecraft.phys.AABB;
+import com.mojang.minecraft.player.Player;
 import com.mojang.minecraft.render.LevelRenderer;
-import com.mojang.minecraft.sound.AudioInfo;
-import com.mojang.minecraft.sound.EntitySoundPos;
-import com.mojang.minecraft.sound.LevelSoundPos;
 import com.mojang.util.MathHelper;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,11 +32,11 @@ public class Level implements Serializable {
    public int ySpawn;
    public int zSpawn;
    public float rotSpawn;
-   private transient ArrayList listeners = new ArrayList();
+   private transient ArrayList<LevelRenderer> listeners = new ArrayList<LevelRenderer>();
    private transient int[] blockers;
    public transient Random random = new Random();
    private transient int randId;
-   private transient ArrayList tickList;
+   private transient ArrayList<NextTickListEntry> tickList;
    public BlockMap blockMap;
    private boolean networkMode;
    public transient Minecraft rendererContext$5cd64a7f;
@@ -58,7 +55,7 @@ public class Level implements Serializable {
 
    public Level() {
       this.randId = this.random.nextInt();
-      this.tickList = new ArrayList();
+      this.tickList = new ArrayList<NextTickListEntry>();
       this.networkMode = false;
       this.unprocessed = 0;
       this.tickCount = 0;
@@ -69,13 +66,13 @@ public class Level implements Serializable {
       if(this.blocks == null) {
          throw new RuntimeException("The level is corrupt!");
       } else {
-         this.listeners = new ArrayList();
+         this.listeners = new ArrayList<LevelRenderer>();
          this.blockers = new int[this.width * this.height];
          Arrays.fill(this.blockers, this.depth);
          this.calcLightDepths(0, 0, this.width, this.height);
          this.random = new Random();
          this.randId = this.random.nextInt();
-         this.tickList = new ArrayList();
+         this.tickList = new ArrayList<NextTickListEntry>();
          if(this.waterLevel == 0) {
             this.waterLevel = this.depth / 2;
          }
@@ -186,8 +183,8 @@ public class Level implements Serializable {
       return (var4 = Block.blocks[this.getTile(var1, var2, var3)]) == null?false:var4.isOpaque();
    }
 
-   public ArrayList getCubes(AABB var1) {
-      ArrayList var2 = new ArrayList();
+   public ArrayList<AABB> getCubes(AABB var1) {
+      ArrayList<AABB> var2 = new ArrayList<AABB>();
       int var3 = (int)var1.x0;
       int var4 = (int)var1.x1 + 1;
       int var5 = (int)var1.y0;
@@ -206,7 +203,7 @@ public class Level implements Serializable {
          --var7;
       }
 
-      for(var3 = var3; var3 < var4; ++var3) {
+      for(; var3 < var4; ++var3) {
          for(int var9 = var5; var9 < var6; ++var9) {
             for(int var10 = var7; var10 < var8; ++var10) {
                AABB var11;
@@ -394,7 +391,7 @@ public class Level implements Serializable {
 
    }
 
-   public int countInstanceOf(Class var1) {
+   public int countInstanceOf(Class<Mob> var1) {
       int var2 = 0;
 
       for(int var3 = 0; var3 < this.blockMap.all.size(); ++var3) {
@@ -549,7 +546,7 @@ public class Level implements Serializable {
       return this.blockMap.getEntities((Entity)null, var1).size() == 0;
    }
 
-   public List findEntities(Entity var1, AABB var2) {
+   public List<Entity> findEntities(Entity var1, AABB var2) {
       return this.blockMap.getEntities(var1, var2);
    }
 
@@ -654,7 +651,6 @@ public class Level implements Serializable {
             float var16 = var4 * var14 + var5;
             var14 = var4 - var5 * var14;
             float var17 = var2 * var12 + var3 * var14;
-            var16 = var16;
             var14 = var2 * var14 - var3 * var12;
             int var15 = 0;
 
@@ -776,7 +772,6 @@ public class Level implements Serializable {
                   var15 = (var12 - var1.z) / var18;
                }
 
-               boolean var19 = false;
                byte var24;
                if(var13 < var14 && var13 < var15) {
                   if(var3 > var6) {
@@ -854,30 +849,23 @@ public class Level implements Serializable {
 
    public void playSound(String var1, Entity var2, float var3, float var4) {
       if(this.rendererContext$5cd64a7f != null) {
-         Minecraft var5;
-         if((var5 = this.rendererContext$5cd64a7f).soundPlayer == null || !var5.settings.sound) {
+         if(!rendererContext$5cd64a7f.settings.sound) {
             return;
          }
-
-         AudioInfo var6;
-         if(var2.distanceToSqr(var5.player) < 1024.0F && (var6 = var5.sound.getAudioInfo(var1, var3, var4)) != null) {
-            var5.soundPlayer.play(var6, new EntitySoundPos(var2, var5.player));
+         
+         if(var2.distanceToSqr(rendererContext$5cd64a7f.player) < 1024.0F) {
+        	 rendererContext$5cd64a7f.sound.playSound(var1, var2);
          }
       }
-
    }
 
    public void playSound(String var1, float var2, float var3, float var4, float var5, float var6) {
       if(this.rendererContext$5cd64a7f != null) {
-         Minecraft var7;
-         if((var7 = this.rendererContext$5cd64a7f).soundPlayer == null || !var7.settings.sound) {
+         if(!rendererContext$5cd64a7f.settings.sound) {
             return;
          }
 
-         AudioInfo var8;
-         if((var8 = var7.sound.getAudioInfo(var1, var5, var6)) != null) {
-            var7.soundPlayer.play(var8, new LevelSoundPos(var2, var3, var4, var7.player));
-         }
+         rendererContext$5cd64a7f.sound.playSound(var1, var2, var3, var4);
       }
 
    }
@@ -984,7 +972,7 @@ public class Level implements Serializable {
          }
       }
 
-      List var18 = this.blockMap.getEntities(var1, (float)var6, (float)var8, (float)var10, (float)var7, (float)var9, (float)var11);
+      List<Entity> var18 = this.blockMap.getEntities(var1, (float)var6, (float)var8, (float)var10, (float)var7, (float)var9, (float)var11);
 
       for(var13 = 0; var13 < var18.size(); ++var13) {
          Entity var20;
@@ -996,7 +984,7 @@ public class Level implements Serializable {
 
    }
 
-   public Entity findSubclassOf(Class var1) {
+   public Entity findSubclassOf(Class<Player> var1) {
       for(int var2 = 0; var2 < this.blockMap.all.size(); ++var2) {
          Entity var3 = (Entity)this.blockMap.all.get(var2);
          if(var1.isAssignableFrom(var3.getClass())) {

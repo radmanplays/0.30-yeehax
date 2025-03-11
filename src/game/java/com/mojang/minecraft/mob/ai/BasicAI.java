@@ -3,7 +3,6 @@ package com.mojang.minecraft.mob.ai;
 import com.mojang.minecraft.Entity;
 import com.mojang.minecraft.level.Level;
 import com.mojang.minecraft.mob.Mob;
-import com.mojang.minecraft.mob.ai.AI;
 import java.util.List;
 import net.lax1dude.eaglercraft.Random;
 
@@ -68,7 +67,7 @@ public class BasicAI extends AI {
       this.yya *= 0.98F;
       this.yRotA *= 0.9F;
       var2.travel(this.xxa, this.yya);
-      List var11;
+      List<Entity> var11;
       if((var11 = var1.findEntities(var2, var2.bb.grow(0.2F, 0.0F, 0.2F))) != null && var11.size() > 0) {
          for(int var8 = 0; var8 < var11.size(); ++var8) {
             Entity var10;

@@ -2,7 +2,7 @@ package com.mojang.minecraft.net;
 
 public class PacketType
 {
-	private PacketType(Class ... classes)
+	private PacketType(Class<?> ... classes)
 	{
 		opcode = (byte)(nextOpcode++);
 		packets[opcode] = this;
@@ -12,7 +12,7 @@ public class PacketType
 
 		for(int classNumber = 0; classNumber < classes.length; classNumber++)
 		{
-			Class class_ = classes[classNumber];
+			Class<?> class_ = classes[classNumber];
 
 			params[classNumber] = class_;
 
@@ -60,7 +60,7 @@ public class PacketType
 	public int length;
 	private static int nextOpcode;
 	public byte opcode;
-	public Class[] params;
+	public Class<?>[] params;
 
 	static
 	{

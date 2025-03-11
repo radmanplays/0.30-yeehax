@@ -1,7 +1,5 @@
 package com.mojang.minecraft.level.tile;
 
-import com.mojang.minecraft.level.tile.Block;
-
 public final class OreBlock extends Block {
 
    public OreBlock(int var1, int var2) {

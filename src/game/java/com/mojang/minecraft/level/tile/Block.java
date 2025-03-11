@@ -122,7 +122,7 @@ public class Block
 
 	protected void setPhysics(boolean physics)
 	{
-		this.physics[id] = physics;
+		Block.physics[id] = physics;
 	}
 
 	protected void setBounds(float x1, float y1, float z1, float x2, float y2, float z2)
@@ -137,7 +137,7 @@ public class Block
 
 	public void setTickDelay(int tickDelay)
 	{
-		this.tickDelay[id] = tickDelay;
+		Block.tickDelay[id] = tickDelay;
 	}
 
 	public void renderFullbright(WorldRenderer shapeRenderer)
@@ -748,21 +748,18 @@ public class Block
 
 	static {
 		Block var10000 = (new StoneBlock(1, 1)).setData(Tile$SoundType.stone, 1.0F, 1.0F, 1.0F);
-		boolean var0 = false;
 		Block var1 = var10000;
 		var10000.explodes = false;
 		STONE = var1;
 		GRASS = (new GrassBlock(2)).setData(Tile$SoundType.grass, 0.9F, 1.0F, 0.6F);
 		DIRT = (new DirtBlock(3, 2)).setData(Tile$SoundType.grass, 0.8F, 1.0F, 0.5F);
 		var10000 = (new Block(4, 16)).setData(Tile$SoundType.stone, 1.0F, 1.0F, 1.5F);
-		var0 = false;
 		var1 = var10000;
 		var10000.explodes = false;
 		COBBLESTONE = var1;
 		WOOD = (new Block(5, 4)).setData(Tile$SoundType.wood, 1.0F, 1.0F, 1.5F);
 		SAPLING = (new SaplingBlock(6, 15)).setData(Tile$SoundType.none, 0.7F, 1.0F, 0.0F);
 		var10000 = (new Block(7, 17)).setData(Tile$SoundType.stone, 1.0F, 1.0F, 999.0F);
-		var0 = false;
 		var1 = var10000;
 		var10000.explodes = false;
 		BEDROCK = var1;
@@ -773,17 +770,14 @@ public class Block
 		SAND = (new SandBlock(12, 18)).setData(Tile$SoundType.gravel, 0.8F, 1.0F, 0.5F);
 		GRAVEL = (new SandBlock(13, 19)).setData(Tile$SoundType.gravel, 0.8F, 1.0F, 0.6F);
 		var10000 = (new OreBlock(14, 32)).setData(Tile$SoundType.stone, 1.0F, 1.0F, 3.0F);
-		var0 = false;
 		var1 = var10000;
 		var10000.explodes = false;
 		GOLD_ORE = var1;
 		var10000 = (new OreBlock(15, 33)).setData(Tile$SoundType.stone, 1.0F, 1.0F, 3.0F);
-		var0 = false;
 		var1 = var10000;
 		var10000.explodes = false;
 		IRON_ORE = var1;
 		var10000 = (new OreBlock(16, 34)).setData(Tile$SoundType.stone, 1.0F, 1.0F, 3.0F);
-		var0 = false;
 		var1 = var10000;
 		var10000.explodes = false;
 		COAL_ORE = var1;
@@ -812,39 +806,32 @@ public class Block
 		BROWN_MUSHROOM = (new MushroomBlock(39, 29)).setData(Tile$SoundType.none, 0.7F, 1.0F, 0.0F);
 		RED_MUSHROOM = (new MushroomBlock(40, 28)).setData(Tile$SoundType.none, 0.7F, 1.0F, 0.0F);
 		var10000 = (new MetalBlock(41, 40)).setData(Tile$SoundType.metal, 0.7F, 1.0F, 3.0F);
-		var0 = false;
 		var1 = var10000;
 		var10000.explodes = false;
 		GOLD_BLOCK = var1;
 		var10000 = (new MetalBlock(42, 39)).setData(Tile$SoundType.metal, 0.7F, 1.0F, 5.0F);
-		var0 = false;
 		var1 = var10000;
 		var10000.explodes = false;
 		IRON_BLOCK = var1;
 		var10000 = (new SlabBlock(43, true)).setData(Tile$SoundType.stone, 1.0F, 1.0F, 2.0F);
-		var0 = false;
 		var1 = var10000;
 		var10000.explodes = false;
 		DOUBLE_SLAB = var1;
 		var10000 = (new SlabBlock(44, false)).setData(Tile$SoundType.stone, 1.0F, 1.0F, 2.0F);
-		var0 = false;
 		var1 = var10000;
 		var10000.explodes = false;
 		SLAB = var1;
 		var10000 = (new Block(45, 7)).setData(Tile$SoundType.stone, 1.0F, 1.0F, 2.0F);
-		var0 = false;
 		var1 = var10000;
 		var10000.explodes = false;
 		BRICK = var1;
 		TNT = (new TNTBlock(46, 8)).setData(Tile$SoundType.cloth, 1.0F, 1.0F, 0.0F);
 		BOOKSHELF = (new BookshelfBlock(47, 35)).setData(Tile$SoundType.wood, 1.0F, 1.0F, 1.5F);
 		var10000 = (new Block(48, 36)).setData(Tile$SoundType.stone, 1.0F, 1.0F, 1.0F);
-		var0 = false;
 		var1 = var10000;
 		var10000.explodes = false;
 		MOSSY_COBBLESTONE = var1;
 		var10000 = (new StoneBlock(49, 37)).setData(Tile$SoundType.stone, 1.0F, 1.0F, 10.0F);
-		var0 = false;
 		var1 = var10000;
 		var10000.explodes = false;
 		OBSIDIAN = var1;

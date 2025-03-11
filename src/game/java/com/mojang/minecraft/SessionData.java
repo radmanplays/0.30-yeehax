@@ -6,7 +6,7 @@ import java.util.List;
 
 public final class SessionData {
 
-   public static List allowedBlocks;
+   public static List<Block> allowedBlocks = new ArrayList<Block>();
    public String username;
    public String mppass;
 
@@ -16,7 +16,7 @@ public final class SessionData {
    }
 
    static {
-      (allowedBlocks = new ArrayList()).add(Block.STONE);
+      allowedBlocks.add(Block.STONE);
       allowedBlocks.add(Block.COBBLESTONE);
       allowedBlocks.add(Block.BRICK);
       allowedBlocks.add(Block.DIRT);

@@ -2,7 +2,6 @@ package com.mojang.minecraft.level.tile;
 
 import com.mojang.minecraft.level.Level;
 import com.mojang.minecraft.level.liquid.LiquidType;
-import com.mojang.minecraft.level.tile.Block;
 
 public final class SandBlock extends Block {
 

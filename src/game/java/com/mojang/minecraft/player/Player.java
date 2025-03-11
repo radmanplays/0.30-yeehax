@@ -7,8 +7,6 @@ import com.mojang.minecraft.model.HumanoidModel;
 import com.mojang.minecraft.render.TextureManager;
 import com.mojang.util.MathHelper;
 
-import net.lax1dude.eaglercraft.opengl.ImageData;
-
 import java.util.List;
 import org.lwjgl.opengl.GL11;
 
@@ -75,7 +73,7 @@ public class Player extends Mob {
 
       this.bob += (var1 - this.bob) * 0.4F;
       this.tilt += (var2 - this.tilt) * 0.8F;
-      List var3;
+      List<Entity> var3;
       if(this.health > 0 && (var3 = this.level.findEntities(this, this.bb.grow(1.0F, 0.0F, 1.0F))) != null) {
          for(int var4 = 0; var4 < var3.size(); ++var4) {
             ((Entity)var3.get(var4)).playerTouch(this);

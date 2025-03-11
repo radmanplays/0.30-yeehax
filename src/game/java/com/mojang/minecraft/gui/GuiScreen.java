@@ -1,9 +1,6 @@
 package com.mojang.minecraft.gui;
 
 import com.mojang.minecraft.Minecraft;
-import com.mojang.minecraft.gui.Button;
-import com.mojang.minecraft.gui.FontRenderer;
-import com.mojang.minecraft.gui.Screen;
 import java.util.ArrayList;
 import java.util.List;
 import net.lax1dude.eaglercraft.Keyboard;
@@ -15,7 +12,7 @@ public class GuiScreen extends Screen {
    protected Minecraft minecraft;
    protected int width;
    protected int height;
-   protected List buttons = new ArrayList();
+   protected List<Button> buttons = new ArrayList<Button>();
    public boolean grabsMouse = false;
    protected FontRenderer fontRenderer;
 

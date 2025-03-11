@@ -1,7 +1,5 @@
 package com.mojang.minecraft.level.tile;
 
-import com.mojang.minecraft.level.tile.Block;
-
 public enum Tile$SoundType {
 
    none("none", 0, "-", 0.0F, 0.0F),
@@ -14,9 +12,6 @@ public enum Tile$SoundType {
    public final String name;
    private final float volume;
    private final float pitch;
-   // $FF: synthetic field
-   private static final Tile$SoundType[] values = new Tile$SoundType[]{none, grass, cloth, gravel, stone, metal, wood};
-
 
    private Tile$SoundType(String var1, int var2, String var3, float var4, float var5) {
       this.name = var3;
@@ -30,6 +25,36 @@ public enum Tile$SoundType {
 
    public final float getPitch() {
       return this.pitch / (Block.random.nextFloat() * 0.2F + 0.9F);
+   }
+   
+   public static String mapSound(String sound) {
+	   switch(sound) {
+	   case "step.cloth":
+		   return "step.grass";
+	   case "step.metal":
+		   return "step.stone";
+	   default:
+		   return sound;
+	   }
+   }
+   
+   public static Tile$SoundType getSoundType(String sound) {
+	   switch(sound) {
+	   case "step.grass":
+		   return Tile$SoundType.grass;
+	   case "step.cloth":
+		   return Tile$SoundType.cloth;
+	   case "step.gravel":
+		   return Tile$SoundType.gravel;
+	   case "step.stone":
+		   return Tile$SoundType.stone;
+	   case "step.metal":
+		   return Tile$SoundType.metal;
+	   case "step.wood":
+		   return Tile$SoundType.wood;
+	   default:
+		   return Tile$SoundType.none;
+	   }
    }
 
 }

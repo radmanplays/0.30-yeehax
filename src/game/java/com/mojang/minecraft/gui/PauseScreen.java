@@ -1,7 +1,5 @@
 package com.mojang.minecraft.gui;
 
-import com.mojang.minecraft.SessionData;
-
 import net.peyton.eagler.level.LevelUtils;
 
 public final class PauseScreen extends GuiScreen {

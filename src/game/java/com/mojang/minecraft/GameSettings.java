@@ -101,20 +101,11 @@ public final class GameSettings
 			anaglyph = !anaglyph;
 
 			TextureManager textureManager = minecraft.textureManager;
-			Iterator iterator = this.minecraft.textureManager.textureImages.keySet().iterator();
 
 			int i;
 			ImageData image;
 
-			while(iterator.hasNext())
-			{
-				i = (Integer)iterator.next();
-				image = (ImageData)textureManager.textureImages.get(Integer.valueOf(i));
-
-				textureManager.load(image, i);
-			}
-
-			iterator = textureManager.textures.keySet().iterator();
+			Iterator<String> iterator = textureManager.textures.keySet().iterator();
 
 			while(iterator.hasNext())
 			{
@@ -138,6 +129,7 @@ public final class GameSettings
 		}
 
 		save();
+		this.minecraft.sound.settingsChanged();
 	}
 
 	public String getSetting(int id)

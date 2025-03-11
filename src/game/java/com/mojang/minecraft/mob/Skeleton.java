@@ -2,8 +2,6 @@ package com.mojang.minecraft.mob;
 
 import com.mojang.minecraft.item.Arrow;
 import com.mojang.minecraft.level.Level;
-import com.mojang.minecraft.mob.Skeleton$1;
-import com.mojang.minecraft.mob.Zombie;
 
 public class Skeleton extends Zombie {
 
@@ -27,7 +25,6 @@ public class Skeleton extends Zombie {
 
    // $FF: synthetic method
    static void shootRandomArrow(Skeleton var0) {
-      var0 = var0;
       int var1 = (int)((Math.random() + Math.random()) * 3.0D + 4.0D);
 
       for(int var2 = 0; var2 < var1; ++var2) {

@@ -6,7 +6,6 @@ import com.mojang.net.NetworkHandler;
 
 import net.lax1dude.eaglercraft.EaglerOutputStream;
 import net.lax1dude.eaglercraft.internal.EnumEaglerConnectionState;
-import net.lax1dude.eaglercraft.internal.PlatformNetworking;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,13 +58,13 @@ public class NetworkManager
 		return successful && this.netHandler != null && netHandler.webSocket != null && netHandler.webSocket.getState() != EnumEaglerConnectionState.CONNECTED;
 	}
 
-	public List getPlayers()
+	public List<String> getPlayers()
 	{
-		ArrayList list = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
 
 		list.add(minecraft.session.username);
 
-		Iterator playerIterator = this.players.values().iterator();
+		Iterator<NetworkPlayer> playerIterator = this.players.values().iterator();
 
 		while(playerIterator.hasNext())
 		{

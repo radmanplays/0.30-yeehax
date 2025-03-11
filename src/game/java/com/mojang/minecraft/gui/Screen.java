@@ -6,7 +6,6 @@ import net.lax1dude.eaglercraft.opengl.WorldRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import com.mojang.minecraft.Minecraft;
 public class Screen {
 
    protected float imgZ = 0.0F;

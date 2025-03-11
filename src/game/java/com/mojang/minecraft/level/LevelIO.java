@@ -4,18 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.InputStream;
 
-import com.mojang.minecraft.ProgressBarDisplay;
-
 import net.lax1dude.eaglercraft.EaglerZLIB;
 
 public final class LevelIO {
-
-   private ProgressBarDisplay progressBar;
-
-
-   public LevelIO(ProgressBarDisplay var1) {
-      this.progressBar = var1;
-   }
 
    public static byte[] decompress(InputStream var0) {
       try {

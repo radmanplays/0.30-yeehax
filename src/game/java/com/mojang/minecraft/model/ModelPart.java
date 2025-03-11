@@ -22,7 +22,6 @@ public final class ModelPart {
 	public int displayList = 0;
 	public boolean mirror = false;
 	public boolean render = true;
-	private boolean isHidden = false;
 
 	public ModelPart(int var1, int var2) {
 		this.textureOffsetX = var1;

@@ -30,8 +30,6 @@ import com.mojang.minecraft.render.texture.TextureFX;
 import com.mojang.minecraft.render.texture.TextureLavaFX;
 import com.mojang.minecraft.render.texture.TextureWaterFX;
 import com.mojang.minecraft.sound.SoundManager;
-import com.mojang.minecraft.sound.SoundPlayer;
-import com.mojang.net.NetworkHandler;
 import com.mojang.util.MathHelper;
 import net.lax1dude.eaglercraft.Keyboard;
 import net.lax1dude.eaglercraft.Mouse;
@@ -52,11 +50,8 @@ import net.lax1dude.eaglercraft.EaglerOutputStream;
 import org.lwjgl.opengl.GL11;
 
 import java.io.*;
-import java.nio.ByteBuffer;
 
-import net.lax1dude.eaglercraft.internal.EnumPlatformType;
 import net.lax1dude.eaglercraft.internal.PlatformOpenGL;
-import net.lax1dude.eaglercraft.internal.buffer.IntBuffer;
 import java.util.Collections;
 import java.util.List;
 
@@ -88,7 +83,6 @@ public final class Minecraft implements Runnable {
    public HUDScreen hud;
    public boolean online;
    public NetworkManager networkManager;
-   public SoundPlayer soundPlayer;
    public MovingObjectPosition selected;
    public GameSettings settings;
    String server;
@@ -175,12 +169,6 @@ public final class Minecraft implements Runnable {
 	  }
    }
    
-   private void updateDisplayMode() {
-		this.width = Display.getWidth();
-		this.height = Display.getHeight();
-		this.dpi = Display.getDPI();
-	}
-
    public final void shutdown() {
 	   EagRuntime.destroy();
 	   EagRuntime.exit();
@@ -220,8 +208,6 @@ public final class Minecraft implements Runnable {
          this.textureManager.registerAnimation(new TextureLavaFX());
          this.textureManager.registerAnimation(new TextureWaterFX());
          this.fontRenderer = new FontRenderer(this.settings, "/default.png", this.textureManager);
-         IntBuffer var9;
-         (var9 = GLAllocation.createDirectIntBuffer(256)).clear().limit(256);
          this.levelRenderer = new LevelRenderer(this, this.textureManager);
          Item.initModels();
          Mob.modelCache = new ModelManager();
@@ -231,8 +217,6 @@ public final class Minecraft implements Runnable {
             (var85 = new Level()).setData(8, 8, 8, new byte[512]);
             this.setLevel(var85);
          } else {
-            boolean var10 = false;
-
             try {
                if(!var1.levelLoaded) {
                   Level var11 = null;
@@ -328,6 +312,9 @@ public final class Minecraft implements Runnable {
           		}
                   
                   GL11.glEnable(3553);
+                  
+                  this.sound.updatePosition(this.player, this.timer.delta);
+                  
                   if(!this.online) {
                      this.gamemode.applyCracks(this.timer.delta);
                      float var65 = this.timer.delta;
@@ -393,7 +380,7 @@ public final class Minecraft implements Runnable {
 
                            var71 = var31.add(var34 * var36, var33 * var36, var87 * var36);
                            var66.entity = null;
-                           List var37 = var66.minecraft.level.blockMap.getEntities(var28, var28.bb.expand(var34 * var36, var33 * var36, var87 * var36));
+                           List<Entity> var37 = var66.minecraft.level.blockMap.getEntities(var28, var28.bb.expand(var34 * var36, var33 * var36, var87 * var36));
                            float var35 = 0.0F;
 
                            for(var81 = 0; var81 < var37.size(); ++var81) {
@@ -597,7 +584,7 @@ public final class Minecraft implements Runnable {
                               var69 = MathHelper.cos(var126.xRot * 3.1415927F / 180.0F);
 
                               for(var83 = 0; var83 < 2; ++var83) {
-                                 if(var96.particles[var83].size() != 0) {
+                                 if(var96.particles.get(var83).size() != 0) {
                                     var110 = 0;
                                     if(var83 == 0) {
                                        var110 = var96.textureManager.load("/particles.png");
@@ -611,8 +598,8 @@ public final class Minecraft implements Runnable {
                                     WorldRenderer var121 = tess.getWorldRenderer();
                                     var121.begin(7, VertexFormat.POSITION_TEX_COLOR);
 
-                                    for(var120 = 0; var120 < var96.particles[var83].size(); ++var120) {
-                                       ((Particle)var96.particles[var83].get(var120)).render(var121, var107, var29, var69, var30, var117, var32);
+                                    for(var120 = 0; var120 < var96.particles.get(var83).size(); ++var120) {
+                                       ((Particle)var96.particles.get(var83).get(var120)).render(var121, var107, var29, var69, var30, var117, var32);
                                     }
 
                                     tess.draw();
@@ -693,7 +680,6 @@ public final class Minecraft implements Runnable {
                                  GL11.glDisable(3008);
                                  MovingObjectPosition var10001 = var82.minecraft.selected;
                                  var105 = var126.inventory.getSelected();
-                                 boolean var106 = false;
                                  MovingObjectPosition var102 = var10001;
                                  var101 = var89;
                                  WorldRenderer var113 = tess.getWorldRenderer();
@@ -707,9 +693,8 @@ public final class Minecraft implements Runnable {
                                     GL11.glBindTexture(3553, var108);
                                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
                                     GL11.glPushMatrix();
-                                    Block var10000 = (var114 = var89.level.getTile(var102.x, var102.y, var102.z)) > 0?Block.blocks[var114]:null;
-                                    var73 = var10000;
-                                    var74 = (var10000.x1 + var73.x2) / 2.0F;
+                                    var73 = (var114 = var89.level.getTile(var102.x, var102.y, var102.z)) > 0?Block.blocks[var114]:Block.STONE;
+                                    var74 = (var73.x1 + var73.x2) / 2.0F;
                                     var33 = (var73.y1 + var73.y2) / 2.0F;
                                     var34 = (var73.z1 + var73.z2) / 2.0F;
                                     GL11.glTranslatef((float)var102.x + var74, (float)var102.y + var33, (float)var102.z + var34);
@@ -719,9 +704,6 @@ public final class Minecraft implements Runnable {
                                     var113.begin(7, VertexFormat.POSITION_TEX);
                                     var113.markDirty();
                                     GL11.glDepthMask(false);
-                                    if(var73 == null) {
-                                       var73 = Block.STONE;
-                                    }
 
                                     for(var86 = 0; var86 < 6; ++var86) {
                                        var73.renderSide(var113, var102.x, var102.y, var102.z, var86, 240 + (int)(var101.cracks * 10.0F));
@@ -736,7 +718,6 @@ public final class Minecraft implements Runnable {
                                  GL11.glDisable(3008);
                                  var10001 = var82.minecraft.selected;
                                  var126.inventory.getSelected();
-                                 var106 = false;
                                  var102 = var10001;
                                  GL11.glEnable(3042);
                                  GL11.glBlendFunc(770, 771);
@@ -1138,13 +1119,12 @@ public final class Minecraft implements Runnable {
    
    private void tick() {
 	  this.levelSave();
-      if(this.soundPlayer != null) {
-         SoundPlayer var1 = this.soundPlayer;
+	  if(this.settings.music) {
          SoundManager var2 = this.sound;
-         if(EagRuntime.steadyTimeMillis() > var2.lastMusic && var2.playMusic(var1, "calm")) {
+         if(EagRuntime.steadyTimeMillis() > var2.lastMusic && var2.playMusic("calm")) {
             var2.lastMusic = EagRuntime.steadyTimeMillis() + (long)var2.random.nextInt(900000) + 300000L;
          }
-      }
+	  }
 
       this.gamemode.spawnMob();
       HUDScreen var17 = this.hud;
@@ -1542,7 +1522,6 @@ public final class Minecraft implements Runnable {
          }
 
          boolean var26 = this.currentScreen == null && Mouse.isButtonDown(0) && this.hasMouse;
-         boolean var35 = false;
          if(!this.gamemode.instantBreak && this.blockHitTime <= 0) {
             if(var26 && this.selected != null && this.selected.entityPos == 0) {
                var4 = this.selected.x;
@@ -1622,7 +1601,6 @@ public final class Minecraft implements Runnable {
             }
          }
 
-         LevelRenderer var31 = this.levelRenderer;
          ++this.levelRenderer.ticks;
          this.level.tickEntities();
          if(!this.isOnline()) {
@@ -1720,7 +1698,7 @@ public final class Minecraft implements Runnable {
          }
 
          for(int var4 = 0; var4 < 2; ++var4) {
-            var5.particles[var4].clear();
+            var5.particles.get(var4).clear();
          }
       }
 

@@ -16,10 +16,9 @@ import org.lwjgl.opengl.GL11;
 
 public class TextureManager {
 
-   public HashMap textures = new HashMap();
-   public HashMap textureImages = new HashMap();
+   public HashMap<String, Integer> textures = new HashMap<String, Integer>();
    public ByteBuffer textureBuffer = GLAllocation.createDirectByteBuffer(262144);
-   public List animations = new ArrayList();
+   public List<TextureFX> animations = new ArrayList<TextureFX>();
    public GameSettings settings;
 
 
