@@ -42,6 +42,7 @@ import net.lax1dude.eaglercraft.opengl.WorldRenderer;
 import net.peyton.eagler.level.LevelStorageManager;
 import net.peyton.eagler.level.LevelUtils;
 import yeehax.YeeHax;
+import yeehax.input.KeyHandler;
 import net.lax1dude.eaglercraft.Display;
 import net.lax1dude.eaglercraft.EagRuntime;
 import net.lax1dude.eaglercraft.EagUtils;
@@ -1110,6 +1111,8 @@ public final class Minecraft implements Runnable {
             var2.lastMusic = EagRuntime.steadyTimeMillis() + (long)var2.random.nextInt(900000) + 300000L;
          }
       }
+      
+      //KeyHandler.checkKeys();
 
       this.gamemode.spawnMob();
       HUDScreen var17 = this.hud;

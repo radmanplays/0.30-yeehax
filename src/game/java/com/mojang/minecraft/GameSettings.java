@@ -16,7 +16,7 @@ public final class GameSettings
 {
 	public GameSettings(Minecraft minecraft)
 	{
-		bindings = new KeyBinding[] {forwardKey, leftKey, backKey, rightKey, jumpKey, buildKey, chatKey, toggleFogKey, saveLocationKey, loadLocationKey, gameModeKey};
+		bindings = new KeyBinding[] {forwardKey, flyKey,leftKey, backKey, rightKey, jumpKey, buildKey, chatKey, toggleFogKey, saveLocationKey, loadLocationKey, gameModeKey};
 
 		settingCount = 8;
 
@@ -47,6 +47,7 @@ public final class GameSettings
 	public KeyBinding saveLocationKey = new KeyBinding("Save location", 28);
 	public KeyBinding loadLocationKey = new KeyBinding("Load location", 19);
 	public KeyBinding gameModeKey = new KeyBinding("Switch gamemode", KeyboardConstants.KEY_M);
+	public KeyBinding flyKey = new KeyBinding("Fly", KeyboardConstants.KEY_P);
 	public KeyBinding[] bindings;
 	private Minecraft minecraft;
 	private VFile2 settingsFile;
