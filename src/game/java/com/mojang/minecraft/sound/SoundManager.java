@@ -20,7 +20,8 @@ public final class SoundManager {
    private Map<String, IAudioResource> sounds = new HashMap<String, IAudioResource>();
    private Map<String, IAudioResource> music = new HashMap<String, IAudioResource>();
    public Random random = new Random();
-   public long lastMusic = System.currentTimeMillis() + 60000L;
+   public long lastMusic = 0;
+   private int lastSongID = 0;
    
    private IAudioHandle musicHandle;
    
@@ -31,18 +32,18 @@ public final class SoundManager {
 		   if(var2 != null) {
 			   var2 = var2.replace(".", "/");
 		   }
-		   if(!sounds.containsKey(var2)) {
-			   String s = "/sounds/blocks/" + Tile$SoundType.mapSound(var2) + (this.random.nextInt(4) + 1) + ".ogg";
+		   String s = "/sounds/blocks/" + Tile$SoundType.mapSound(var2) + (this.random.nextInt(4) + 1) + ".ogg";
+		   if(!sounds.containsKey(s)) {
 			   if (EagRuntime.getPlatformType() != EnumPlatformType.DESKTOP) {
 				   trk = PlatformAudio.loadAudioDataNew(s, true, browserResourceLoader);
 			   } else {
 				   trk = PlatformAudio.loadAudioData(s, true);
 			   }
 			   if(trk != null) {
-				   sounds.put(var2, trk);
+				   sounds.put(s, trk);
 			   }
 		   } else {
-			   trk = sounds.get(var2);
+			   trk = sounds.get(s);
 		   }
 
 		   PlatformAudio.beginPlayback(trk, var3.x + 0.5f, var3.y + 0.5f, var3.z + 0.5f, soundType.getVolume(), soundType.getPitch(), false);
@@ -58,18 +59,18 @@ public final class SoundManager {
 		   if(var2 != null) {
 			   var2 = var2.replace(".", "/");
 		   }
-		   if(!sounds.containsKey(var2)) {
-			   String s = "/sounds/blocks/" + Tile$SoundType.mapSound(var2) + (this.random.nextInt(4) + 1) + ".ogg";
+		   String s = "/sounds/blocks/" + Tile$SoundType.mapSound(var2) + (this.random.nextInt(4) + 1) + ".ogg";
+		   if(!sounds.containsKey(s)) {
 			   if (EagRuntime.getPlatformType() != EnumPlatformType.DESKTOP) {
 				   trk = PlatformAudio.loadAudioDataNew(s, true, browserResourceLoader);
 			   } else {
 				   trk = PlatformAudio.loadAudioData(s, true);
 			   }
 			   if(trk != null) {
-				   sounds.put(var2, trk);
+				   sounds.put(s, trk);
 			   }
 		   } else {
-			   trk = sounds.get(var2);
+			   trk = sounds.get(s);
 		   }
 
 		   PlatformAudio.beginPlayback(trk, x, y, z, soundType.getVolume(), soundType.getPitch(), false);
@@ -81,18 +82,23 @@ public final class SoundManager {
    public boolean playMusic(String var2) {
 	   try {
 		   IAudioResource trk;
-		   if(!music.containsKey(var2)) {
-			   String s = "/sounds/music/" + var2 + (this.random.nextInt(3) + 1) + ".ogg";
+		   int i = this.random.nextInt(3) + 1;
+		   while(i == lastSongID) {
+			   i = this.random.nextInt(3) + 1;
+		   }
+		   lastSongID = i;
+		   String s = "/sounds/music/" + var2 + i + ".ogg";
+		   if(!music.containsKey(s)) {
 			   if (EagRuntime.getPlatformType() != EnumPlatformType.DESKTOP) {
 				   trk = PlatformAudio.loadAudioDataNew(s, false, browserResourceLoader);
 			   } else {
 				   trk = PlatformAudio.loadAudioData(s, false);
 			   }
 			   if(trk != null) {
-				   music.put(var2, trk);
+				   music.put(s, trk);
 			   }
 		   } else {
-			   trk = music.get(var2);
+			   trk = music.get(s);
 		   }
 	   
 		   musicHandle = PlatformAudio.beginPlaybackStatic(trk, 1.0f, 1.0f, false);
@@ -128,8 +134,9 @@ public final class SoundManager {
 	};
 	
 	public void settingsChanged() {
-		if(musicHandle != null && !musicHandle.shouldFree()) {
-			musicHandle.pause(!Minecraft.getMinecraft().settings.music);
+		if(musicHandle != null && !musicHandle.shouldFree() && !Minecraft.getMinecraft().settings.music) {
+			musicHandle.end();
+			this.lastMusic = EagRuntime.steadyTimeMillis();
 		}
 	}
 }
