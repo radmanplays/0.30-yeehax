@@ -278,12 +278,12 @@ public class PlatformOpenGL {
 		return new OpenGLObjects.TextureGL(ctx.createTexture());
 	}
 	
-	public static final IBufferArrayGL _wglGenVertexArrays() {
+	public static final IVertexArrayGL _wglGenVertexArrays() {
 		switch(vertexArrayImpl) {
 		case VAO_IMPL_CORE:
-			return new OpenGLObjects.BufferArrayGL(ctx.createVertexArray());
+			return new OpenGLObjects.VertexArrayGL(ctx.createVertexArray());
 		case VAO_IMPL_OES:
-			return new OpenGLObjects.BufferArrayGL(OESVertexArrayObject.createVertexArrayOES());
+			return new OpenGLObjects.VertexArrayGL(OESVertexArrayObject.createVertexArrayOES());
 		default:
 			throw new UnsupportedOperationException();
 		}
@@ -317,8 +317,8 @@ public class PlatformOpenGL {
 		ctx.deleteTexture(((OpenGLObjects.TextureGL)obj).ptr);
 	}
 	
-	public static final void _wglDeleteVertexArrays(IBufferArrayGL obj) {
-		WebGLVertexArray ptr = ((OpenGLObjects.BufferArrayGL)obj).ptr;
+	public static final void _wglDeleteVertexArrays(IVertexArrayGL obj) {
+		WebGLVertexArray ptr = ((OpenGLObjects.VertexArrayGL)obj).ptr;
 		switch(vertexArrayImpl) {
 		case VAO_IMPL_CORE:
 			ctx.deleteVertexArray(ptr);
@@ -383,8 +383,8 @@ public class PlatformOpenGL {
 		ctx.bufferSubData(target, offset, EaglerArrayBufferAllocator.getDataView32F(data));
 	}
 	
-	public static final void _wglBindVertexArray(IBufferArrayGL obj) {
-		WebGLVertexArray ptr = obj != null ? ((OpenGLObjects.BufferArrayGL)obj).ptr : null;
+	public static final void _wglBindVertexArray(IVertexArrayGL obj) {
+		WebGLVertexArray ptr = obj != null ? ((OpenGLObjects.VertexArrayGL)obj).ptr : null;
 		switch(vertexArrayImpl) {
 		case VAO_IMPL_CORE:
 			ctx.bindVertexArray(ptr);

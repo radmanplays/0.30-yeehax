@@ -276,14 +276,6 @@ public class EaglerArrayByteBuffer extends ByteBuffer {
 	}
 	
 	@Override
-	public ByteBuffer putDouble(double value) {
-		if(position + 8 > limit) throw Buffer.makeIOOBE(position);
-		dataView.setFloat64(position, value, true);
-		position += 8;
-		return this;
-	}
-
-	@Override
 	public int getInt(int index) {
 		if(index < 0 || index + 4 > limit) throw Buffer.makeIOOBE(index);
 		return dataView.getInt32(index, true);
@@ -340,14 +332,6 @@ public class EaglerArrayByteBuffer extends ByteBuffer {
 		return f;
 	}
 	
-	@Override
-	public double getDouble() {
-		if(position + 8 > limit) throw Buffer.makeIOOBE(position);
-		double f = dataView.getFloat64(position, true);
-		position += 8;
-		return f;
-	}
-
 	@Override
 	public ByteBuffer putFloat(float value) {
 		if(position + 4 > limit) throw Buffer.makeIOOBE(position);
@@ -422,11 +406,6 @@ public class EaglerArrayByteBuffer extends ByteBuffer {
 	public ByteBuffer position(int newPosition) {
 		if(newPosition < 0 || newPosition > limit) throw Buffer.makeIOOBE(newPosition);
 		position = newPosition;
-		return this;
-	}
-	
-	@Override
-	public ByteBuffer compact() {
 		return this;
 	}
 }

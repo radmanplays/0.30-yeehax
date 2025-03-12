@@ -3,6 +3,7 @@ package net.lax1dude.eaglercraft.internal;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,9 +43,6 @@ import org.teavm.jso.webgl.WebGLFramebuffer;
 import org.teavm.platform.Platform;
 import org.teavm.platform.PlatformRunnable;
 
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Sets;
 import com.jcraft.jzlib.Deflater;
 import com.jcraft.jzlib.DeflaterOutputStream;
 import com.jcraft.jzlib.GZIPInputStream;
@@ -212,7 +210,11 @@ public class PlatformRuntime {
 			if(viewportTag != null) {
 				String cont = viewportTag.getAttribute("content");
 				if(cont != null) {
-					Set<String> oldTokens = Sets.newHashSet(Iterators.transform(Iterators.forArray(cont.split(",")), String::trim));
+					String[] oldTokenArray = cont.split(",");
+	                Set<String> oldTokens = new HashSet<>();
+	                for (String token : oldTokenArray) {
+	                    oldTokens.add(token.trim());
+	                }
 					Set<String> tokens = new HashSet<>();
 					for(String str : oldTokens) {
 						if (!(str.startsWith("width=") || str.startsWith("initial-scale=")
@@ -475,7 +477,11 @@ public class PlatformRuntime {
 
 	private static void dumpShims(Set<EnumES6Shims> shims) {
 		if(!shims.isEmpty()) {
-			logger.info("(Enabled {} shims: {})", shims.size(), String.join(", ", Collections2.transform(shims, (shim) -> shim.shimDesc)));
+			List<String> descriptions = new ArrayList<>();
+            for (EnumES6Shims shim : shims) {
+                descriptions.add(shim.shimDesc);
+            }
+			logger.info("(Enabled {} shims: {})", shims.size(), String.join(", ", descriptions));
 		}
 	}
 

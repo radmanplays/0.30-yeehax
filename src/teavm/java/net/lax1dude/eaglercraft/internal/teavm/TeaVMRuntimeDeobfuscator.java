@@ -1,5 +1,7 @@
 package net.lax1dude.eaglercraft.internal.teavm;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +12,6 @@ import org.teavm.backend.javascript.spi.GeneratedBy;
 import org.teavm.jso.JSObject;
 import org.teavm.jso.core.JSArrayReader;
 import org.teavm.jso.core.JSString;
-
-import com.google.common.collect.Lists;
 
 import net.lax1dude.eaglercraft.internal.PlatformRuntime;
 import net.lax1dude.eaglercraft.internal.teavm.generators.TeaVMRuntimeDeobfuscatorGenerator;
@@ -171,7 +171,7 @@ public class TeaVMRuntimeDeobfuscator {
 	public static String deobfExceptionStack(String stackLines) {
 		if(!isInitialized) return stackLines;
 		try {
-			List<String> lines = Lists.newArrayList(EagUtils.splitPattern.split(stackLines));
+			List<String> lines = Arrays.asList(EagUtils.splitPattern.split(stackLines));
 			deobfExceptionStack(lines);
 			return String.join("\n", lines);
 		}catch(Throwable t) {
