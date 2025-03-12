@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Iterator;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.lax1dude.eaglercraft.EagRuntime;
 import net.lax1dude.eaglercraft.Keyboard;
 import net.lax1dude.eaglercraft.KeyboardConstants;
@@ -51,7 +54,9 @@ public final class GameSettings
 	private Minecraft minecraft;
 	private VFile2 settingsFile;
 	public int settingCount;
-
+	
+	private Logger logger = LogManager.getLogger();
+	
 	public String getBinding(int key)
 	{
 		return bindings[key].name + ": " + Keyboard.getKeyName(bindings[key].key);
@@ -211,9 +216,8 @@ public final class GameSettings
 				reader.close();
 			}
 		} catch (Exception e) {
-			System.out.println("Failed to load options");
-
-			e.printStackTrace();
+			logger.error("Failed to load options");
+			logger.error(e);
 		}
 	}
 
@@ -238,9 +242,8 @@ public final class GameSettings
 
 			writer.close();
 		} catch (Exception e) {
-			System.out.println("Failed to save options");
-
-			e.printStackTrace();
+			logger.error("Failed to save options");
+			logger.error(e);
 		}
 	}
 

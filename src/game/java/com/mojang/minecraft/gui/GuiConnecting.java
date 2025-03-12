@@ -1,5 +1,7 @@
 package com.mojang.minecraft.gui;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.minecraft.Minecraft;
@@ -28,6 +30,8 @@ public class GuiConnecting extends GuiScreen {
 	
 	private long start = EagRuntime.steadyTimeMillis();
 	
+	private Logger logger = LogManager.getLogger();
+	
 	public GuiConnecting(String addr, String username, String key) {
 		this.currentAddress = addr;
 		this.username = username;
@@ -48,7 +52,7 @@ public class GuiConnecting extends GuiScreen {
 		++timer;
 		if(timer > 1) {
 			if(this.minecraft.networkManager.netHandler.webSocket == null) {
-				System.out.println("Connecting to: " + currentAddress);
+				logger.info("Connecting to: {}", currentAddress);
 				this.minecraft.networkManager.netHandler.webSocket = PlatformNetworking.openWebSocket(currentAddress);
 				if(this.minecraft.networkManager.netHandler.webSocket == null) {
 					minecraft.online = false;

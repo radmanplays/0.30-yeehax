@@ -13,7 +13,7 @@ class BlockMap$Slot implements Serializable {
    final BlockMap blockMap;
 
 
-   private BlockMap$Slot(BlockMap var1) {
+   public BlockMap$Slot(BlockMap var1) {
       this.blockMap = var1;
    }
 
@@ -60,11 +60,6 @@ class BlockMap$Slot implements Serializable {
          this.blockMap.entityGrid[(this.zSlot * BlockMap.getDepth(this.blockMap) + this.ySlot) * BlockMap.getWidth(this.blockMap) + this.xSlot].remove(var1);
       }
 
-   }
-
-   // $FF: synthetic method
-   BlockMap$Slot(BlockMap var1, SyntheticClass var2) {
-      this(var1);
    }
 
    // $FF: synthetic method

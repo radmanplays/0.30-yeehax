@@ -147,25 +147,30 @@ public class Level implements Serializable {
    public void calcLightDepths(int var1, int var2, int var3, int var4) {
       for(int var5 = var1; var5 < var1 + var3; ++var5) {
          for(int var6 = var2; var6 < var2 + var4; ++var6) {
-            int var7 = this.blockers[var5 + var6 * this.width];
+        	 int oldDepth = this.blockers[var5 + var6 * this.width];
+             int newDepth = calculateLightDepth(var5, var6);
+             this.blockers[var5 + var6 * this.width] = newDepth;
+             
+             if (oldDepth != newDepth) {
+                 int minDepth = Math.min(oldDepth, newDepth);
+                 int maxDepth = Math.max(oldDepth, newDepth);
 
-            int var8;
-            for(var8 = this.depth - 1; var8 > 0 && !this.isLightBlocker(var5, var8, var6); --var8) {
-               ;
-            }
-
-            this.blockers[var5 + var6 * this.width] = var8;
-            if(var7 != var8) {
-               int var9 = var7 < var8?var7:var8;
-               var7 = var7 > var8?var7:var8;
-
-               for(var8 = 0; var8 < this.listeners.size(); ++var8) {
-                  ((LevelRenderer)this.listeners.get(var8)).queueChunks(var5 - 1, var9 - 1, var6 - 1, var5 + 1, var7 + 1, var6 + 1);
-               }
-            }
+                 for (int i = 0, j = this.listeners.size(); i < j; ++i) {
+                	 LevelRenderer listener = this.listeners.get(i);
+                     listener.queueChunks(var5 - 1, minDepth - 1, var6 - 1, var5 + 1, maxDepth + 1, var6 + 1);
+                 }
+             }
          }
       }
-
+   }
+   
+   private int calculateLightDepth(int var1, int var2) {
+       for (int var3 = this.depth - 1; var3 > 0; --var3) {
+           if (isLightBlocker(var1, var3, var2)) {
+               return var3;
+           }
+       }
+       return 0;
    }
 
    public void addListener(LevelRenderer var1) {
@@ -179,8 +184,11 @@ public class Level implements Serializable {
    }
 
    public boolean isLightBlocker(int var1, int var2, int var3) {
-      Block var4;
-      return (var4 = Block.blocks[this.getTile(var1, var2, var3)]) == null?false:var4.isOpaque();
+	   if (var1 < 0 || var2 < 0 || var3 < 0 || var1 >= this.width || var2 >= this.depth || var3 >= this.height) {
+           return true;
+       }
+       Block block = Block.blocks[this.getTile(var1, var2, var3)];
+       return block != null && block.isOpaque();
    }
 
    public ArrayList<AABB> getCubes(AABB var1) {
@@ -322,7 +330,10 @@ public class Level implements Serializable {
    }
 
    public boolean isLit(int var1, int var2, int var3) {
-      return var1 >= 0 && var2 >= 0 && var3 >= 0 && var1 < this.width && var2 < this.depth && var3 < this.height?var2 >= this.blockers[var1 + var3 * this.width]:true;
+	   if (var1 < 0 || var2 < 0 || var3 < 0 || var1 >= this.width || var2 >= this.depth || var3 >= this.height) {
+           return true;
+       }
+       return var2 >= this.blockers[var1 + var3 * this.width];
    }
 
    public int getTile(int var1, int var2, int var3) {

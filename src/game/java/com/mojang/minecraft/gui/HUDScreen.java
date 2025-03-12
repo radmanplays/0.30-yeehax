@@ -167,9 +167,9 @@ public final class HUDScreen extends Screen {
          var27 = true;
       }
 
-      for(var14 = 0; var14 < this.chat.size() && var14 < var25; ++var14) {
-         if(((ChatLine)this.chat.get(var14)).time < 200 || var27) {
-            var5.render(((ChatLine)this.chat.get(var14)).message, 2, this.height - 8 - var14 * 9 - 20, 16777215);
+      for(int var14_1 = 0, var15_1 = this.chat.size(); var14_1 < var15_1 && var14_1 < var25; ++var14_1) {
+         if(((ChatLine)this.chat.get(var14_1)).time < 200 || var27) {
+            var5.render(((ChatLine)this.chat.get(var14_1)).message, 2, this.height - 8 - var14_1 * 9 - 20, 16777215);
          }
       }
 
@@ -195,14 +195,14 @@ public final class HUDScreen extends Screen {
           var23 = "Connected players:";
           var5.render(var23, var14 - var5.getWidth(var23) / 2, var15 - 64 - 12, 16777215);
 
-          for(var11 = 0; var11 < var22.size(); ++var11) {
-             int var28 = var14 + var11 % 2 * 120 - 120;
-             int var17 = var15 - 64 + (var11 / 2 << 3);
+          for(int var13 = 0, var16 = var22.size(); var13 < var16; ++var13) {
+             int var28 = var14 + var13 % 2 * 120 - 120;
+             int var17 = var15 - 64 + (var13 / 2 << 3);
              if(var2 && var3 >= var28 && var4 >= var17 && var3 < var28 + 120 && var4 < var17 + 8) {
-                this.hoveredPlayer = (String)var22.get(var11);
-                var5.render((String)var22.get(var11), var28 + 2, var17, 16777215);
+                this.hoveredPlayer = (String)var22.get(var13);
+                var5.render((String)var22.get(var13), var28 + 2, var17, 16777215);
              } else {
-                var5.render((String)var22.get(var11), var28, var17, 15658734);
+                var5.render((String)var22.get(var13), var28, var17, 15658734);
              }
           }
        }
@@ -216,9 +216,4 @@ public final class HUDScreen extends Screen {
       }
 
    }
-   
-//   public void onResize(Minecraft mc, int width, int height) {
-//		this.width = width;
-//		this.height = height;
-//	}
 }

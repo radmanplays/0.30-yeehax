@@ -68,8 +68,9 @@ public class BasicAI extends AI {
       this.yRotA *= 0.9F;
       var2.travel(this.xxa, this.yya);
       List<Entity> var11;
-      if((var11 = var1.findEntities(var2, var2.bb.grow(0.2F, 0.0F, 0.2F))) != null && var11.size() > 0) {
-         for(int var8 = 0; var8 < var11.size(); ++var8) {
+      int size;
+      if((var11 = var1.findEntities(var2, var2.bb.grow(0.2F, 0.0F, 0.2F))) != null && (size = var11.size()) > 0) {
+         for(int var8 = 0; var8 < size; ++var8) {
             Entity var10;
             if((var10 = (Entity)var11.get(var8)).isPushable()) {
                var10.push(var2);

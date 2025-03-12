@@ -17,7 +17,7 @@ public class GuiScreen extends Screen {
    protected FontRenderer fontRenderer;
 
    public void render(int var1, int var2) {
-      for(int var3 = 0; var3 < this.buttons.size(); ++var3) {
+      for(int var3 = 0, var100 = this.buttons.size(); var3 < var100; ++var3) {
          Button var10000 = (Button)this.buttons.get(var3);
          Minecraft var7 = this.minecraft;
          Button var4 = var10000;
@@ -57,10 +57,10 @@ public class GuiScreen extends Screen {
 
    protected void onMouseClick(int var1, int var2, int var3) {
       if(var3 == 0) {
-         for(var3 = 0; var3 < this.buttons.size(); ++var3) {
+         for(int var5 = 0, var6 = this.buttons.size(); var5 < var6; ++var5) {
             Button var4;
             Button var7;
-            if((var7 = var4 = (Button)this.buttons.get(var3)).active && var1 >= var7.x && var2 >= var7.y && var1 < var7.x + var7.width && var2 < var7.y + var7.height) {
+            if((var7 = var4 = (Button)this.buttons.get(var5)).active && var1 >= var7.x && var2 >= var7.y && var1 < var7.x + var7.width && var2 < var7.y + var7.height) {
                this.onButtonClick(var4);
             }
          }

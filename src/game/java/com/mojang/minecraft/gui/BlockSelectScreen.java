@@ -11,13 +11,15 @@ import net.lax1dude.eaglercraft.opengl.WorldRenderer;
 import org.lwjgl.opengl.GL11;
 
 public final class BlockSelectScreen extends GuiScreen {
+	
+  private int allowedBlocksSize = SessionData.allowedBlocks.size();
 
    public BlockSelectScreen() {
       this.grabsMouse = true;
    }
 
    private int getBlockOnScreen(int var1, int var2) {
-      for(int var3 = 0; var3 < SessionData.allowedBlocks.size(); ++var3) {
+      for(int var3 = 0; var3 < allowedBlocksSize; ++var3) {
          int var4 = this.width / 2 + var3 % 9 * 24 + -108 - 3;
          int var5 = this.height / 2 + var3 / 9 * 24 + -60 + 3;
          if(var1 >= var4 && var1 <= var4 + 24 && var2 >= var5 - 12 && var2 <= var5 + 12) {
@@ -44,7 +46,7 @@ public final class BlockSelectScreen extends GuiScreen {
       var2 = var7.load("/terrain.png");
       GL11.glBindTexture(3553, var2);
 
-      for(var2 = 0; var2 < SessionData.allowedBlocks.size(); ++var2) {
+      for(var2 = 0; var2 < allowedBlocksSize; ++var2) {
          Block var4 = (Block)SessionData.allowedBlocks.get(var2);
          GL11.glPushMatrix();
          int var5 = this.width / 2 + var2 % 9 * 24 + -108;

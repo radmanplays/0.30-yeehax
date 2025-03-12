@@ -93,15 +93,14 @@ public final class ModelPart {
 		if(this.render) {
 			if(!this.compiled) {
 				float var3 = var1;
-				ModelPart var2 = this;
 				this.displayList = GL11.glGenLists(1);
 				GL11.glNewList(this.displayList, RealOpenGLEnums.GL_COMPILE);
 				Tessellator tess = Tessellator.getInstance();
 				WorldRenderer var4 = tess.getWorldRenderer();
 
-				for(int var5 = 0; var5 < var2.quads.length; ++var5) {
+				for(int var5 = 0; var5 < this.quads.length; ++var5) {
 					var4.begin(7, VertexFormat.POSITION_TEX_NORMAL);
-					TexturedQuad var10000 = var2.quads[var5];
+					TexturedQuad var10000 = this.quads[var5];
 					float var8 = var3;
 					TexturedQuad var6 = var10000;
 					Vec3D var9 = var6.vertices[1].vector.subtract(var6.vertices[0].vector).normalize();
@@ -117,7 +116,7 @@ public final class ModelPart {
 				}
 
 				GL11.glEndList();
-				var2.compiled = true;
+				this.compiled = true;
 			}
 
 			if(this.pitch == 0.0F && this.yaw == 0.0F && this.roll == 0.0F) {
@@ -132,15 +131,15 @@ public final class ModelPart {
 				GL11.glPushMatrix();
 				GL11.glTranslatef(this.x * var1, this.y * var1, this.z * var1);
 				if(this.roll != 0.0F) {
-					GL11.glRotatef(this.roll * (180.0F / (float)Math.PI), 0.0F, 0.0F, 1.0F);
+					GL11.glRotatef(this.roll * 57.295776F, 0.0F, 0.0F, 1.0F);
 				}
 
 				if(this.yaw != 0.0F) {
-					GL11.glRotatef(this.yaw * (180.0F / (float)Math.PI), 0.0F, 1.0F, 0.0F);
+					GL11.glRotatef(this.yaw * 57.295776F, 0.0F, 1.0F, 0.0F);
 				}
 
 				if(this.pitch != 0.0F) {
-					GL11.glRotatef(this.pitch * (180.0F / (float)Math.PI), 1.0F, 0.0F, 0.0F);
+					GL11.glRotatef(this.pitch * 57.295776F, 1.0F, 0.0F, 0.0F);
 				}
 
 				GL11.glCallList(this.displayList);

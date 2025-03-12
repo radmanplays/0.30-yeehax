@@ -70,13 +70,13 @@ public final class LevelRenderer {
          }
       }
 
-      for(var2 = 0; var2 < this.chunks.size(); ++var2) {
+      int size = this.chunks.size();
+      for(var2 = 0; var2 < size; ++var2) {
          ((Chunk)this.chunks.get(var2)).loaded = false;
       }
 
       this.chunks.clear();
       GL11.glNewList(this.listId, 4864);
-      LevelRenderer var9 = this;
       float var10 = 0.5F;
       Tessellator tess = Tessellator.getInstance();
       WorldRenderer var11 = tess.getWorldRenderer();
@@ -94,10 +94,10 @@ public final class LevelRenderer {
       var11.begin(7, VertexFormat.POSITION_TEX_COLOR);
 
       int var7;
-      for(var7 = -var5 * var6; var7 < var9.level.width + var5 * var6; var7 += var5) {
-         for(int var8 = -var5 * var6; var8 < var9.level.height + var5 * var6; var8 += var5) {
+      for(var7 = -var5 * var6; var7 < this.level.width + var5 * var6; var7 += var5) {
+         for(int var8 = -var5 * var6; var8 < this.level.height + var5 * var6; var8 += var5) {
             var10 = var12;
-            if(var7 >= 0 && var8 >= 0 && var7 < var9.level.width && var8 < var9.level.height) {
+            if(var7 >= 0 && var8 >= 0 && var7 < this.level.width && var8 < this.level.height) {
                var10 = 0.0F;
             }
 
@@ -111,32 +111,31 @@ public final class LevelRenderer {
       tess.draw();
       var11.begin(7, VertexFormat.POSITION_TEX_COLOR);
 
-      for(var7 = 0; var7 < var9.level.width; var7 += var5) {
+      for(var7 = 0; var7 < this.level.width; var7 += var5) {
          var11.pos((float)var7, 0.0F, 0.0F).tex(0.0F, 0.0F).color(0.8F, 0.8F, 0.8F, 1.0f).endVertex();;
          var11.pos((float)(var7 + var5), 0.0F, 0.0F).tex((float)var5, 0.0F).color(0.8F, 0.8F, 0.8F, 1.0f).endVertex();;
          var11.pos((float)(var7 + var5), var12, 0.0F).tex((float)var5, var12).color(0.8F, 0.8F, 0.8F, 1.0f).endVertex();;
          var11.pos((float)var7, var12, 0.0F).tex(0.0F, var12).color(0.8F, 0.8F, 0.8F, 1.0f).endVertex();;
-         var11.pos((float)var7, var12, (float)var9.level.height).tex(0.0F, var12).color(0.8F, 0.8F, 0.8F, 1.0f).endVertex();;
-         var11.pos((float)(var7 + var5), var12, (float)var9.level.height).tex((float)var5, var12).color(0.8F, 0.8F, 0.8F, 1.0f).endVertex();;
-         var11.pos((float)(var7 + var5), 0.0F, (float)var9.level.height).tex((float)var5, 0.0F).color(0.8F, 0.8F, 0.8F, 1.0f).endVertex();;
-         var11.pos((float)var7, 0.0F, (float)var9.level.height).tex(0.0F, 0.0F).color(0.8F, 0.8F, 0.8F, 1.0f).endVertex();
+         var11.pos((float)var7, var12, (float)this.level.height).tex(0.0F, var12).color(0.8F, 0.8F, 0.8F, 1.0f).endVertex();;
+         var11.pos((float)(var7 + var5), var12, (float)this.level.height).tex((float)var5, var12).color(0.8F, 0.8F, 0.8F, 1.0f).endVertex();;
+         var11.pos((float)(var7 + var5), 0.0F, (float)this.level.height).tex((float)var5, 0.0F).color(0.8F, 0.8F, 0.8F, 1.0f).endVertex();;
+         var11.pos((float)var7, 0.0F, (float)this.level.height).tex(0.0F, 0.0F).color(0.8F, 0.8F, 0.8F, 1.0f).endVertex();
       }
 
-      for(var7 = 0; var7 < var9.level.height; var7 += var5) {
+      for(var7 = 0; var7 < this.level.height; var7 += var5) {
          var11.pos(0.0F, var12, (float)var7).tex(0.0F, 0.0F).color(0.6F, 0.6F, 0.6F, 1.0f).endVertex();
          var11.pos(0.0F, var12, (float)(var7 + var5)).tex((float)var5, 0.0F).color(0.6F, 0.6F, 0.6F, 1.0f).endVertex();
          var11.pos(0.0F, 0.0F, (float)(var7 + var5)).tex((float)var5, var12).color(0.6F, 0.6F, 0.6F, 1.0f).endVertex();;
          var11.pos(0.0F, 0.0F, (float)var7).tex(0.0F, var12).color(0.6F, 0.6F, 0.6F, 1.0f).endVertex();;
-         var11.pos((float)var9.level.width, 0.0F, (float)var7).tex(0.0F, var12).color(0.6F, 0.6F, 0.6F, 1.0f).endVertex();
-         var11.pos((float)var9.level.width, 0.0F, (float)(var7 + var5)).tex((float)var5, var12).color(0.6F, 0.6F, 0.6F, 1.0f).endVertex();;
-         var11.pos((float)var9.level.width, var12, (float)(var7 + var5)).tex((float)var5, 0.0F).color(0.6F, 0.6F, 0.6F, 1.0f).endVertex();;
-         var11.pos((float)var9.level.width, var12, (float)var7).tex(0.0F, 0.0F).color(0.6F, 0.6F, 0.6F, 1.0f).endVertex();;
+         var11.pos((float)this.level.width, 0.0F, (float)var7).tex(0.0F, var12).color(0.6F, 0.6F, 0.6F, 1.0f).endVertex();
+         var11.pos((float)this.level.width, 0.0F, (float)(var7 + var5)).tex((float)var5, var12).color(0.6F, 0.6F, 0.6F, 1.0f).endVertex();;
+         var11.pos((float)this.level.width, var12, (float)(var7 + var5)).tex((float)var5, 0.0F).color(0.6F, 0.6F, 0.6F, 1.0f).endVertex();;
+         var11.pos((float)this.level.width, var12, (float)var7).tex(0.0F, 0.0F).color(0.6F, 0.6F, 0.6F, 1.0f).endVertex();;
       }
 
       tess.draw();
       GL11.glEndList();
       GL11.glNewList(this.listId + 1, 4864);
-      var9 = this;
       var10 = this.level.getWaterLevel();
       GL11.glBlendFunc(770, 771);
       var4 = 128;
@@ -151,10 +150,10 @@ public final class LevelRenderer {
       var5 = 2048 / var4;
       var11.begin(7, VertexFormat.POSITION_TEX_COLOR);
 
-      for(var6 = -var4 * var5; var6 < var9.level.width + var4 * var5; var6 += var4) {
-         for(var7 = -var4 * var5; var7 < var9.level.height + var4 * var5; var7 += var4) {
+      for(var6 = -var4 * var5; var6 < this.level.width + var4 * var5; var6 += var4) {
+         for(var7 = -var4 * var5; var7 < this.level.height + var4 * var5; var7 += var4) {
             float var13 = var10 - 0.1F;
-            if(var6 < 0 || var7 < 0 || var6 >= var9.level.width || var7 >= var9.level.height) {
+            if(var6 < 0 || var7 < 0 || var6 >= this.level.width || var7 >= this.level.height) {
                var11.pos((float)var6, var13, (float)(var7 + var4)).tex(0.0F, (float)var4).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();;
                var11.pos((float)(var6 + var4), var13, (float)(var7 + var4)).tex((float)var4, (float)var4).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();;
                var11.pos((float)(var6 + var4), var13, (float)var7).tex((float)var4, 0.0F).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();;

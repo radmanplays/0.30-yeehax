@@ -35,9 +35,8 @@ public final class NetworkHandler {
 	   this.out.put(var1.opcode);
 
 	   for(int var3 = 0; var3 < var2.length; ++var3) {
-		   Class<?> var10001 = var1.params[var3];
 		   Object var4 = var2[var3];
-		   Class<?> var5 = var10001;
+		   Class<?> var5 = var1.params[var3];
 		   NetworkHandler var6 = this;
 		   try {
 			   if(var5 == Long.TYPE) {
