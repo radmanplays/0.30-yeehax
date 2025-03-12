@@ -1,9 +1,7 @@
 package com.mojang.minecraft.net;
 
-public class PositionUpdate
-{
-	public PositionUpdate(float x, float y, float z, float yaw, float pitch)
-	{
+public class PositionUpdate {
+	public PositionUpdate(float x, float y, float z, float yaw, float pitch) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -14,8 +12,7 @@ public class PositionUpdate
 		position = true;
 	}
 
-	public PositionUpdate(float x, float y, float z)
-	{
+	public PositionUpdate(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -24,8 +21,7 @@ public class PositionUpdate
 		rotation = false;
 	}
 
-	public PositionUpdate(float yaw, float pitch)
-	{
+	public PositionUpdate(float yaw, float pitch) {
 		this.yaw = yaw;
 		this.pitch = pitch;
 

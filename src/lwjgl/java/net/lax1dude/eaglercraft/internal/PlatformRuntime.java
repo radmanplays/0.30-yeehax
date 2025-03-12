@@ -97,8 +97,7 @@ public class PlatformRuntime {
 			freeByteBuffer(endiannessTestBytes);
 		}
 
-		IEaglerFilesystem resourcePackFilesystem = Filesystem
-				.getHandleFor(getClientConfigAdapter().getWorldsDB());
+		IEaglerFilesystem resourcePackFilesystem = Filesystem.getHandleFor(getClientConfigAdapter().getWorldsDB());
 		VFile2.setPrimaryFilesystem(resourcePackFilesystem);
 
 		if (requestedANGLEPlatform != EnumPlatformANGLE.DEFAULT) {

@@ -15,11 +15,10 @@ import net.lax1dude.eaglercraft.KeyboardConstants;
 import net.lax1dude.eaglercraft.internal.vfs2.VFile2;
 import net.lax1dude.eaglercraft.opengl.ImageData;
 
-public final class GameSettings
-{
-	public GameSettings(Minecraft minecraft)
-	{
-		bindings = new KeyBinding[] {forwardKey, leftKey, backKey, rightKey, jumpKey, buildKey, chatKey, toggleFogKey, saveLocationKey, loadLocationKey, gameModeKey};
+public final class GameSettings {
+	public GameSettings(Minecraft minecraft) {
+		bindings = new KeyBinding[] { forwardKey, leftKey, backKey, rightKey, jumpKey, buildKey, chatKey, toggleFogKey,
+				saveLocationKey, loadLocationKey, gameModeKey };
 
 		settingCount = 8;
 
@@ -30,7 +29,7 @@ public final class GameSettings
 		load();
 	}
 
-	private static final String[] renderDistances = new String[]{"FAR", "NORMAL", "SHORT", "TINY"};
+	private static final String[] renderDistances = new String[] { "FAR", "NORMAL", "SHORT", "TINY" };
 	public boolean music = true;
 	public boolean sound = true;
 	public boolean invertMouse = false;
@@ -54,55 +53,45 @@ public final class GameSettings
 	private Minecraft minecraft;
 	private VFile2 settingsFile;
 	public int settingCount;
-	
+
 	private Logger logger = LogManager.getLogger();
-	
-	public String getBinding(int key)
-	{
+
+	public String getBinding(int key) {
 		return bindings[key].name + ": " + Keyboard.getKeyName(bindings[key].key);
 	}
 
-	public void setBinding(int key, int keyID)
-	{
+	public void setBinding(int key, int keyID) {
 		bindings[key].key = keyID;
 
 		save();
 	}
 
-	public void toggleSetting(int setting, int fogValue)
-	{
-		if(setting == 0)
-		{
+	public void toggleSetting(int setting, int fogValue) {
+		if (setting == 0) {
 			music = !music;
 		}
 
-		if(setting == 1)
-		{
+		if (setting == 1) {
 			sound = !sound;
 		}
 
-		if(setting == 2)
-		{
+		if (setting == 2) {
 			invertMouse = !invertMouse;
 		}
 
-		if(setting == 3)
-		{
+		if (setting == 3) {
 			showFrameRate = !showFrameRate;
 		}
 
-		if(setting == 4)
-		{
+		if (setting == 4) {
 			viewDistance = viewDistance + fogValue & 3;
 		}
 
-		if(setting == 5)
-		{
+		if (setting == 5) {
 			viewBobbing = !viewBobbing;
 		}
 
-		if(setting == 6)
-		{
+		if (setting == 6) {
 			anaglyph = !anaglyph;
 
 			TextureManager textureManager = minecraft.textureManager;
@@ -112,14 +101,12 @@ public final class GameSettings
 
 			Iterator<String> iterator = textureManager.textures.keySet().iterator();
 
-			while(iterator.hasNext())
-			{
-				String s = (String)iterator.next();
+			while (iterator.hasNext()) {
+				String s = (String) iterator.next();
 
-				try
-				{
+				try {
 					image = ImageData.loadImageFile(EagRuntime.getResourceStream(s)).swapRB();
-					i = (Integer)textureManager.textures.get(s);
+					i = (Integer) textureManager.textures.get(s);
 
 					textureManager.load(image, i);
 				} catch (Exception var6) {
@@ -128,8 +115,7 @@ public final class GameSettings
 			}
 		}
 
-		if(setting == 7)
-		{
+		if (setting == 7) {
 			limitFramerate = !limitFramerate;
 		}
 
@@ -137,77 +123,64 @@ public final class GameSettings
 		this.minecraft.sound.settingsChanged();
 	}
 
-	public String getSetting(int id)
-	{
+	public String getSetting(int id) {
 		return id == 0 ? "Music: " + (music ? "ON" : "OFF")
 				: (id == 1 ? "Sound: " + (sound ? "ON" : "OFF")
-				: (id == 2 ? "Invert mouse: " + (invertMouse ? "ON" : "OFF")
-				: (id == 3 ? "Show FPS: " + (showFrameRate ? "ON" : "OFF")
-				: (id == 4 ? "Render distance: " + renderDistances[viewDistance]
-				: (id == 5 ? "View bobbing: " + (viewBobbing ? "ON" : "OFF")
-				: (id == 6 ? "3d anaglyph: " + (anaglyph ? "ON" : "OFF")
-				: (id == 7 ? "Limit framerate: " + (limitFramerate ? "ON" : "OFF")
-				: "")))))));
+						: (id == 2 ? "Invert mouse: " + (invertMouse ? "ON" : "OFF")
+								: (id == 3 ? "Show FPS: " + (showFrameRate ? "ON" : "OFF")
+										: (id == 4 ? "Render distance: " + renderDistances[viewDistance]
+												: (id == 5 ? "View bobbing: " + (viewBobbing ? "ON" : "OFF")
+														: (id == 6 ? "3d anaglyph: " + (anaglyph ? "ON" : "OFF")
+																: (id == 7
+																		? "Limit framerate: "
+																				+ (limitFramerate ? "ON" : "OFF")
+																		: "")))))));
 	}
 
-	private void load()
-	{
-		try
-		{
-			if(settingsFile.exists())
-			{
+	private void load() {
+		try {
+			if (settingsFile.exists()) {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(settingsFile.getInputStream()));
 
 				String line = null;
 
-				while((line = reader.readLine()) != null)
-				{
+				while ((line = reader.readLine()) != null) {
 					String[] setting = line.split(":");
 
-					if(setting[0].equals("music"))
-					{
+					if (setting[0].equals("music")) {
 						music = setting[1].equals("true");
 					}
 
-					if(setting[0].equals("sound"))
-					{
+					if (setting[0].equals("sound")) {
 						sound = setting[1].equals("true");
 					}
 
-					if(setting[0].equals("invertYMouse"))
-					{
+					if (setting[0].equals("invertYMouse")) {
 						invertMouse = setting[1].equals("true");
 					}
 
-					if(setting[0].equals("showFrameRate"))
-					{
+					if (setting[0].equals("showFrameRate")) {
 						showFrameRate = setting[1].equals("true");
 					}
 
-					if(setting[0].equals("viewDistance"))
-					{
+					if (setting[0].equals("viewDistance")) {
 						viewDistance = Integer.parseInt(setting[1]);
 					}
 
-					if(setting[0].equals("bobView"))
-					{
+					if (setting[0].equals("bobView")) {
 						viewBobbing = setting[1].equals("true");
 					}
 
-					if(setting[0].equals("anaglyph3d"))
-					{
+					if (setting[0].equals("anaglyph3d")) {
 						anaglyph = setting[1].equals("true");
 					}
 
-					if(setting[0].equals("limitFramerate"))
-					{
+					if (setting[0].equals("limitFramerate")) {
 						limitFramerate = setting[1].equals("true");
 					}
 
-					for(int index = 0; index < this.bindings.length; index++)
-					{
-						if(setting[0].equals("key_" + bindings[index].name))
-						{
+					for (int index = 0; index < this.bindings.length; index++) {
+						if (setting[0].equals("key_" + bindings[index].name)) {
 							bindings[index].key = Integer.parseInt(setting[1]);
 						}
 					}
@@ -221,8 +194,7 @@ public final class GameSettings
 		}
 	}
 
-	private void save()
-	{
+	private void save() {
 		try {
 			PrintWriter writer = new PrintWriter(settingsFile.getOutputStream());
 
@@ -235,8 +207,7 @@ public final class GameSettings
 			writer.println("anaglyph3d:" + anaglyph);
 			writer.println("limitFramerate:" + limitFramerate);
 
-			for(int binding = 0; binding < bindings.length; binding++)
-			{
+			for (int binding = 0; binding < bindings.length; binding++) {
 				writer.println("key_" + bindings[binding].name + ":" + bindings[binding].key);
 			}
 

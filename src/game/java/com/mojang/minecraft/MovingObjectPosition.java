@@ -2,10 +2,8 @@ package com.mojang.minecraft;
 
 import com.mojang.minecraft.model.Vec3D;
 
-public class MovingObjectPosition
-{
-	public MovingObjectPosition(int x, int y, int z, int side, Vec3D blockPos)
-	{
+public class MovingObjectPosition {
+	public MovingObjectPosition(int x, int y, int z, int side, Vec3D blockPos) {
 		entityPos = 0;
 
 		this.x = x;
@@ -17,8 +15,7 @@ public class MovingObjectPosition
 		vec = new Vec3D(blockPos.x, blockPos.y, blockPos.z);
 	}
 
-	public MovingObjectPosition(Entity entity)
-	{
+	public MovingObjectPosition(Entity entity) {
 		entityPos = 1;
 		this.entity = entity;
 	}

@@ -1,37 +1,33 @@
 package com.mojang.minecraft.net;
 
-public class PacketType
-{
-	private PacketType(Class<?> ... classes)
-	{
-		opcode = (byte)(nextOpcode++);
+public class PacketType {
+	private PacketType(Class<?>... classes) {
+		opcode = (byte) (nextOpcode++);
 		packets[opcode] = this;
 		params = new Class[classes.length];
 
 		int length = 0;
 
-		for(int classNumber = 0; classNumber < classes.length; classNumber++)
-		{
+		for (int classNumber = 0; classNumber < classes.length; classNumber++) {
 			Class<?> class_ = classes[classNumber];
 
 			params[classNumber] = class_;
 
-			if(class_ == Long.TYPE)
-			{
+			if (class_ == Long.TYPE) {
 				length += 8;
-			} else if(class_ == Integer.TYPE) {
+			} else if (class_ == Integer.TYPE) {
 				length += 4;
-			} else if(class_ == Short.TYPE) {
+			} else if (class_ == Short.TYPE) {
 				length += 2;
-			} else if(class_ == Byte.TYPE) {
+			} else if (class_ == Byte.TYPE) {
 				++length;
-			} else if(class_ == Float.TYPE) {
+			} else if (class_ == Float.TYPE) {
 				length += 4;
-			} else if(class_ == Double.TYPE) {
+			} else if (class_ == Double.TYPE) {
 				length += 8;
-			} else if(class_ == byte[].class) {
+			} else if (class_ == byte[].class) {
 				length += 1024;
-			} else if(class_ == String.class) {
+			} else if (class_ == String.class) {
 				length += 64;
 			}
 		}
@@ -41,7 +37,8 @@ public class PacketType
 
 	public static final PacketType[] packets = new PacketType[256];
 
-	public static final PacketType IDENTIFICATION = new PacketType(new Class[] {Byte.TYPE, String.class, String.class, Byte.TYPE});
+	public static final PacketType IDENTIFICATION = new PacketType(
+			new Class[] { Byte.TYPE, String.class, String.class, Byte.TYPE });
 	public static final PacketType LEVEL_INIT;
 	public static final PacketType LEVEL_DATA;
 	public static final PacketType LEVEL_FINALIZE;
@@ -62,24 +59,26 @@ public class PacketType
 	public byte opcode;
 	public Class<?>[] params;
 
-	static
-	{
+	static {
 		new PacketType(new Class[0]);
 
 		LEVEL_INIT = new PacketType(new Class[0]);
-		LEVEL_DATA = new PacketType(new Class[] {Short.TYPE, byte[].class, Byte.TYPE});
-		LEVEL_FINALIZE = new PacketType(new Class[] {Short.TYPE, Short.TYPE, Short.TYPE});
-		PLAYER_SET_BLOCK = new PacketType(new Class[] {Short.TYPE, Short.TYPE, Short.TYPE, Byte.TYPE, Byte.TYPE});
-		BLOCK_CHANGE = new PacketType(new Class[] {Short.TYPE, Short.TYPE, Short.TYPE, Byte.TYPE});
-		SPAWN_PLAYER = new PacketType(new Class[] {Byte.TYPE, String.class, Short.TYPE, Short.TYPE, Short.TYPE, Byte.TYPE, Byte.TYPE});
-		POSITION_ROTATION = new PacketType(new Class[] {Byte.TYPE, Short.TYPE, Short.TYPE, Short.TYPE, Byte.TYPE, Byte.TYPE});
-		POSITION_ROTATION_UPDATE = new PacketType(new Class[] {Byte.TYPE, Byte.TYPE, Byte.TYPE, Byte.TYPE, Byte.TYPE, Byte.TYPE});
-		POSITION_UPDATE = new PacketType(new Class[] {Byte.TYPE, Byte.TYPE, Byte.TYPE, Byte.TYPE});
-		ROTATION_UPDATE = new PacketType(new Class[] {Byte.TYPE, Byte.TYPE, Byte.TYPE});
-		DESPAWN_PLAYER = new PacketType(new Class[] {Byte.TYPE});
-		CHAT_MESSAGE = new PacketType(new Class[] {Byte.TYPE, String.class});
-		DISCONNECT = new PacketType(new Class[] {String.class});
-		UPDATE_PLAYER_TYPE = new PacketType(new Class[] {Byte.TYPE});
+		LEVEL_DATA = new PacketType(new Class[] { Short.TYPE, byte[].class, Byte.TYPE });
+		LEVEL_FINALIZE = new PacketType(new Class[] { Short.TYPE, Short.TYPE, Short.TYPE });
+		PLAYER_SET_BLOCK = new PacketType(new Class[] { Short.TYPE, Short.TYPE, Short.TYPE, Byte.TYPE, Byte.TYPE });
+		BLOCK_CHANGE = new PacketType(new Class[] { Short.TYPE, Short.TYPE, Short.TYPE, Byte.TYPE });
+		SPAWN_PLAYER = new PacketType(
+				new Class[] { Byte.TYPE, String.class, Short.TYPE, Short.TYPE, Short.TYPE, Byte.TYPE, Byte.TYPE });
+		POSITION_ROTATION = new PacketType(
+				new Class[] { Byte.TYPE, Short.TYPE, Short.TYPE, Short.TYPE, Byte.TYPE, Byte.TYPE });
+		POSITION_ROTATION_UPDATE = new PacketType(
+				new Class[] { Byte.TYPE, Byte.TYPE, Byte.TYPE, Byte.TYPE, Byte.TYPE, Byte.TYPE });
+		POSITION_UPDATE = new PacketType(new Class[] { Byte.TYPE, Byte.TYPE, Byte.TYPE, Byte.TYPE });
+		ROTATION_UPDATE = new PacketType(new Class[] { Byte.TYPE, Byte.TYPE, Byte.TYPE });
+		DESPAWN_PLAYER = new PacketType(new Class[] { Byte.TYPE });
+		CHAT_MESSAGE = new PacketType(new Class[] { Byte.TYPE, String.class });
+		DISCONNECT = new PacketType(new Class[] { String.class });
+		UPDATE_PLAYER_TYPE = new PacketType(new Class[] { Byte.TYPE });
 
 		nextOpcode = 0;
 	}

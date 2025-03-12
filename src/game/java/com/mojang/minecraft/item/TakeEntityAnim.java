@@ -4,10 +4,8 @@ import com.mojang.minecraft.Entity;
 import com.mojang.minecraft.level.Level;
 import com.mojang.minecraft.render.TextureManager;
 
-public class TakeEntityAnim extends Entity
-{
-	public TakeEntityAnim(Level level1, Entity item, Entity player)
-	{
+public class TakeEntityAnim extends Entity {
+	public TakeEntityAnim(Level level1, Entity item, Entity player) {
 		super(level1);
 
 		this.item = item;
@@ -21,17 +19,15 @@ public class TakeEntityAnim extends Entity
 	}
 
 	@Override
-	public void tick()
-	{
+	public void tick() {
 		time++;
 
-		if(time >= 3)
-		{
+		if (time >= 3) {
 			remove();
 		}
 
 		// TODO: Is this right?
-		float distance = (distance = (float)time / 3.0F) * distance;
+		float distance = (distance = (float) time / 3.0F) * distance;
 
 		xo = item.xo = item.x;
 		yo = item.yo = item.y;
@@ -45,8 +41,7 @@ public class TakeEntityAnim extends Entity
 	}
 
 	@Override
-	public void render(TextureManager textureManager, float unknown0)
-	{
+	public void render(TextureManager textureManager, float unknown0) {
 		item.render(textureManager, unknown0);
 	}
 

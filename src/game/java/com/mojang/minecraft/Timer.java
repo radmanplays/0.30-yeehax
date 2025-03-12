@@ -2,10 +2,8 @@ package com.mojang.minecraft;
 
 import net.lax1dude.eaglercraft.EagRuntime;
 
-public class Timer
-{
-	public Timer(float tps)
-	{
+public class Timer {
+	public Timer(float tps) {
 		this.tps = tps;
 		lastSysClock = EagRuntime.steadyTimeMillis();
 		lastHRClock = EagRuntime.nanoTime() / 1000000L;

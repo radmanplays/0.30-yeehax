@@ -3,10 +3,8 @@ package com.mojang.minecraft.render;
 import com.mojang.minecraft.Minecraft;
 import com.mojang.minecraft.level.tile.Block;
 
-public class HeldBlock
-{
-	public HeldBlock(Minecraft minecraft)
-	{
+public class HeldBlock {
+	public HeldBlock(Minecraft minecraft) {
 		this.minecraft = minecraft;
 	}
 

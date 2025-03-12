@@ -32,9 +32,9 @@ public abstract class GLObjectRecycler<T> {
 
 	public T createObject() {
 		T ret = deletedObjects.pollLast();
-		if(ret != null) {
+		if (ret != null) {
 			return ret;
-		}else {
+		} else {
 			return create();
 		}
 	}
@@ -44,7 +44,7 @@ public abstract class GLObjectRecycler<T> {
 	}
 
 	public void compact() {
-		while(deletedObjects.size() > reserveSize) {
+		while (deletedObjects.size() > reserveSize) {
 			destroy(deletedObjects.removeFirst());
 		}
 	}

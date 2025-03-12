@@ -15,21 +15,21 @@ import com.mojang.minecraft.level.tile.Block;
 import com.mojang.minecraft.phys.AABB;
 
 public class LevelUtils {
-	
-	public static float x,y,z,rotY,rotX;
-	
+
+	public static float x, y, z, rotY, rotX;
+
 	public static final boolean loadPlayer(Player player) {
-		if(player == null) {
+		if (player == null) {
 			return false;
 		}
 		NBTTagCompound var13 = LevelStorageManager.levelStorage;
-		
-		if(var13 == null) {
+
+		if (var13 == null) {
 			return false;
 		}
-		
+
 		NBTTagCompound var2 = var13.getCompoundTag("Player");
-		
+
 		player.rot = var2.getFloat("rot");
 		player.timeOffs = var2.getFloat("timeOffs");
 		player.speed = var2.getFloat("speed");
@@ -81,19 +81,19 @@ public class LevelUtils {
 		player.pushthrough = var2.getFloat("pushthrough");
 		player.hovered = var2.getBoolean("hovered");
 		player.score = var2.getInteger("score");
-		
+
 		player.inventory = new Inventory();
-		for(int i = 0; i < 9; i++) {
+		for (int i = 0; i < 9; i++) {
 			player.inventory.slots[i] = var2.getInteger("inv-" + i);
 			player.inventory.count[i] = var2.getInteger("inv-" + i + "-size");
 		}
-		
+
 		return true;
 	}
-	
+
 	public static final Level load() {
 		NBTTagCompound var13 = LevelStorageManager.levelStorage;
-		if(var13 == null) {
+		if (var13 == null) {
 			return null;
 		}
 		NBTTagCompound var2 = var13.getCompoundTag("About");
@@ -103,59 +103,59 @@ public class LevelUtils {
 		level.creator = "Player";
 		level.name = "Level";
 		level.createTime = var2.getLong("CreatedOn");
-		
+
 		level.width = var3.getShort("Width");
 		level.height = var3.getShort("Height");
 		level.depth = var3.getShort("Depth");
 		level.blocks = var3.getByteArray("Blocks");
 		level.creativeMode = var3.getBoolean("CreativeMode");
-		
+
 		level.cloudColor = var4.getInteger("CloudColor");
 		level.skyColor = var4.getInteger("SkyColor");
 		level.fogColor = var4.getInteger("FogColor");
 		level.waterLevel = var4.getInteger("SurroundingWaterHeight");
-		
+
 		return level;
 	}
-	
+
 	public static void save() {
-		
-		if(Minecraft.getMinecraft().level == null || Minecraft.getMinecraft().networkManager != null) {
+
+		if (Minecraft.getMinecraft().level == null || Minecraft.getMinecraft().networkManager != null) {
 			return;
 		}
-		
+
 		Level var1 = Minecraft.getMinecraft().level;
 		NBTTagCompound var3 = new NBTTagCompound();
-		
+
 		var3.setInteger("CloudColor", var1.cloudColor);
 		var3.setInteger("SkyColor", var1.skyColor);
 		var3.setInteger("FogColor", var1.fogColor);
-		var3.setShort("SurroundingGroundHeight", (short)var1.getGroundLevel());
-		var3.setShort("SurroundingWaterHeight", (short)var1.waterLevel);
-		var3.setByte("SurroundingGroundType", (byte)Block.GRASS.id);
-		var3.setByte("SurroundingWaterType", (byte)Block.WATER.id);
-		
+		var3.setShort("SurroundingGroundHeight", (short) var1.getGroundLevel());
+		var3.setShort("SurroundingWaterHeight", (short) var1.waterLevel);
+		var3.setByte("SurroundingGroundType", (byte) Block.GRASS.id);
+		var3.setByte("SurroundingWaterType", (byte) Block.WATER.id);
+
 		NBTTagCompound var4 = new NBTTagCompound();
-		var4.setShort("Width", (short)var1.width);
-		var4.setShort("Height", (short)var1.height);
-		var4.setShort("Depth", (short)var1.depth);
+		var4.setShort("Width", (short) var1.width);
+		var4.setShort("Height", (short) var1.height);
+		var4.setShort("Depth", (short) var1.depth);
 		var4.setByteArray("Blocks", var1.blocks);
 		var4.setBoolean("CreativeMode", var1.creativeMode);
-		
+
 		NBTTagList var5 = new NBTTagList();
-		var5.appendTag(new NBTTagShort((short)var1.xSpawn));
-		var5.appendTag(new NBTTagShort((short)var1.ySpawn));
-		var5.appendTag(new NBTTagShort((short)var1.zSpawn));
+		var5.appendTag(new NBTTagShort((short) var1.xSpawn));
+		var5.appendTag(new NBTTagShort((short) var1.ySpawn));
+		var5.appendTag(new NBTTagShort((short) var1.zSpawn));
 		var4.setTag("Spawn", var5);
-		
+
 		NBTTagCompound var15 = new NBTTagCompound();
 		var15.setString("Author", "Player");
 		var15.setString("Name", "Level");
 		var15.setLong("CreatedOn", var1.createTime);
-		
+
 		NBTTagCompound var6 = new NBTTagCompound();
 		Player player = Minecraft.getMinecraft().player;
-		
+
 		var6.setFloat("rot", player.rot);
 		var6.setFloat("timeOffs", player.timeOffs);
 		var6.setFloat("speed", player.speed);
@@ -199,18 +199,18 @@ public class LevelUtils {
 		var6.setFloat("pushthrough", player.pushthrough);
 		var6.setBoolean("hovered", player.hovered);
 		var6.setInteger("score", player.score);
-		
-		for(int i = 0; i < 9; i++) {
+
+		for (int i = 0; i < 9; i++) {
 			var6.setInteger("inv-" + i, player.inventory.slots[i]);
 			var6.setInteger("inv-" + i + "-size", player.inventory.count[i]);
 		}
-		
+
 		NBTTagCompound var18 = new NBTTagCompound();
 		var18.setTag("About", var15);
 		var18.setTag("Map", var4);
 		var18.setTag("Environment", var3);
 		var18.setTag("Player", var6);
-		
+
 		LevelStorageManager.levelStorage = var18;
 		try {
 			LevelStorageManager.saveLevelData();

@@ -1,9 +1,7 @@
 package com.mojang.minecraft;
 
-public class KeyBinding
-{
-	public KeyBinding(String name, int key)
-	{
+public class KeyBinding {
+	public KeyBinding(String name, int key) {
 		this.name = name;
 		this.key = key;
 	}

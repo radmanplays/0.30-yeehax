@@ -9,9 +9,9 @@ import net.lax1dude.eaglercraft.internal.buffer.FloatBuffer;
 import net.lax1dude.eaglercraft.internal.buffer.IntBuffer;
 
 public class GL11 extends EaglercraftGPU {
-	
+
 	public static final int GL_TEXTURE_2D = RealOpenGLEnums.GL_TEXTURE_2D;
-	
+
 	public static void glEnable(int p1) {
 		switch (p1) {
 		case GL_DEPTH_TEST:
@@ -37,9 +37,9 @@ public class GL11 extends EaglercraftGPU {
 		case GL_FOG:
 			GL11.enableFog();
 			break;
-		//case GL_COLOR_MATERIAL:
-			//GL11.enableColorMaterial();
-			//break;
+		// case GL_COLOR_MATERIAL:
+		// GL11.enableColorMaterial();
+		// break;
 		case GL_TEXTURE_GEN_S:
 		case GL_TEXTURE_GEN_T:
 		case GL_TEXTURE_GEN_R:
@@ -53,7 +53,7 @@ public class GL11 extends EaglercraftGPU {
 			break;
 		}
 	}
-	
+
 	public static void glDisable(int p1) {
 		switch (p1) {
 		case GL_DEPTH_TEST:
@@ -79,9 +79,9 @@ public class GL11 extends EaglercraftGPU {
 		case GL_FOG:
 			GL11.disableFog();
 			break;
-		//case GL_COLOR_MATERIAL:
-			//GL11.disableColorMaterial();
-			//break;
+		// case GL_COLOR_MATERIAL:
+		// GL11.disableColorMaterial();
+		// break;
 		case GL_TEXTURE_GEN_S:
 		case GL_TEXTURE_GEN_T:
 		case GL_TEXTURE_GEN_R:
@@ -95,19 +95,19 @@ public class GL11 extends EaglercraftGPU {
 			break;
 		}
 	}
-	
+
 	public static void glShadeModel(int i) {
 		GL11.shadeModel(i);
 	}
-	
+
 	public static void glClearDepth(float f) {
 		GL11.clearDepth(f);
 	}
-	
+
 	public static void glClearDepth(double d) {
-		GL11.clearDepth((float)d);
+		GL11.clearDepth((float) d);
 	}
-	
+
 	public static void glDepthFunc(int f) {
 		GL11.depthFunc(f);
 	}
@@ -157,7 +157,7 @@ public class GL11 extends EaglercraftGPU {
 	}
 
 	public static void glBindTexture(int i, int var110) {
-		if(i != GL_TEXTURE_2D) {
+		if (i != GL_TEXTURE_2D) {
 			throw new RuntimeException("Only 2D texture types are supported!");
 		}
 		GL11.bindTexture(var110);
@@ -170,7 +170,7 @@ public class GL11 extends EaglercraftGPU {
 	public static void glPushMatrix() {
 		GL11.pushMatrix();
 	}
-	
+
 	public static void glPopMatrix() {
 		GL11.popMatrix();
 	}
@@ -214,7 +214,7 @@ public class GL11 extends EaglercraftGPU {
 //	}
 
 	public static void glCallLists(IntBuffer p1) {
-		while(p1.hasRemaining()) {
+		while (p1.hasRemaining()) {
 			glCallList(p1.get());
 		}
 	}
@@ -224,7 +224,7 @@ public class GL11 extends EaglercraftGPU {
 	}
 
 	public static void glGenTextures(IntBuffer idBuffer) {
-		for(int i = idBuffer.position(); i < idBuffer.limit(); i++) {
+		for (int i = idBuffer.position(); i < idBuffer.limit(); i++) {
 			idBuffer.put(i, GL11.generateTexture());
 		}
 	}

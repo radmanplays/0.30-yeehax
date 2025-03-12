@@ -175,12 +175,12 @@ public class FontRenderer {
 
 	public FontRenderer(GameSettings gamesettings, String s, TextureManager var3) {
 		charWidth = new int[256];
-      ImageData var14;
-      try {
-         var14 = ImageData.loadImageFile(EagRuntime.getResourceStream(s)).swapRB();
-      } catch (Exception var13) {
-         throw new RuntimeException(var13);
-      }
+		ImageData var14;
+		try {
+			var14 = ImageData.loadImageFile(EagRuntime.getResourceStream(s)).swapRB();
+		} catch (Exception var13) {
+			throw new RuntimeException(var13);
+		}
 		int i = var14.width;
 		int ai[] = var14.pixels;
 		for (int k = 0; k < 256; k++) {
@@ -225,7 +225,8 @@ public class FontRenderer {
 			float f1 = 0.0F;
 			float f2 = 0.0F;
 			renderer.pos(0.0D, 0.0F + f, 0.0D).tex((float) l1 / 128F + f1, ((float) k2 + f) / 128F + f2).endVertex();
-			renderer.pos(0.0F + f, 0.0F + f, 0.0D).tex(((float) l1 + f) / 128F + f1, ((float) k2 + f) / 128F + f2).endVertex();
+			renderer.pos(0.0F + f, 0.0F + f, 0.0D).tex(((float) l1 + f) / 128F + f1, ((float) k2 + f) / 128F + f2)
+					.endVertex();
 			renderer.pos(0.0F + f, 0.0D, 0.0D).tex(((float) l1 + f) / 128F + f1, (float) k2 / 128F + f2).endVertex();
 			renderer.pos(0.0D, 0.0D, 0.0D).tex((float) l1 / 128F + f1, (float) k2 / 128F + f2).endVertex();
 			tessellator.draw();
@@ -307,7 +308,7 @@ public class FontRenderer {
 				}
 			}
 		}
-		
+
 		GL11.glPopMatrix();
 	}
 
@@ -329,13 +330,13 @@ public class FontRenderer {
 
 		return i;
 	}
-	
+
 	public static String stripColor(String var0) {
 		char[] var3 = var0.toCharArray();
 		String var1 = "";
 
-		for(int var2 = 0; var2 < var3.length; ++var2) {
-			if(var3[var2] == 38) {
+		for (int var2 = 0; var2 < var3.length; ++var2) {
+			if (var3[var2] == 38) {
 				++var2;
 			} else {
 				var1 = var1 + var3[var2];
@@ -348,6 +349,6 @@ public class FontRenderer {
 	private int charWidth[];
 	public int fontTexture;
 	private int fontDisplayLists;
-	
+
 	public static final char formatChar = '\247';
 }
