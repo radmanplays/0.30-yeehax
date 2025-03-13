@@ -159,10 +159,10 @@ public class GuiConnecting extends GuiScreen {
 				GL11.glEnable(3553);
 			}
 
-			this.minecraft.fontRenderer.render(this.title,
-					(var4 - this.minecraft.fontRenderer.getWidth(this.title)) / 2, var5 / 2 - 4 - 16, 16777215);
-			this.minecraft.fontRenderer.render(this.message,
-					(var4 - this.minecraft.fontRenderer.getWidth(this.message)) / 2, var5 / 2 - 4 + 8, 16777215);
+			this.minecraft.fontRenderer.drawStringWithShadow(this.title,
+					(var4 - this.minecraft.fontRenderer.getStringWidth(this.title)) / 2, var5 / 2 - 4 - 16, 16777215);
+			this.minecraft.fontRenderer.drawStringWithShadow(this.message,
+					(var4 - this.minecraft.fontRenderer.getStringWidth(this.message)) / 2, var5 / 2 - 4 + 8, 16777215);
 			Display.update();
 		}
 	}

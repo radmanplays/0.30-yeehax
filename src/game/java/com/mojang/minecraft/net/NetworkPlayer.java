@@ -1,9 +1,11 @@
 package com.mojang.minecraft.net;
 
 import com.mojang.minecraft.Minecraft;
-import com.mojang.minecraft.gui.FontRenderer;
 import com.mojang.minecraft.mob.HumanoidMob;
 import com.mojang.minecraft.render.TextureManager;
+
+import net.peyton.eagler.minecraft.FontRenderer;
+
 import java.util.LinkedList;
 import java.util.List;
 import org.lwjgl.opengl.GL11;
@@ -24,7 +26,6 @@ public class NetworkPlayer extends HumanoidMob {
 		super(var1.level, (float) var4, (float) var5, (float) var6);
 		this.minecraft = var1;
 		this.displayName = var3;
-		var3 = FontRenderer.stripColor(var3);
 		this.name = var3;
 		this.xp = var4;
 		this.yp = var5;
@@ -63,14 +64,14 @@ public class NetworkPlayer extends HumanoidMob {
 		GL11.glRotatef(-this.minecraft.player.yRot, 0.0F, 1.0F, 0.0F);
 		var2 = 0.05F;
 		GL11.glScalef(0.05F, -var2, var2);
-		GL11.glTranslatef((float) (-var3.getWidth(this.displayName)) / 2.0F, 0.0F, 0.0F);
+		GL11.glTranslatef((float) (-var3.getStringWidth(this.displayName)) / 2.0F, 0.0F, 0.0F);
 		GL11.glNormal3f(1.0F, -1.0F, 1.0F);
 		GL11.glDisable(2896);
 		GL11.glDisable(16384);
 		if (this.name.equalsIgnoreCase("Notch")) {
-			var3.render(this.displayName, 0, 0, 16776960);
+			var3.drawStringWithShadow(this.displayName, 0, 0, 16776960);
 		} else {
-			var3.render(this.displayName, 0, 0, 16777215);
+			var3.drawStringWithShadow(this.displayName, 0, 0, 16777215);
 		}
 
 		GL11.glDepthFunc(516);
@@ -78,12 +79,12 @@ public class NetworkPlayer extends HumanoidMob {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.8F);
 		GL11.glEnable(3042);
 		GL11.glBlendFunc(770, 771);
-		var3.render(this.displayName, 0, 0, 16777215);
+		var3.drawStringWithShadow(this.displayName, 0, 0, 16777215);
 		GL11.glDisable(3042);
 		GL11.glDepthMask(true);
 		GL11.glDepthFunc(515);
 		GL11.glTranslatef(1.0F, 1.0F, -0.05F);
-		var3.render(this.name, 0, 0, 5263440);
+		var3.drawStringWithShadow(this.name, 0, 0, 5263440);
 		GL11.glEnable(16384);
 		GL11.glEnable(2896);
 		GL11.glPopMatrix();

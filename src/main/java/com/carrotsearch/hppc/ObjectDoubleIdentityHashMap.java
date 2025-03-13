@@ -51,8 +51,6 @@ public class ObjectDoubleIdentityHashMap<KType> extends ObjectDoubleHashMap<KTyp
 		return v1 == v2;
 	}
 
-	@SuppressWarnings("unchecked")
-
 	/** Creates a hash map from two index-aligned arrays of key-value pairs. */
 	public static <KType> ObjectDoubleIdentityHashMap<KType> from(KType[] keys, double[] values) {
 		if (keys.length != values.length) {

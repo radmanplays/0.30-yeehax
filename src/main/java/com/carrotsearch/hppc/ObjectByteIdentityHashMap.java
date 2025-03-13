@@ -51,8 +51,6 @@ public class ObjectByteIdentityHashMap<KType> extends ObjectByteHashMap<KType> {
 		return v1 == v2;
 	}
 
-	@SuppressWarnings("unchecked")
-
 	/** Creates a hash map from two index-aligned arrays of key-value pairs. */
 	public static <KType> ObjectByteIdentityHashMap<KType> from(KType[] keys, byte[] values) {
 		if (keys.length != values.length) {

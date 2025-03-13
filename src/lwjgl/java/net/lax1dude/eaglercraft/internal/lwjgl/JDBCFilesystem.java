@@ -51,7 +51,6 @@ public class JDBCFilesystem implements IEaglerFilesystem {
 
 	private final String dbName;
 	private final String jdbcUri;
-	private final String jdbcDriver;
 
 	private final Connection conn;
 	private final PreparedStatement createStatement;
@@ -123,7 +122,6 @@ public class JDBCFilesystem implements IEaglerFilesystem {
 		this.dbName = dbName;
 		this.conn = conn;
 		this.jdbcUri = jdbcUri;
-		this.jdbcDriver = jdbcDriver;
 		try (Statement stmt = conn.createStatement()) {
 			stmt.execute("CREATE TABLE IF NOT EXISTS " + "\"eaglercraft_desktop_runtime_filesystem\" ("
 					+ "\"FileName\" VARCHAR(1024) NOT NULL," + "\"FileSize\" INT NOT NULL,"

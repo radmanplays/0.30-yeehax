@@ -94,8 +94,8 @@ public class EaglercraftGPU extends GlStateManager {
 	static boolean emulatedVAOs = false;
 	static SoftGLVertexState emulatedVAOState = new SoftGLVertexState();
 
-	private static final HashMap<Integer, DisplayList> displayLists = new HashMap();
-	private static final HashMap<Integer, DisplayList> displayListsInitialized = new HashMap();
+	private static final HashMap<Integer, DisplayList> displayLists = new HashMap<Integer, DisplayList>();
+	private static final HashMap<Integer, DisplayList> displayListsInitialized = new HashMap<Integer, DisplayList>();
 
 	public static String gluErrorString(int i) {
 		switch (i) {

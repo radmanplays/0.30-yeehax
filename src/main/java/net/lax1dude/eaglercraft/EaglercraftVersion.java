@@ -1,7 +1,5 @@
 package net.lax1dude.eaglercraft;
 
-import java.math.BigInteger;
-
 public class EaglercraftVersion {
 
 	//////////////////////////////////////////////////////////////////////

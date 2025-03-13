@@ -396,6 +396,8 @@ public final class HFormatter implements Closeable, Flushable {
 
 	public static class MissingFormatArgumentException extends IllegalArgumentException {
 
+		private static final long serialVersionUID = 1L;
+
 		public MissingFormatArgumentException() {
 		}
 
@@ -407,6 +409,8 @@ public final class HFormatter implements Closeable, Flushable {
 
 	public static class DuplicateFormatFlagsException extends IllegalArgumentException {
 
+		private static final long serialVersionUID = 1L;
+
 		public DuplicateFormatFlagsException() {
 		}
 
@@ -417,6 +421,8 @@ public final class HFormatter implements Closeable, Flushable {
 	}
 
 	public static class IllegalFormatWidthException extends IllegalArgumentException {
+
+		private static final long serialVersionUID = 1L;
 
 		public IllegalFormatWidthException() {
 		}
@@ -1154,8 +1160,6 @@ public final class HFormatter implements Closeable, Flushable {
 	 */
 	private static class Transformer {
 
-		private HFormatter formatter;
-
 		private FormatToken formatToken;
 
 		private Object arg;
@@ -1164,22 +1168,12 @@ public final class HFormatter implements Closeable, Flushable {
 
 		private static String lineSeparator;
 
-		private NumberFormat numberFormat;
-
 		private DecimalFormatSymbols decimalFormatSymbols;
 
 		private DateTimeUtil dateTimeUtil;
 
 		Transformer(HFormatter formatter, Locale locale) {
-			this.formatter = formatter;
 			this.locale = (null == locale ? Locale.US : locale);
-		}
-
-		private NumberFormat getNumberFormat() {
-			if (null == numberFormat) {
-				numberFormat = NumberFormat.getInstance(locale);
-			}
-			return numberFormat;
 		}
 
 		private DecimalFormatSymbols getDecimalFormatSymbols() {

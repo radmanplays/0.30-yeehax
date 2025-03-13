@@ -30,15 +30,23 @@ public class TextureManager {
 		if ((var2 = (Integer) this.textures.get(var1)) != null) {
 			return var2.intValue();
 		} else {
-			// try {
-			int var4 = GL11.generateTexture();
-			this.load(ImageData.loadImageFile(EagRuntime.getResourceStream(var1)).swapRB(), var4);
+			try {
+				int var4 = GL11.generateTexture();
+				this.load(ImageData.loadImageFile(EagRuntime.getResourceStream(var1)).swapRB(), var4);
 
-			this.textures.put(var1, Integer.valueOf(var4));
-			return var4;
-			// } catch (Exception var3) {
-			// throw new RuntimeException("!!");
-			// }
+				this.textures.put(var1, Integer.valueOf(var4));
+				return var4;
+			} catch (Exception var3) {
+				throw new RuntimeException("!!");
+			}
+		}
+	}
+	
+	public ImageData loadImageData(String var1) {
+		try {
+			return ImageData.loadImageFile(EagRuntime.getResourceStream(var1));
+		} catch(Exception e) {
+			throw new RuntimeException("!!");
 		}
 	}
 

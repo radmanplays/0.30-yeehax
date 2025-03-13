@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import net.lax1dude.eaglercraft.Keyboard;
 import net.lax1dude.eaglercraft.Mouse;
+import net.peyton.eagler.minecraft.FontRenderer;
+
 import org.lwjgl.opengl.GL11;
 
 public class GuiScreen extends Screen {
@@ -18,12 +20,9 @@ public class GuiScreen extends Screen {
 
 	public void render(int var1, int var2) {
 		for (int var3 = 0, var100 = this.buttons.size(); var3 < var100; ++var3) {
-			Button var10000 = (Button) this.buttons.get(var3);
-			Minecraft var7 = this.minecraft;
-			Button var4 = var10000;
-			if (var10000.visible) {
-				FontRenderer var8 = var7.fontRenderer;
-				GL11.glBindTexture(3553, var7.textureManager.load("/gui/gui.png"));
+			Button var4 = (Button) this.buttons.get(var3);
+			if (var4.visible) {
+				GL11.glBindTexture(3553, this.minecraft.textureManager.load("/gui/gui.png"));
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				byte var9 = 1;
 				boolean var6 = var1 >= var4.x && var2 >= var4.y && var1 < var4.x + var4.width
@@ -38,13 +37,13 @@ public class GuiScreen extends Screen {
 				var4.drawImage(var4.x + var4.width / 2, var4.y, 200 - var4.width / 2, 46 + var9 * 20, var4.width / 2,
 						var4.height);
 				if (!var4.active) {
-					Button.drawCenteredString(var8, var4.text, var4.x + var4.width / 2, var4.y + (var4.height - 8) / 2,
+					Button.drawCenteredString(this.fontRenderer, var4.text, var4.x + var4.width / 2, var4.y + (var4.height - 8) / 2,
 							-6250336);
 				} else if (var6) {
-					Button.drawCenteredString(var8, var4.text, var4.x + var4.width / 2, var4.y + (var4.height - 8) / 2,
+					Button.drawCenteredString(this.fontRenderer, var4.text, var4.x + var4.width / 2, var4.y + (var4.height - 8) / 2,
 							16777120);
 				} else {
-					Button.drawCenteredString(var8, var4.text, var4.x + var4.width / 2, var4.y + (var4.height - 8) / 2,
+					Button.drawCenteredString(this.fontRenderer, var4.text, var4.x + var4.width / 2, var4.y + (var4.height - 8) / 2,
 							14737632);
 				}
 			}

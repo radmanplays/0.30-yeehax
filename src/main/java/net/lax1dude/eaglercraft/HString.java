@@ -19,7 +19,9 @@ package net.lax1dude.eaglercraft;
 public class HString {
 
 	public static String format(String format, Object... args) {
-		return new HFormatter().format(format, args).toString();
+		try (HFormatter formatter = new HFormatter()) {
+			return formatter.format(format, args).toString();
+		}
 	}
 
 }

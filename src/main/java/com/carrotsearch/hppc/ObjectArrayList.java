@@ -379,7 +379,6 @@ public class ObjectArrayList<KType> extends AbstractObjectCollection<KType>
 
 	/** {@inheritDoc} */
 	@Override
-	@SuppressWarnings("unchecked")
 	public Stream<KType> stream() {
 		return (Stream<KType>) Arrays.stream(buffer, 0, size());
 	}

@@ -3,6 +3,7 @@ package com.mojang.minecraft.gui;
 import net.lax1dude.eaglercraft.opengl.Tessellator;
 import net.lax1dude.eaglercraft.opengl.VertexFormat;
 import net.lax1dude.eaglercraft.opengl.WorldRenderer;
+import net.peyton.eagler.minecraft.FontRenderer;
 
 import org.lwjgl.opengl.GL11;
 
@@ -61,11 +62,11 @@ public class Screen {
 	}
 
 	public static void drawCenteredString(FontRenderer var0, String var1, int var2, int var3, int var4) {
-		var0.render(var1, var2 - var0.getWidth(var1) / 2, var3, var4);
+		var0.drawStringWithShadow(var1, var2 - var0.getStringWidth(var1) / 2, var3, var4);
 	}
 
 	public static void drawString(FontRenderer var0, String var1, int var2, int var3, int var4) {
-		var0.render(var1, var2, var3, var4);
+		var0.drawStringWithShadow(var1, var2, var3, var4);
 	}
 
 	public final void drawImage(int var1, int var2, int var3, int var4, int var5, int var6) {

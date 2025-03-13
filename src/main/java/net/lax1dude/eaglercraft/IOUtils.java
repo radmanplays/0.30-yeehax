@@ -47,7 +47,7 @@ public class IOUtils {
 			return Arrays.asList(
 					new String(((EaglerInputStream) parInputStream).getAsArray(), charset).split("(\\r\\n|\\n|\\r)"));
 		} else {
-			List<String> ret = new ArrayList();
+			List<String> ret = new ArrayList<String>();
 			try (InputStream is = parInputStream) {
 				BufferedReader rd = new BufferedReader(new InputStreamReader(is, charset));
 				String s;
@@ -262,11 +262,6 @@ public class IOUtils {
 
 	static char[] getScratchCharArrayWriteOnly() {
 		return fill0(SCRATCH_CHAR_BUFFER_WO);
-	}
-
-	private static byte[] fill0(final byte[] arr) {
-		Arrays.fill(arr, (byte) 0);
-		return arr;
 	}
 
 	private static char[] fill0(final char[] arr) {

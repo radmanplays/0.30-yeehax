@@ -157,6 +157,7 @@ public class KeyboardConstants {
 	public static final int KEY_POWER = 0xDE;
 	public static final int KEY_SLEEP = 0xDF;
 
+	@SuppressWarnings("unused")
 	private static final int GLFW_KEY_SPACE = 32, GLFW_KEY_APOSTROPHE = 39, GLFW_KEY_COMMA = 44, GLFW_KEY_MINUS = 45,
 			GLFW_KEY_PERIOD = 46, GLFW_KEY_SLASH = 47, GLFW_KEY_0 = 48, GLFW_KEY_1 = 49, GLFW_KEY_2 = 50,
 			GLFW_KEY_3 = 51, GLFW_KEY_4 = 52, GLFW_KEY_5 = 53, GLFW_KEY_6 = 54, GLFW_KEY_7 = 55, GLFW_KEY_8 = 56,
@@ -168,6 +169,7 @@ public class KeyboardConstants {
 			GLFW_KEY_LEFT_BRACKET = 91, GLFW_KEY_BACKSLASH = 92, GLFW_KEY_RIGHT_BRACKET = 93,
 			GLFW_KEY_GRAVE_ACCENT = 96, GLFW_KEY_WORLD_1 = 161, GLFW_KEY_WORLD_2 = 162;
 
+	@SuppressWarnings("unused")
 	private static final int GLFW_KEY_ESCAPE = 256, GLFW_KEY_ENTER = 257, GLFW_KEY_TAB = 258, GLFW_KEY_BACKSPACE = 259,
 			GLFW_KEY_INSERT = 260, GLFW_KEY_DELETE = 261, GLFW_KEY_RIGHT = 262, GLFW_KEY_LEFT = 263,
 			GLFW_KEY_DOWN = 264, GLFW_KEY_UP = 265, GLFW_KEY_PAGE_UP = 266, GLFW_KEY_PAGE_DOWN = 267,

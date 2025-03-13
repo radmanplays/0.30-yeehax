@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class LogManager {
 
-	private static final Map<String, Logger> loggerInstances = new HashMap();
+	private static final Map<String, Logger> loggerInstances = new HashMap<String, Logger>();
 
 	public static final Object logLock = new Object();
 	public static Level logLevel = Level.DEBUG;

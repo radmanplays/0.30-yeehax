@@ -632,8 +632,7 @@ public class PlatformRuntime {
 
 	public static void downloadRemoteURIByteArray(String assetPackageURI, final Consumer<byte[]> cb) {
 		logger.info("Downloading: {}");
-		try (InputStream is = (new URL(assetPackageURI)).openStream()) {
-			EaglerOutputStream bao = new EaglerOutputStream();
+		try (InputStream is = (new URL(assetPackageURI)).openStream(); EaglerOutputStream bao = new EaglerOutputStream()) {
 			byte[] copyBuffer = new byte[16384];
 			int i;
 			while ((i = is.read(copyBuffer, 0, copyBuffer.length)) != -1) {

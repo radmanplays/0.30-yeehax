@@ -40,6 +40,7 @@ import net.lax1dude.eaglercraft.opengl.VertexFormat;
 import net.lax1dude.eaglercraft.opengl.WorldRenderer;
 import net.peyton.eagler.level.LevelStorageManager;
 import net.peyton.eagler.level.LevelUtils;
+import net.peyton.eagler.minecraft.FontRenderer;
 import net.lax1dude.eaglercraft.Display;
 import net.lax1dude.eaglercraft.EagRuntime;
 import net.lax1dude.eaglercraft.EagUtils;
@@ -53,6 +54,8 @@ import org.lwjgl.opengl.GL11;
 import java.io.*;
 
 import net.lax1dude.eaglercraft.internal.PlatformOpenGL;
+import net.lax1dude.eaglercraft.minecraft.EaglerFontRenderer;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -200,7 +203,7 @@ public final class Minecraft implements Runnable {
 		this.textureManager = new TextureManager(this.settings);
 		this.textureManager.registerAnimation(new TextureLavaFX());
 		this.textureManager.registerAnimation(new TextureWaterFX());
-		this.fontRenderer = new FontRenderer(this.settings, "/default.png", this.textureManager);
+		this.fontRenderer = EaglerFontRenderer.createSupportedFontRenderer(this.settings, "/default.png", this.textureManager);
 		this.levelRenderer = new LevelRenderer(this, this.textureManager);
 		Item.initModels();
 		Mob.modelCache = new ModelManager();

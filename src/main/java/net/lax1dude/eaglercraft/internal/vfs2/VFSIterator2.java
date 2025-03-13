@@ -19,6 +19,8 @@ package net.lax1dude.eaglercraft.internal.vfs2;
 public interface VFSIterator2 {
 
 	public static class BreakLoop extends RuntimeException {
+		private static final long serialVersionUID = 1L;
+
 		public BreakLoop() {
 			super("iterator loop break request");
 		}

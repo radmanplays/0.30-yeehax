@@ -908,7 +908,6 @@ public class GlStateManager {
 		Matrix4f.mul(matrix, paramMatrix, matrix);
 	}
 
-	private static final Vector3f paramVector = new Vector3f();
 	private static final float toRad = 0.0174532925f;
 
 	public static void rotate(float angle, float x, float y, float z) {

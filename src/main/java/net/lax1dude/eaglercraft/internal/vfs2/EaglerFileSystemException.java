@@ -18,6 +18,8 @@ package net.lax1dude.eaglercraft.internal.vfs2;
  */
 public class EaglerFileSystemException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
+
 	public EaglerFileSystemException() {
 	}
 

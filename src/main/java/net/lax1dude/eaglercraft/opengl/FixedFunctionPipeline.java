@@ -373,7 +373,6 @@ public class FixedFunctionPipeline {
 		return sb.toString();
 	}
 
-	private final int stateBits;
 	private final int stateCoreBits;
 	private final int stateExtBits;
 	private Object[] extensionPointer;
@@ -507,7 +506,6 @@ public class FixedFunctionPipeline {
 	private FixedFunctionPipeline(int bits, int extBits, IProgramGL compiledProg) {
 		shaderProgram = compiledProg;
 
-		stateBits = bits;
 		stateHasAttribTexture = (bits & STATE_HAS_ATTRIB_TEXTURE) != 0;
 		stateHasAttribColor = (bits & STATE_HAS_ATTRIB_COLOR) != 0;
 		stateHasAttribNormal = (bits & STATE_HAS_ATTRIB_NORMAL) != 0;

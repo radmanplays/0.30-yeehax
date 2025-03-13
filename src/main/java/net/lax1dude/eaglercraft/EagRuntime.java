@@ -168,9 +168,7 @@ public class EagRuntime {
 		byte[] bytes = PlatformAssets.getResourceBytes(path);
 		if (bytes != null) {
 			List<String> ret = new ArrayList<>();
-			try {
-				BufferedReader rd = new BufferedReader(
-						new InputStreamReader(new EaglerInputStream(bytes), StandardCharsets.UTF_8));
+			try (BufferedReader rd = new BufferedReader(new InputStreamReader(new EaglerInputStream(bytes), StandardCharsets.UTF_8))) {
 				String s;
 				while ((s = rd.readLine()) != null) {
 					ret.add(s);

@@ -45,6 +45,8 @@ import net.lax1dude.eaglercraft.internal.buffer.FloatBuffer;
  */
 public abstract class Matrix implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor for Matrix.
 	 */

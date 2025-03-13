@@ -17,19 +17,19 @@ package net.lax1dude.eaglercraft.internal;
  * 
  */
 public class GLObjectMap<T> {
-	private Object[] values;
+	private ITextureGL[] values;
 	private int size;
 	private int insertIndex;
 	public int allocatedObjects;
 
 	public GLObjectMap(int initialSize) {
-		this.values = new Object[initialSize];
+		this.values = new ITextureGL[initialSize];
 		this.size = initialSize;
 		this.insertIndex = 0;
 		this.allocatedObjects = 0;
 	}
 
-	public int register(T obj) {
+	public int register(ITextureGL obj) {
 		int start = insertIndex;
 		do {
 			++insertIndex;
@@ -46,24 +46,24 @@ public class GLObjectMap<T> {
 		return insertIndex + 1;
 	}
 
-	public T free(int obj) {
+	public ITextureGL free(int obj) {
 		--obj;
 		if (obj >= size || obj < 0)
 			return null;
-		Object ret = values[obj];
+		ITextureGL ret = values[obj];
 		values[obj] = null;
 		--allocatedObjects;
-		return (T) ret;
+		return ret;
 	}
 
-	public T get(int obj) {
+	public ITextureGL get(int obj) {
 		--obj;
 		if (obj >= size || obj < 0)
 			return null;
-		return (T) values[obj];
+		return values[obj];
 	}
 
-	public void set(int obj, T val) {
+	public void set(int obj, ITextureGL val) {
 		values[obj] = val;
 	}
 
@@ -71,14 +71,14 @@ public class GLObjectMap<T> {
 		int oldSize = size;
 		size += size / 2;
 		Object[] oldValues = values;
-		values = new Object[size];
+		values = new ITextureGL[size];
 		System.arraycopy(oldValues, 0, values, 0, oldSize);
 	}
 
 	public void clear() {
 		if (allocatedObjects == 0)
 			return;
-		values = new Object[size];
+		values = new ITextureGL[size];
 		insertIndex = 0;
 		allocatedObjects = 0;
 	}

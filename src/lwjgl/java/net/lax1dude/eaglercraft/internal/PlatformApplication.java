@@ -221,6 +221,8 @@ public class PlatformApplication {
 
 	private static class FileChooserAlwaysOnTop extends JFileChooser {
 
+		private static final long serialVersionUID = 1L;
+
 		private FileChooserAlwaysOnTop(File file) {
 			super(file);
 		}

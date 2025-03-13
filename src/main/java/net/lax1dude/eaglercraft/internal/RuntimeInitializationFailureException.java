@@ -18,6 +18,8 @@ package net.lax1dude.eaglercraft.internal;
  */
 public class RuntimeInitializationFailureException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
+
 	public RuntimeInitializationFailureException(String message, Throwable cause) {
 		super(message, cause);
 	}

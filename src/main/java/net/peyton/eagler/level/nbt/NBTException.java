@@ -1,6 +1,8 @@
 package net.peyton.eagler.level.nbt;
 
 public class NBTException extends Exception {
+	private static final long serialVersionUID = 1L;
+
 	public NBTException(String p_i47523_1_, String p_i47523_2_, int p_i47523_3_) {
 		super(p_i47523_1_ + " at: " + func_193592_a(p_i47523_2_, p_i47523_3_));
 	}

@@ -11,6 +11,7 @@ import com.mojang.util.MathHelper;
 import net.lax1dude.eaglercraft.opengl.Tessellator;
 import net.lax1dude.eaglercraft.opengl.VertexFormat;
 import net.lax1dude.eaglercraft.opengl.WorldRenderer;
+import net.peyton.eagler.minecraft.FontRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,20 +145,20 @@ public final class HUDScreen extends Screen {
 				GL11.glPopMatrix();
 				if (var8.count[var12] > 1) {
 					var23 = "" + var8.count[var12];
-					var5.render(var23, var26 + 19 - var5.getWidth(var23), var14 + 6, 16777215);
+					var5.drawStringWithShadow(var23, var26 + 19 - var5.getStringWidth(var23), var14 + 6, 16777215);
 				}
 			}
 		}
 
-		var5.render("0.30", 2, 2, 16777215);
+		var5.drawStringWithShadow("0.30", 2, 2, 16777215);
 		if (this.mc.settings.showFrameRate) {
-			var5.render(this.mc.debug, 2, 12, 16777215);
+			var5.drawStringWithShadow(this.mc.debug, 2, 12, 16777215);
 		}
 
 		if (this.mc.gamemode instanceof SurvivalGameMode) {
 			String var24 = "Score: " + this.mc.player.getScore();
-			var5.render(var24, this.width - var5.getWidth(var24) - 2, 2, 16777215);
-			var5.render("Arrows: " + this.mc.player.arrows, this.width / 2 + 8, this.height - 33, 16777215);
+			var5.drawStringWithShadow(var24, this.width - var5.getStringWidth(var24) - 2, 2, 16777215);
+			var5.drawStringWithShadow("Arrows: " + this.mc.player.arrows, this.width / 2 + 8, this.height - 33, 16777215);
 		}
 
 		byte var25 = 10;
@@ -169,7 +170,7 @@ public final class HUDScreen extends Screen {
 
 		for (int var14_1 = 0, var15_1 = this.chat.size(); var14_1 < var15_1 && var14_1 < var25; ++var14_1) {
 			if (((ChatLine) this.chat.get(var14_1)).time < 200 || var27) {
-				var5.render(((ChatLine) this.chat.get(var14_1)).message, 2, this.height - 8 - var14_1 * 9 - 20,
+				var5.drawStringWithShadow(((ChatLine) this.chat.get(var14_1)).message, 2, this.height - 8 - var14_1 * 9 - 20,
 						16777215);
 			}
 		}
@@ -196,16 +197,16 @@ public final class HUDScreen extends Screen {
 			GL11.glDisable(3042);
 			GL11.glEnable(3553);
 			var23 = "Connected players:";
-			var5.render(var23, var14 - var5.getWidth(var23) / 2, var15 - 64 - 12, 16777215);
+			var5.drawStringWithShadow(var23, var14 - var5.getStringWidth(var23) / 2, var15 - 64 - 12, 16777215);
 
 			for (int var13 = 0, var16 = var22.size(); var13 < var16; ++var13) {
 				int var28 = var14 + var13 % 2 * 120 - 120;
 				int var17 = var15 - 64 + (var13 / 2 << 3);
 				if (var2 && var3 >= var28 && var4 >= var17 && var3 < var28 + 120 && var4 < var17 + 8) {
 					this.hoveredPlayer = (String) var22.get(var13);
-					var5.render((String) var22.get(var13), var28 + 2, var17, 16777215);
+					var5.drawStringWithShadow((String) var22.get(var13), var28 + 2, var17, 16777215);
 				} else {
-					var5.render((String) var22.get(var13), var28, var17, 15658734);
+					var5.drawStringWithShadow((String) var22.get(var13), var28, var17, 15658734);
 				}
 			}
 		}
