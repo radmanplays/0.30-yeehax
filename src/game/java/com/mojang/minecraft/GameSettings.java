@@ -50,6 +50,7 @@ public final class GameSettings {
 	public KeyBinding loadLocationKey = new KeyBinding("Load location", 19);
 	public KeyBinding gameModeKey = new KeyBinding("Switch gamemode", KeyboardConstants.KEY_M);
 	public KeyBinding flyKey = new KeyBinding("Fly", KeyboardConstants.KEY_P);
+	public KeyBinding flyDownKey = new KeyBinding("Fly Down", KeyboardConstants.KEY_LSHIFT);
 	public KeyBinding[] bindings;
 	private Minecraft minecraft;
 	private VFile2 settingsFile;

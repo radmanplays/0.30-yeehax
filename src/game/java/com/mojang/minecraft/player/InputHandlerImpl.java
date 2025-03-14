@@ -9,6 +9,7 @@ import yeehax.YeeHax;
 public class InputHandlerImpl extends InputHandler {
 
 	private boolean flyEnabled = false; 
+	private boolean sneaking = false; 
 	protected Minecraft mc = Minecraft.getMinecraft();
 	
 	public InputHandlerImpl(GameSettings gameSettings) {
@@ -37,14 +38,17 @@ public class InputHandlerImpl extends InputHandler {
 
 	    if (flyEnabled) {
 	        if (keyStates[4]) { 
-	            mc.player.yd = 0.2F; 
-		        mc.player.speed = 10.0F;
-	        } else if (keyStates[5]) {
-	            mc.player.yd = -0.2F; 
-		        mc.player.speed = 10.0F;
+	            mc.player.yd = 0.4F; 
+	        } else if (sneaking) {
+	            mc.player.yd = -0.4F; 
 
 	        } else {
 	            mc.player.yd = 0.0F; 
+	        }
+
+	        if (xxa != 0 || jumping != 0) {
+	            mc.player.xd *= 1.1;
+	            mc.player.zd *= 1.1;
 	        }
 	    }
 
@@ -94,11 +98,14 @@ public class InputHandlerImpl extends InputHandler {
 
 		if (key == settings.flyKey.key) { 
 	        if (state) {
-	            flyEnabled = !flyEnabled;
 	            YeeHax.modManager.fly.toggle();
+	            flyEnabled = YeeHax.modManager.fly.isEnabled();
 	            System.out.println("Fly mod " + (flyEnabled ? "enabled" : "disabled"));
 	        }
 	    }
+		if(key == settings.flyDownKey.key) {
+			sneaking = !sneaking;
+		}
 	}
 	private boolean[] keyStates = new boolean[10];
 	private GameSettings settings;
