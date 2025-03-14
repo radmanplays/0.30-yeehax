@@ -1,7 +1,15 @@
 package com.mojang.minecraft.gui;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import com.mojang.minecraft.SessionData;
+
+import net.lax1dude.eaglercraft.EagRuntime;
 import net.lax1dude.eaglercraft.Keyboard;
+import net.peyton.eagler.level.nbt.CompressedStreamTools;
+import net.peyton.eagler.level.nbt.NBTTagCompound;
 
 public class MultiplayerMenu extends GuiScreen {
 
@@ -11,6 +19,7 @@ public class MultiplayerMenu extends GuiScreen {
 	String server = "";
 	String username = "";
 	Button connect;
+	Button load;
 
 	public final void onOpen() {
 		Keyboard.enableRepeatEvents(true);
@@ -18,6 +27,9 @@ public class MultiplayerMenu extends GuiScreen {
 		this.buttons.add(connect = new Button(0, this.width / 2 - 100, this.height / 4 + 96 + 12, "Connect"));
 		this.buttons.add(new Button(1, this.width / 2 - 100, this.height / 4 + 120 + 12, "Cancel"));
 		connect.active = false;
+		this.buttons.add(new Button(2, this.width - 70, 0, 70, 0, "Save server"));
+		this.buttons.add(load = new Button(3, this.width - 70, 21, 70, 20, "Load server"));
+		load.active = EagRuntime.getStorage("multiplayer_config") != null;
 	}
 
 	public final void tick() {
@@ -33,8 +45,43 @@ public class MultiplayerMenu extends GuiScreen {
 		} else if (var1.id == 1) {
 			Keyboard.enableRepeatEvents(false);
 			minecraft.setCurrentScreen(new PauseScreen());
-		}
+		}else if (var1.id == 2) { 
+            saveServerData();
+        } else if (var1.id == 3) { 
+            loadServerData();
+        }
 	}
+	
+    private void saveServerData() {
+        NBTTagCompound mainNBT = new NBTTagCompound();
+        mainNBT.setString("server", server);
+        mainNBT.setString("username", username);
+
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        try {
+            CompressedStreamTools.writeCompressed(mainNBT, bao);
+            EagRuntime.setStorage("multiplayer_config", bao.toByteArray());
+            load.active = true; // Enable the load button after saving
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadServerData() {
+        byte[] data = EagRuntime.getStorage("multiplayer_config");
+        if (data == null) return;
+
+        try {
+            NBTTagCompound mainNBT = CompressedStreamTools.readCompressed(new ByteArrayInputStream(data));
+            if (mainNBT.hasKey("server")) server = mainNBT.getString("server");
+            if (mainNBT.hasKey("username")) username = mainNBT.getString("username");
+
+            // Enable connect button if fields are populated
+            connect.active = server.length() > 0 && username.length() > 0;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 	protected void onMouseClick(int var1, int var2, int var3) {
 		if (var3 == 0) {
