@@ -17,7 +17,7 @@ import net.lax1dude.eaglercraft.opengl.ImageData;
 
 public final class GameSettings {
 	public GameSettings(Minecraft minecraft) {
-		bindings = new KeyBinding[] { forwardKey, flyKey, flyDownKey, leftKey, backKey, rightKey, jumpKey, buildKey, chatKey, toggleFogKey,
+		bindings = new KeyBinding[] { forwardKey, flyKey, leftKey, backKey, rightKey, jumpKey, buildKey, chatKey, toggleFogKey,
 				saveLocationKey, loadLocationKey, gameModeKey };
 
 		settingCount = 8;
@@ -52,6 +52,7 @@ public final class GameSettings {
 	public KeyBinding flyKey = new KeyBinding("YeeHax Fly", KeyboardConstants.KEY_P);
 	public KeyBinding flyDownKey = new KeyBinding("Fly Down", KeyboardConstants.KEY_LSHIFT);
 	public KeyBinding speed = new KeyBinding("YeeHax Speed", KeyboardConstants.KEY_L);
+	public KeyBinding noclip = new KeyBinding("YeeHax NoClip", KeyboardConstants.KEY_N);
 	public KeyBinding[] bindings;
 	private Minecraft minecraft;
 	private VFile2 settingsFile;

@@ -58,6 +58,10 @@ public class InputHandlerImpl extends InputHandler {
 	            if (Math.abs(mc.player.zd) < 0.01) mc.player.zd = 0.0F;
 	        }
 	    }
+	    
+	    if(!flyEnabled && YeeHax.modManager.noclip.isEnabled()) {
+	    	mc.player.yd = 0.0F;
+	    }
 
 	    yya = keyStates[4];
 	}
@@ -116,6 +120,11 @@ public class InputHandlerImpl extends InputHandler {
 		if(key == settings.speed.key) {
 			if (state) {
 				YeeHax.modManager.speed.toggle();
+			}
+		}
+		if(key == settings.noclip.key) {
+			if (state) {
+				YeeHax.modManager.noclip.toggle();
 			}
 		}
 	}

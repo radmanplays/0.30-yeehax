@@ -7,6 +7,8 @@ import com.mojang.minecraft.model.HumanoidModel;
 import com.mojang.minecraft.render.TextureManager;
 import com.mojang.util.MathHelper;
 
+import yeehax.YeeHax;
+
 import java.util.List;
 import org.lwjgl.opengl.GL11;
 
@@ -80,6 +82,22 @@ public class Player extends Mob {
 		}
 
 	}
+	
+	@Override
+	public void move(float xd, float yd, float zd) {
+	    if (YeeHax.modManager.noclip.isEnabled()) {
+	    	this.yd = 0;
+	        this.x += xd;
+	        this.y += yd;
+	        this.z += zd;
+	        this.xo = this.x;
+	        this.yo = this.y;
+	        this.zo = this.z;
+	    } else {
+	        super.move(xd, yd, zd);
+	    }
+	}
+
 
 	public void render(TextureManager var1, float var2) {
 	}
