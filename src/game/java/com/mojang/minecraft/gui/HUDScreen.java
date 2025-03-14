@@ -152,12 +152,13 @@ public final class HUDScreen extends Screen {
 			}
 		}
 
-      var5.drawStringWithShadow(YeeHax.name + " " + YeeHax.version, 2, 2, 16777215);
+	var5.drawStringWithShadow("Minecraft 0.30", 2, 2, 16777215);
+      var5.drawStringWithShadow(YeeHax.name + " " + YeeHax.version, 2, 12, 16777215);
 		if (this.mc.settings.showFrameRate) {
-			var5.drawStringWithShadow(this.mc.debug, 2, 12, 16777215);
+			var5.drawStringWithShadow(this.mc.debug, 2, 22, 16777215);
 		}
 		
-	  int yOffset = 12;
+	  int yOffset = 22;
 	  if(this.mc.settings.showFrameRate) {
 		  yOffset += 10;
 	  }
