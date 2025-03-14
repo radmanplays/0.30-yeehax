@@ -6,8 +6,11 @@ import com.mojang.minecraft.level.Level;
 import com.mojang.minecraft.mob.ai.AI;
 import com.mojang.minecraft.mob.ai.BasicAI;
 import com.mojang.minecraft.model.ModelManager;
+import com.mojang.minecraft.player.Player;
 import com.mojang.minecraft.render.TextureManager;
 import com.mojang.util.MathHelper;
+
+import yeehax.YeeHax;
 
 import org.lwjgl.opengl.GL11;
 
@@ -434,11 +437,13 @@ public class Mob extends Entity {
 			this.yd *= 0.98F;
 			this.zd *= 0.91F;
 			this.yd = (float) ((double) this.yd - 0.08D);
-			if (this.onGround) {
-				var3 = 0.6F;
-				this.xd *= var3;
-				this.zd *= var3;
-			}
+	        if (!(this instanceof Player && YeeHax.modManager.speed.isEnabled())) {
+				if (this.onGround) {
+					var3 = 0.6F;
+					this.xd *= var3;
+					this.zd *= var3;
+				}
+	        }
 
 		}
 	}

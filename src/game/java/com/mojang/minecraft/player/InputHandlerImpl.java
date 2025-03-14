@@ -49,6 +49,13 @@ public class InputHandlerImpl extends InputHandler {
 	        if (xxa != 0 || jumping != 0) {
 	            mc.player.xd *= 1.1;
 	            mc.player.zd *= 1.1;
+	        }else {
+	            mc.player.xd *= 0.8;
+	            mc.player.zd *= 0.8;
+
+	            // Prevent tiny movements from lasting forever
+	            if (Math.abs(mc.player.xd) < 0.01) mc.player.xd = 0.0F;
+	            if (Math.abs(mc.player.zd) < 0.01) mc.player.zd = 0.0F;
 	        }
 	    }
 
@@ -105,6 +112,11 @@ public class InputHandlerImpl extends InputHandler {
 	    }
 		if(key == settings.flyDownKey.key) {
 			sneaking = !sneaking;
+		}
+		if(key == settings.speed.key) {
+			if (state) {
+				YeeHax.modManager.speed.toggle();
+			}
 		}
 	}
 	private boolean[] keyStates = new boolean[10];
