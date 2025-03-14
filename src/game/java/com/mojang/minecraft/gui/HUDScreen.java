@@ -152,7 +152,7 @@ public final class HUDScreen extends Screen {
 			}
 		}
 
-      var5.drawStringWithShadow("YeeHax 0.30", 2, 2, 16777215);
+      var5.drawStringWithShadow(YeeHax.name + " " + YeeHax.version, 2, 2, 16777215);
 		if (this.mc.settings.showFrameRate) {
 			var5.drawStringWithShadow(this.mc.debug, 2, 12, 16777215);
 		}

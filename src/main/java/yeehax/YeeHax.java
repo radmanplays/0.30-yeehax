@@ -13,6 +13,10 @@ public class YeeHax {
 	
 	public static Logger logger;
 	public static ModManager modManager;
+	
+	public static String name = "YeeHax";
+	public static Float version = 1.0F;
+	
 	public static void startup() {
 		logger = LogManager.getLogger("YeeHax");
 		logger.info("Starting YeeHax!");
