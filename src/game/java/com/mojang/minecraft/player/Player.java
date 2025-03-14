@@ -86,7 +86,6 @@ public class Player extends Mob {
 	@Override
 	public void move(float xd, float yd, float zd) {
 	    if (YeeHax.modManager.noclip.isEnabled()) {
-	    	this.yd = 0;
 	        this.x += xd;
 	        this.y += yd;
 	        this.z += zd;
