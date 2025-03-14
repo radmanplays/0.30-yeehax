@@ -90,9 +90,6 @@ public class Player extends Mob {
 	        this.x += xd;
 	        this.y += yd;
 	        this.z += zd;
-	        this.xo = this.x;
-	        this.yo = this.y;
-	        this.zo = this.z;
 	    } else {
 	        super.move(xd, yd, zd);
 	    }
