@@ -1,7 +1,9 @@
 package net.lax1dude.eaglercraft.internal.teavm;
 
 import net.lax1dude.eaglercraft.EaglercraftVersion;
-import org.json.JSONObject;
+
+import java.util.List;
+
 import org.teavm.jso.JSObject;
 
 import net.lax1dude.eaglercraft.internal.IClientConfigAdapter;
@@ -32,30 +34,12 @@ public class TeaVMClientConfigAdapter implements IClientConfigAdapter {
 	private String serverToJoin = null;   
 	private String worldsDB = "worlds";
 	private String resourcePacksDB = "resourcePacks";
-	private JSONObject integratedServerOpts;
 	private boolean checkGLErrors = false;
-	private boolean checkShaderGLErrors = false;
 	private boolean demoMode = EaglercraftVersion.forceDemoMode;
-	private boolean isEnableDownloadOfflineButton = true;
-	private String downloadOfflineButtonLink = null;
-	private boolean useSpecialCursors = false;
-	private boolean allowVoiceClient = true;
-	private boolean allowFNAWSkins = true;
 	private String localStorageNamespace = "_eaglercraftX";
 	private final TeaVMClientConfigAdapterHooks hooks = new TeaVMClientConfigAdapterHooks();
-	private boolean enableMinceraft = true;
-	private boolean enableServerCookies = true;
-	private boolean allowServerRedirects = true;
-	private boolean crashOnUncaughtExceptions = false;
-	private boolean openDebugConsoleOnLaunch = false;
 	private boolean fixDebugConsoleUnloadListener = false;
-	private boolean forceWebViewSupport = false;
-	private boolean enableWebViewCSP = true;
 	private boolean autoFixLegacyStyleAttr = false;
-	private boolean showBootMenuOnLaunch = false;
-	private boolean bootMenuBlocksUnsignedClients = false;
-	private boolean allowBootMenu = true;
-	private boolean forceProfanityFilter = false;
 	private boolean forceWebGL1 = false;
 	private boolean forceWebGL2 = false;
 	private boolean allowExperimentalWebGL1 = true;
@@ -72,7 +56,6 @@ public class TeaVMClientConfigAdapter implements IClientConfigAdapter {
 	private boolean enableEPKVersionCheck = true;
 
 	public void loadNative(JSObject jsObject) {
-		integratedServerOpts = new JSONObject();
 		JSEaglercraftXOptsRoot eaglercraftXOpts = (JSEaglercraftXOptsRoot)jsObject;
 		
 		defaultLocale = eaglercraftXOpts.getLang("en_US");
@@ -80,27 +63,10 @@ public class TeaVMClientConfigAdapter implements IClientConfigAdapter {
 		worldsDB = eaglercraftXOpts.getWorldsDB("worlds");
 		resourcePacksDB = eaglercraftXOpts.getResourcePacksDB("resourcePacks");
 		checkGLErrors = eaglercraftXOpts.getCheckGLErrors(false);
-		checkShaderGLErrors = eaglercraftXOpts.getCheckShaderGLErrors(false);
 		demoMode = EaglercraftVersion.forceDemoMode || eaglercraftXOpts.getDemoMode(false);
-		isEnableDownloadOfflineButton = eaglercraftXOpts.getEnableDownloadOfflineButton(true);
-		downloadOfflineButtonLink = eaglercraftXOpts.getDownloadOfflineButtonLink(null);
-		useSpecialCursors = eaglercraftXOpts.getHtml5CursorSupport(false);
-		allowVoiceClient = eaglercraftXOpts.getAllowVoiceClient(true);
-		allowFNAWSkins = !demoMode && eaglercraftXOpts.getAllowFNAWSkins(true);
 		localStorageNamespace = eaglercraftXOpts.getLocalStorageNamespace(EaglercraftVersion.localStorageNamespace);
-		enableMinceraft = eaglercraftXOpts.getEnableMinceraft(true);
-		enableServerCookies = !demoMode && eaglercraftXOpts.getEnableServerCookies(true);
-		allowServerRedirects = eaglercraftXOpts.getAllowServerRedirects(true);
-		crashOnUncaughtExceptions = eaglercraftXOpts.getCrashOnUncaughtExceptions(false);
-		openDebugConsoleOnLaunch = eaglercraftXOpts.getOpenDebugConsoleOnLaunch(false);
 		fixDebugConsoleUnloadListener = eaglercraftXOpts.getFixDebugConsoleUnloadListener(false);
-		forceWebViewSupport = eaglercraftXOpts.getForceWebViewSupport(false);
-		enableWebViewCSP = eaglercraftXOpts.getEnableWebViewCSP(true);
 		autoFixLegacyStyleAttr = eaglercraftXOpts.getAutoFixLegacyStyleAttr(true);
-		showBootMenuOnLaunch = eaglercraftXOpts.getShowBootMenuOnLaunch(false);
-		bootMenuBlocksUnsignedClients = eaglercraftXOpts.getBootMenuBlocksUnsignedClients(false);
-		allowBootMenu = eaglercraftXOpts.getAllowBootMenu(!demoMode);
-		forceProfanityFilter = eaglercraftXOpts.getForceProfanityFilter(false);
 		forceWebGL1 = eaglercraftXOpts.getForceWebGL1(false);
 		forceWebGL2 = eaglercraftXOpts.getForceWebGL2(false);
 		allowExperimentalWebGL1 = eaglercraftXOpts.getAllowExperimentalWebGL1(true);
@@ -119,65 +85,6 @@ public class TeaVMClientConfigAdapter implements IClientConfigAdapter {
 		if(hooksObj != null) {
 			hooks.loadHooks(hooksObj);
 		}
-		
-		integratedServerOpts.put("worldsDB", worldsDB);
-		integratedServerOpts.put("demoMode", demoMode);
-		integratedServerOpts.put("lang", defaultLocale);
-		integratedServerOpts.put("allowVoiceClient", allowVoiceClient);
-		integratedServerOpts.put("allowFNAWSkins", allowFNAWSkins);
-		integratedServerOpts.put("crashOnUncaughtExceptions", crashOnUncaughtExceptions);
-		integratedServerOpts.put("deobfStackTraces", deobfStackTraces);
-		integratedServerOpts.put("disableBlobURLs", disableBlobURLs);
-		integratedServerOpts.put("eaglerNoDelay", eaglerNoDelay);
-		integratedServerOpts.put("ramdiskMode", ramdiskMode);
-		integratedServerOpts.put("singleThreadMode", singleThreadMode);
-	}
-
-	public void loadJSON(JSONObject eaglercraftOpts) {
-		integratedServerOpts = eaglercraftOpts;
-		defaultLocale = eaglercraftOpts.optString("lang", "en_US");
-		serverToJoin = eaglercraftOpts.optString("joinServer", null);
-		worldsDB = eaglercraftOpts.optString("worldsDB", "worlds");
-		resourcePacksDB = eaglercraftOpts.optString("resourcePacksDB", "resourcePacks");
-		checkGLErrors = eaglercraftOpts.optBoolean("checkGLErrors", false);
-		checkShaderGLErrors = eaglercraftOpts.optBoolean("checkShaderGLErrors", false);
-		if(EaglercraftVersion.forceDemoMode) {
-			eaglercraftOpts.put("demoMode", true);
-		}
-		demoMode = EaglercraftVersion.forceDemoMode || eaglercraftOpts.optBoolean("demoMode", false);
-		isEnableDownloadOfflineButton = eaglercraftOpts.optBoolean("enableDownloadOfflineButton", true);
-		downloadOfflineButtonLink = eaglercraftOpts.optString("downloadOfflineButtonLink", null);
-		useSpecialCursors = eaglercraftOpts.optBoolean("html5CursorSupport", false);
-		allowVoiceClient = eaglercraftOpts.optBoolean("allowVoiceClient", true);
-		allowFNAWSkins = eaglercraftOpts.optBoolean("allowFNAWSkins", true);
-		localStorageNamespace = eaglercraftOpts.optString("localStorageNamespace", EaglercraftVersion.localStorageNamespace);
-		enableMinceraft = eaglercraftOpts.optBoolean("enableMinceraft", true);
-		enableServerCookies = !demoMode && eaglercraftOpts.optBoolean("enableServerCookies", true);
-		allowServerRedirects = eaglercraftOpts.optBoolean("allowServerRedirects", true);
-		crashOnUncaughtExceptions = eaglercraftOpts.optBoolean("crashOnUncaughtExceptions", false);
-		openDebugConsoleOnLaunch = eaglercraftOpts.optBoolean("openDebugConsoleOnLaunch", false);
-		fixDebugConsoleUnloadListener = eaglercraftOpts.optBoolean("fixDebugConsoleUnloadListener", false);
-		forceWebViewSupport = eaglercraftOpts.optBoolean("forceWebViewSupport", false);
-		enableWebViewCSP = eaglercraftOpts.optBoolean("enableWebViewCSP", true);
-		autoFixLegacyStyleAttr = eaglercraftOpts.optBoolean("autoFixLegacyStyleAttr", true);
-		showBootMenuOnLaunch = eaglercraftOpts.optBoolean("showBootMenuOnLaunch", false);
-		bootMenuBlocksUnsignedClients = eaglercraftOpts.optBoolean("bootMenuBlocksUnsignedClients", false);
-		allowBootMenu = eaglercraftOpts.optBoolean("allowBootMenu", !demoMode);
-		forceProfanityFilter = eaglercraftOpts.optBoolean("forceProfanityFilter", false);
-		forceWebGL1 = eaglercraftOpts.optBoolean("forceWebGL1", false);
-		forceWebGL2 = eaglercraftOpts.optBoolean("forceWebGL2", false);
-		allowExperimentalWebGL1 = eaglercraftOpts.optBoolean("allowExperimentalWebGL1", true);
-		useWebGLExt = eaglercraftOpts.optBoolean("useWebGLExt", true);
-		useDelayOnSwap = eaglercraftOpts.optBoolean("useDelayOnSwap", false);
-		useJOrbisAudioDecoder = eaglercraftOpts.optBoolean("useJOrbisAudioDecoder", false);
-		useXHRFetch = eaglercraftOpts.optBoolean("useXHRFetch", false);
-		useVisualViewport = eaglercraftOpts.optBoolean("useVisualViewport", true);
-		deobfStackTraces = eaglercraftOpts.optBoolean("deobfStackTraces", true);
-		disableBlobURLs = eaglercraftOpts.optBoolean("disableBlobURLs", false);
-		eaglerNoDelay = eaglercraftOpts.optBoolean("eaglerNoDelay", false);
-		ramdiskMode = eaglercraftOpts.optBoolean("ramdiskMode", false);
-		singleThreadMode = eaglercraftOpts.optBoolean("singleThreadMode", false);
-		enableEPKVersionCheck = eaglercraftOpts.optBoolean("enableEPKVersionCheck", true);
 	}
 
 	public String getDefaultLocale() {
@@ -280,58 +187,133 @@ public class TeaVMClientConfigAdapter implements IClientConfigAdapter {
 		return hooks;
 	}
 
-	public JSONObject toJSONObject() {
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("lang", defaultLocale);
-		jsonObject.put("joinServer", serverToJoin);
-		jsonObject.put("worldsDB", worldsDB);
-		jsonObject.put("resourcePacksDB", resourcePacksDB);
-		jsonObject.put("checkGLErrors", checkGLErrors);
-		jsonObject.put("checkShaderGLErrors", checkShaderGLErrors);
-		jsonObject.put("demoMode", demoMode);
-		jsonObject.put("enableDownloadOfflineButton", isEnableDownloadOfflineButton);
-		jsonObject.put("downloadOfflineButtonLink", downloadOfflineButtonLink);
-		jsonObject.put("html5CursorSupport", useSpecialCursors);
-		jsonObject.put("allowVoiceClient", allowVoiceClient);
-		jsonObject.put("allowFNAWSkins", allowFNAWSkins);
-		jsonObject.put("localStorageNamespace", localStorageNamespace);
-		jsonObject.put("enableMinceraft", enableMinceraft);
-		jsonObject.put("enableServerCookies", enableServerCookies);
-		jsonObject.put("allowServerRedirects", allowServerRedirects);
-		jsonObject.put("crashOnUncaughtExceptions", crashOnUncaughtExceptions);
-		jsonObject.put("openDebugConsoleOnLaunch", openDebugConsoleOnLaunch);
-		jsonObject.put("fixDebugConsoleUnloadListener", fixDebugConsoleUnloadListener);
-		jsonObject.put("forceWebViewSupport", forceWebViewSupport);
-		jsonObject.put("enableWebViewCSP", enableWebViewCSP);
-		jsonObject.put("autoFixLegacyStyleAttr", autoFixLegacyStyleAttr);
-		jsonObject.put("showBootMenuOnLaunch", showBootMenuOnLaunch);
-		jsonObject.put("bootMenuBlocksUnsignedClients", bootMenuBlocksUnsignedClients);
-		jsonObject.put("allowBootMenu", allowBootMenu);
-		jsonObject.put("forceProfanityFilter", forceProfanityFilter);
-		jsonObject.put("forceWebGL1", forceWebGL1);
-		jsonObject.put("forceWebGL2", forceWebGL2);
-		jsonObject.put("allowExperimentalWebGL1", allowExperimentalWebGL1);
-		jsonObject.put("useWebGLExt", useWebGLExt);
-		jsonObject.put("useDelayOnSwap", useDelayOnSwap);
-		jsonObject.put("useJOrbisAudioDecoder", useJOrbisAudioDecoder);
-		jsonObject.put("useXHRFetch", useXHRFetch);
-		jsonObject.put("useVisualViewport", useVisualViewport);
-		jsonObject.put("deobfStackTraces", deobfStackTraces);
-		jsonObject.put("disableBlobURLs", disableBlobURLs);
-		jsonObject.put("eaglerNoDelay", eaglerNoDelay);
-		jsonObject.put("ramdiskMode", ramdiskMode);
-		jsonObject.put("singleThreadMode", singleThreadMode);
-		jsonObject.put("enableEPKVersionCheck", enableEPKVersionCheck);
-		return jsonObject;
+	@Override
+	public List<DefaultServer> getDefaultServerList() {
+		return null;
 	}
 
 	@Override
-	public String toString() {
-		return toJSONObject().toString();
+	public String getResourcePacksDB() {
+		return this.resourcePacksDB;
 	}
 
-	public String toStringFormatted() {
-		return toJSONObject().toString(4);
+	@Override
+	public boolean isCheckShaderGLErrors() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
+	@Override
+	public boolean isDemo() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean allowUpdateSvc() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean allowUpdateDL() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEnableDownloadOfflineButton() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getDownloadOfflineButtonLink() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean useSpecialCursors() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isLogInvalidCerts() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isCheckRelaysForUpdates() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEnableSignatureBadge() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAllowVoiceClient() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAllowFNAWSkins() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEnableMinceraft() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEnableServerCookies() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAllowServerRedirects() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isOpenDebugConsoleOnLaunch() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isForceWebViewSupport() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEnableWebViewCSP() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAllowBootMenu() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isForceProfanityFilter() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

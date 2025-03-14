@@ -29,7 +29,7 @@ class DisplayList {
 	int count = 0;
 	boolean bindQuad16 = false;
 	boolean bindQuad32 = false;
-	
+
 	DisplayList(int id) {
 		this.id = id;
 	}

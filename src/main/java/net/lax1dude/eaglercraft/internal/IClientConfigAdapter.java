@@ -2,8 +2,6 @@ package net.lax1dude.eaglercraft.internal;
 
 import java.util.List;
 
-import org.json.JSONObject;
-
 /**
  * Copyright (c) 2022-2024 lax1dude. All Rights Reserved.
  * 
@@ -45,8 +43,6 @@ public interface IClientConfigAdapter {
 	String getWorldsDB();
 
 	String getResourcePacksDB();
-
-	JSONObject getIntegratedServerOpts();
 
 	boolean isCheckGLErrors();
 

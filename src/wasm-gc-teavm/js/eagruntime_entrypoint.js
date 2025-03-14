@@ -60,12 +60,6 @@ async function entryPoint() {
 				importObj[platfNetworkingName] = eagruntimeImpl.platformNetworking;
 				importObj[platfOpenGLName] = eagruntimeImpl.platformOpenGL;
 				importObj[platfRuntimeName] = eagruntimeImpl.platformRuntime;
-				importObj[platfScreenRecordName] = eagruntimeImpl.platformScreenRecord;
-				importObj[platfVoiceClientName] = eagruntimeImpl.platformVoiceClient;
-				importObj[platfWebRTCName] = eagruntimeImpl.platformWebRTC;
-				importObj[platfWebViewName] = eagruntimeImpl.platformWebView;
-				importObj[clientPlatfSPName] = eagruntimeImpl.clientPlatformSingleplayer;
-				importObj[serverPlatfSPName] = eagruntimeImpl.serverPlatformSingleplayer;
 				importObj["teavm"]["notifyHeapResized"] = function() {
 					handleMemoryResized(teavm.exports.memory);
 				};

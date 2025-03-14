@@ -51,8 +51,6 @@ public class ObjectLongIdentityHashMap<KType> extends ObjectLongHashMap<KType> {
 		return v1 == v2;
 	}
 
-	@SuppressWarnings("unchecked")
-
 	/** Creates a hash map from two index-aligned arrays of key-value pairs. */
 	public static <KType> ObjectLongIdentityHashMap<KType> from(KType[] keys, long[] values) {
 		if (keys.length != values.length) {

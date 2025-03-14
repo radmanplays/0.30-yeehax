@@ -21,36 +21,37 @@ import net.lax1dude.eaglercraft.vector.Vector3f;
 /**
  * Copyright (c) 2022-2023 lax1dude, ayunami2000. All Rights Reserved.
  * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- * IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  * 
  */
 public class WorldRenderer {
-	
+
 	private static final Logger logger = LogManager.getLogger("WorldRenderer");
-	
+
 	private boolean needsUpdate;
 	private int drawMode;
 	private double xOffset;
 	private double yOffset;
 	private double zOffset;
 	private boolean isDrawing;
-	
+
 	private VertexFormat vertexFormat;
-	
+
 	private int vertexCount;
 	private ByteBuffer byteBuffer;
 	private IntBuffer intBuffer;
 	private FloatBuffer floatBuffer;
-	
+
 	private boolean hasBeenFreed = false;
 
 	public WorldRenderer(int bufferSizeIn) {
@@ -58,14 +59,14 @@ public class WorldRenderer {
 		this.intBuffer = this.byteBuffer.asIntBuffer();
 		this.floatBuffer = this.byteBuffer.asFloatBuffer();
 	}
-	
+
 	public void free() {
-		if(!hasBeenFreed) {
+		if (!hasBeenFreed) {
 			hasBeenFreed = true;
 			EagRuntime.freeByteBuffer(byteBuffer);
 		}
 	}
-	
+
 	public void finalize() {
 		free();
 	}
@@ -75,8 +76,8 @@ public class WorldRenderer {
 		int i = this.byteBuffer.capacity() >> 2;
 		if (parInt1 > (i - pos)) {
 			int k = (((pos + parInt1 + (parInt1 >> 1)) >> 16) + 1) << 16;
-			logger.warn("Needed to grow BufferBuilder buffer: Old size " + (i << 2) +
-					" bytes, new size " + (k << 2) + " bytes.");
+			logger.warn("Needed to grow BufferBuilder buffer: Old size " + (i << 2) + " bytes, new size " + (k << 2)
+					+ " bytes.");
 			ByteBuffer bytebuffer = GLAllocation.createDirectByteBuffer(k << 2);
 			this.byteBuffer.position(0);
 			bytebuffer.put(this.byteBuffer);
@@ -110,12 +111,12 @@ public class WorldRenderer {
 	 */
 	public void func_181674_a(float parFloat1, float parFloat2, float parFloat3) {
 		int i = this.vertexCount / 4;
-		if(i == 0) {
+		if (i == 0) {
 			return;
 		}
 
 		float[] afloat = sortArrayCacheA;
-		if(afloat == null || afloat.length < i) {
+		if (afloat == null || afloat.length < i) {
 			afloat = new float[i];
 			sortArrayCacheA = afloat;
 		}
@@ -127,7 +128,7 @@ public class WorldRenderer {
 		}
 
 		int[] ainteger = sortArrayCacheB;
-		if(ainteger == null || ainteger.length < i) {
+		if (ainteger == null || ainteger.length < i) {
 			ainteger = new int[i];
 			sortArrayCacheB = ainteger;
 		}
@@ -139,10 +140,10 @@ public class WorldRenderer {
 		QuickSort.sort(0, i, sortArrayCacheLambda, swapArrayCacheLambda);
 
 		BitSet bitset = sortBitSetCache;
-		if(bitset == null) {
+		if (bitset == null) {
 			bitset = new BitSet();
 			sortBitSetCache = bitset;
-		}else {
+		} else {
 			bitset.clear();
 		}
 
@@ -293,8 +294,8 @@ public class WorldRenderer {
 	 * gets the color index of a vertex parInt1 indicies before the current vertex
 	 */
 	private int getColorIndex(int parInt1) {
-		return ((this.vertexCount - parInt1) * this.vertexFormat.attribStride +
-				this.vertexFormat.attribColorOffset) >> 2;
+		return ((this.vertexCount - parInt1) * this.vertexFormat.attribStride
+				+ this.vertexFormat.attribColorOffset) >> 2;
 	}
 
 	/**
@@ -314,7 +315,7 @@ public class WorldRenderer {
 		}
 		this.intBuffer.put(i, j);
 	}
-	
+
 	/**
 	 * sets color multiplier of a vertex parInt1 indicies before the current vertex
 	 */
@@ -383,7 +384,7 @@ public class WorldRenderer {
 		this.intBuffer.position((this.vertexCount * this.vertexFormat.attribStride) >> 2);
 		this.intBuffer.put(vertexData);
 		this.intBuffer.position(p);
-		this.vertexCount += vertexData.length / (this.vertexFormat.attribStride >> 2); 
+		this.vertexCount += vertexData.length / (this.vertexFormat.attribStride >> 2);
 	}
 
 	/**
@@ -426,7 +427,7 @@ public class WorldRenderer {
 		int i = (byte) ((int) (x * 127.0F)) & 255;
 		int j = (byte) ((int) (y * 127.0F)) & 255;
 		int k = (byte) ((int) (z * 127.0F)) & 255;
-		int l = i | j << 8 | k << 16 | ((byte)id) << 24;
+		int l = i | j << 8 | k << 16 | ((byte) id) << 24;
 		VertexFormat fmt = this.vertexFormat;
 		int i1 = fmt.attribStride;
 		int j1 = (this.vertexCount - 4) * i1 + fmt.attribNormalOffset;
@@ -439,7 +440,7 @@ public class WorldRenderer {
 	/**
 	 * set normal of current vertex
 	 */
-	public WorldRenderer normal(float parFloat1, float parFloat2, float parFloat3) { //TODO: crash with particles
+	public WorldRenderer normal(float parFloat1, float parFloat2, float parFloat3) { // TODO: crash with particles
 		VertexFormat fmt = this.vertexFormat;
 		int i = this.vertexCount * fmt.attribStride + fmt.attribNormalOffset;
 		this.byteBuffer.put(i, (byte) ((int) parFloat1 * 127 & 255));
@@ -473,8 +474,7 @@ public class WorldRenderer {
 		Vector3f.sub(tmpVec1, tmpVec2, tmpVec4);
 		Vector3f.sub(tmpVec3, tmpVec2, tmpVec5);
 		Vector3f.cross(tmpVec5, tmpVec4, tmpVec6);
-		float f = (float) Math
-				.sqrt((double) (tmpVec6.x * tmpVec6.x + tmpVec6.y * tmpVec6.y + tmpVec6.z * tmpVec6.z));
+		float f = (float) Math.sqrt((double) (tmpVec6.x * tmpVec6.x + tmpVec6.y * tmpVec6.y + tmpVec6.z * tmpVec6.z));
 		tmpVec6.x /= f;
 		tmpVec6.y /= f;
 		tmpVec6.z /= f;
@@ -485,11 +485,11 @@ public class WorldRenderer {
 		int jj1 = (this.vertexCount - 4) * i1 + fmt.attribNormalOffset;
 		this.byteBuffer.putInt(jj1, l);
 		this.byteBuffer.putInt(jj1 + i1, l);
-		if(!b) {
+		if (!b) {
 			this.byteBuffer.putInt(jj1 + i1 * 2, l);
 		}
 		this.byteBuffer.putInt(jj1 + i1 * 3, l);
-		if(b) {
+		if (b) {
 			j1 = (this.vertexCount - 2) * i1;
 			tmpVec1.x = this.byteBuffer.getFloat(j1);
 			tmpVec1.y = this.byteBuffer.getFloat(j1 + 4);
@@ -585,15 +585,15 @@ public class WorldRenderer {
 		}
 
 		public void release() {
-			if(--refCount == 0) {
+			if (--refCount == 0) {
 				EagRuntime.freeIntBuffer(stateRawBuffer);
 			}
-			if(refCount < 0) {
+			if (refCount < 0) {
 				logger.error("WorldRenderer.State released multiple times");
 			}
 		}
 	}
-	
+
 	public WorldRenderer color(int var1) {
 		int var2 = var1 >>> 16 & 255;
 		int var3 = var1 >>> 8 & 255;
@@ -601,48 +601,48 @@ public class WorldRenderer {
 		setColorOpaque(var2, var3, var4);
 		return this;
 	}
-	
+
 	public void setColorOpaque(int var1, int var2, int var3) {
 		this.setColorRGBA(var1, var2, var3, 255);
 	}
-	
+
 	public void setColorRGBA(int var1, int var2, int var3, int var4) {
-		if(!this.needsUpdate) {
-			if(var1 > 255) {
+		if (!this.needsUpdate) {
+			if (var1 > 255) {
 				var1 = 255;
 			}
 
-			if(var2 > 255) {
+			if (var2 > 255) {
 				var2 = 255;
 			}
 
-			if(var3 > 255) {
+			if (var3 > 255) {
 				var3 = 255;
 			}
 
-			if(var4 > 255) {
+			if (var4 > 255) {
 				var4 = 255;
 			}
 
-			if(var1 < 0) {
+			if (var1 < 0) {
 				var1 = 0;
 			}
 
-			if(var2 < 0) {
+			if (var2 < 0) {
 				var2 = 0;
 			}
 
-			if(var3 < 0) {
+			if (var3 < 0) {
 				var3 = 0;
 			}
 
-			if(var4 < 0) {
+			if (var4 < 0) {
 				var4 = 0;
 			}
 
 			VertexFormat fmt = this.vertexFormat;
 			int i = this.vertexCount * fmt.attribStride + fmt.attribColorOffset;
-			if(ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN) {
+			if (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN) {
 				this.byteBuffer.putInt(i, var4 << 24 | var3 << 16 | var2 << 8 | var1);
 			} else {
 				this.byteBuffer.putInt(i, var1 << 24 | var2 << 16 | var3 << 8 | var4);

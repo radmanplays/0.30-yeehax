@@ -13,6 +13,8 @@ import java.util.IllegalFormatException;
 import java.util.Locale;
 
 public class BufferAllocationException extends RuntimeException {
+	private static final long serialVersionUID = 1L;
+
 	public BufferAllocationException(String message) {
 		super(message);
 	}

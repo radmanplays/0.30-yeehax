@@ -1,26 +1,25 @@
 package net.peyton.eagler.level.nbt;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import net.lax1dude.eaglercraft.EaglercraftUUID;
 import java.util.regex.Pattern;
-import javax.annotation.Nullable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class NBTTagCompound extends NBTBase {
 	private static final Logger field_191551_b = LogManager.getLogger();
 	private static final Pattern field_193583_c = Pattern.compile("[A-Za-z0-9._+-]+");
-	public final Map<String, NBTBase> tagMap = Maps.<String, NBTBase>newHashMap();
+	public final Map<String, NBTBase> tagMap = new HashMap<String, NBTBase>();
 
 	/**
 	 * Write the actual data contents of the tag, implemented in NBT extension
@@ -116,7 +115,6 @@ public class NBTTagCompound extends NBTBase {
 		this.setLong(key + "Least", value.getLeastSignificantBits());
 	}
 
-	@Nullable
 	public EaglercraftUUID getUniqueId(String key) {
 		return new EaglercraftUUID(this.getLong(key + "Most"), this.getLong(key + "Least"));
 	}
@@ -415,7 +413,7 @@ public class NBTTagCompound extends NBTBase {
 		Collection<String> collection = this.tagMap.keySet();
 
 		if (field_191551_b.isDebugEnabled()) {
-			List<String> list = Lists.newArrayList(this.tagMap.keySet());
+			List<String> list = new ArrayList<String>(this.tagMap.keySet());
 			Collections.sort(list);
 			collection = list;
 		}

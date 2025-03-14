@@ -51,8 +51,6 @@ public class ObjectCharIdentityHashMap<KType> extends ObjectCharHashMap<KType> {
 		return v1 == v2;
 	}
 
-	@SuppressWarnings("unchecked")
-
 	/** Creates a hash map from two index-aligned arrays of key-value pairs. */
 	public static <KType> ObjectCharIdentityHashMap<KType> from(KType[] keys, char[] values) {
 		if (keys.length != values.length) {

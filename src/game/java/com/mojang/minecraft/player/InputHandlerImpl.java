@@ -6,36 +6,34 @@ import com.mojang.minecraft.Minecraft;
 import yeehax.YeeHax;
 
 
-public class InputHandlerImpl extends InputHandler
-{
+public class InputHandlerImpl extends InputHandler {
+
 	private boolean flyEnabled = false; 
 	protected Minecraft mc = Minecraft.getMinecraft();
-
 	
-	public InputHandlerImpl(GameSettings gameSettings)
-	{
+	public InputHandlerImpl(GameSettings gameSettings) {
 		settings = gameSettings;
 	}
 	@Override
 	public void updateMovement() {
-	    xxa = 0.0F;
-	    jumping = 0.0F;
+		xxa = 0.0F;
+		jumping = 0.0F;
 
-	    if (keyStates[0]) { 
-	        jumping--;
-	    }
+		if (keyStates[0]) {
+			jumping--;
+		}
 
-	    if (keyStates[1]) { 
-	        jumping++;
-	    }
+		if (keyStates[1]) {
+			jumping++;
+		}
 
-	    if (keyStates[2]) {
-	        xxa--;
-	    }
+		if (keyStates[2]) {
+			xxa--;
+		}
 
-	    if (keyStates[3]) { 
-	        xxa++;
-	    }
+		if (keyStates[3]) {
+			xxa++;
+		}
 
 	    if (flyEnabled) {
 	        if (keyStates[4]) { 
@@ -55,10 +53,8 @@ public class InputHandlerImpl extends InputHandler
 
 
 	@Override
-	public void resetKeys()
-	{
-		for (int i = 0; i < keyStates.length; ++i)
-		{
+	public void resetKeys() {
+		for (int i = 0; i < keyStates.length; ++i) {
 			keyStates[i] = false;
 		}
 
@@ -66,39 +62,42 @@ public class InputHandlerImpl extends InputHandler
 
 	@Override
 	public void setKeyState(int key, boolean state) {
-	    byte index = -1;
+		byte index = -1;
 
-	    if (key == settings.forwardKey.key) {
-	        index = 0;
+		if (key == settings.forwardKey.key) {
+			index = 0;
+		}
+
+		if (key == settings.backKey.key) {
+			index = 1;
+		}
+
+		if (key == settings.leftKey.key) {
+			index = 2;
+		}
+
+		if (key == settings.rightKey.key) {
+			index = 3;
+		}
+
+		if (key == settings.jumpKey.key) {
+			index = 4;
+		}
+
+		if (index >= 0) {
+			keyStates[index] = state;
+		}
+
+	    if (index >= 0) {
+	        keyStates[index] = state;
 	    }
 
-	    if (key == settings.backKey.key) {
-	        index = 1;
-	    }
-
-	    if (key == settings.leftKey.key) {
-	        index = 2;
-	    }
-
-	    if (key == settings.rightKey.key) {
-	        index = 3;
-	    }
-
-	    if (key == settings.jumpKey.key) {
-	        index = 4;
-	    }
-
-	  
-	    if (key == settings.flyKey.key) { 
+		if (key == settings.flyKey.key) { 
 	        if (state) {
 	            flyEnabled = !flyEnabled;
 	            YeeHax.modManager.fly.toggle();
 	            System.out.println("Fly mod " + (flyEnabled ? "enabled" : "disabled"));
 	        }
-	    }
-
-	    if (index >= 0) {
-	        keyStates[index] = state;
 	    }
 	}
 	private boolean[] keyStates = new boolean[10];

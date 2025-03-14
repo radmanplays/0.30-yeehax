@@ -1,9 +1,7 @@
 package com.mojang.minecraft.level.liquid;
 
-public class LiquidType
-{
-	private LiquidType(int type)
-	{
+public class LiquidType {
+	private LiquidType(int type) {
 		values = new LiquidType[4];
 
 		values[type] = this;

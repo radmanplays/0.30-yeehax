@@ -8,10 +8,8 @@ import com.mojang.minecraft.render.TextureManager;
 import com.mojang.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 
-public class Item extends Entity
-{
-	public Item(Level level1, float x, float y, float z, int block)
-	{
+public class Item extends Entity {
+	public Item(Level level1, float x, float y, float z, int block) {
 		super(level1);
 
 		setSize(0.25F, 0.25F);
@@ -22,18 +20,17 @@ public class Item extends Entity
 
 		resource = block;
 
-		rot = (float)(Math.random() * 360.0D);
+		rot = (float) (Math.random() * 360.0D);
 
-		xd = (float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D);
+		xd = (float) (Math.random() * 0.20000000298023224D - 0.10000000149011612D);
 		yd = 0.2F;
-		zd = (float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D);
+		zd = (float) (Math.random() * 0.20000000298023224D - 0.10000000149011612D);
 
 		makeStepSound = false;
 	}
 
 	@Override
-	public void tick()
-	{
+	public void tick() {
 		xo = x;
 		yo = y;
 		zo = z;
@@ -46,8 +43,7 @@ public class Item extends Entity
 		yd *= 0.98F;
 		zd *= 0.98F;
 
-		if(onGround)
-		{
+		if (onGround) {
 			xd *= 0.7F;
 			zd *= 0.7F;
 			yd *= -0.5F;
@@ -57,21 +53,19 @@ public class Item extends Entity
 
 		age++;
 
-		if(age >= 6000)
-		{
+		if (age >= 6000) {
 			remove();
 		}
 	}
 
 	@Override
-	public void render(TextureManager textureManager, float unknown0)
-	{
+	public void render(TextureManager textureManager, float unknown0) {
 		textureId = textureManager.load("/terrain.png");
 
 		GL11.glBindTexture(3553, this.textureId);
 
-		float brightness = level.getBrightness((int)x, (int)y, (int)z);
-		float unknown1 = rot + ((float)tickCount + unknown0) * 3.0F;
+		float brightness = level.getBrightness((int) x, (int) y, (int) z);
+		float unknown1 = rot + ((float) tickCount + unknown0) * 3.0F;
 
 		GL11.glPushMatrix();
 		GL11.glColor4f(brightness, brightness, brightness, 1.0F);
@@ -102,12 +96,10 @@ public class Item extends Entity
 	}
 
 	@Override
-	public void playerTouch(Entity entity)
-	{
-		Player player = (Player)entity;
+	public void playerTouch(Entity entity) {
+		Player player = (Player) entity;
 
-		if(player.addResource(resource))
-		{
+		if (player.addResource(resource)) {
 			TakeEntityAnim takeEntityAnim = new TakeEntityAnim(level, this, player);
 
 			level.addEntity(takeEntityAnim);
@@ -133,14 +125,11 @@ public class Item extends Entity
 
 	private int age = 0;
 
-	public static void initModels()
-	{
-		for(int unknown0 = 0; unknown0 < 256; unknown0++)
-		{
+	public static void initModels() {
+		for (int unknown0 = 0; unknown0 < 256; unknown0++) {
 			Block var1 = Block.blocks[unknown0];
 
-			if(var1 != null)
-			{
+			if (var1 != null) {
 				models[unknown0] = new ItemModel(var1.textureId);
 			}
 		}

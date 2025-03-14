@@ -20,7 +20,6 @@ import net.lax1dude.eaglercraft.internal.PlatformInput;
  */
 public class Display {
 
-	private static long lastSwap = 0l;
 	private static long lastDPIUpdate = -250l;
 	private static float cacheDPI = 1.0f;
 

@@ -1,9 +1,9 @@
 package net.peyton.eagler.level.nbt;
 
-import com.google.common.collect.Lists;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 public class NBTTagList extends NBTBase {
 	private static final Logger LOGGER = LogManager.getLogger();
-	private List<NBTBase> tagList = Lists.<NBTBase>newArrayList();
+	private List<NBTBase> tagList = new ArrayList<NBTBase>();
 
 	/**
 	 * The type byte for the tags in the list - they must all be of the same type.
@@ -50,7 +50,7 @@ public class NBTTagList extends NBTBase {
 				throw new RuntimeException("Missing type on ListTag");
 			} else {
 				sizeTracker.read(32L * (long) i);
-				this.tagList = Lists.<NBTBase>newArrayListWithCapacity(i);
+				this.tagList = new ArrayList<NBTBase>(i);
 
 				for (int j = 0; j < i; ++j) {
 					NBTBase nbtbase = NBTBase.createNewByType(this.tagType);

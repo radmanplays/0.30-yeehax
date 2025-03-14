@@ -21,6 +21,8 @@ import org.lwjgl.system.jemalloc.JEmalloc;
 public class EaglerLWJGLAllocator {
 
 	public static class WrongBufferClassType extends RuntimeException {
+		private static final long serialVersionUID = 1L;
+
 		public WrongBufferClassType(String msg) {
 			super(msg);
 		}

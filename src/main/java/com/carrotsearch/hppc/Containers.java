@@ -10,8 +10,6 @@
 package com.carrotsearch.hppc;
 
 import com.carrotsearch.hppc.internals.SuppressForbidden;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Constants used as defaults in containers.

@@ -42,6 +42,8 @@ public class VSHInputLayoutParser {
 
 	public static class ShaderLayoutParseException extends RuntimeException {
 
+		private static final long serialVersionUID = 1L;
+
 		public ShaderLayoutParseException(String message, Throwable cause) {
 			super(message, cause);
 		}

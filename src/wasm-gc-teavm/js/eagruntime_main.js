@@ -23,13 +23,7 @@ const eagruntimeImpl = {
 	platformInput: {},
 	platformNetworking: {},
 	platformOpenGL: {},
-	platformRuntime: {},
-	platformScreenRecord: {},
-	platformVoiceClient: {},
-	platformWebRTC: {},
-	platformWebView: {},
-	clientPlatformSingleplayer: {},
-	serverPlatformSingleplayer: {}
+	platformRuntime: {}
 };
 
 /** @type {WebAssembly.Module} */
@@ -147,12 +141,6 @@ async function initializeContext() {
 	
 	await initializePlatfRuntime();
 	initializePlatfApplication(eagruntimeImpl.platformApplication);
-	initializePlatfScreenRecord(eagruntimeImpl.platformScreenRecord);
-	initializePlatfVoiceClient(eagruntimeImpl.platformVoiceClient);
-	initializePlatfWebRTC(eagruntimeImpl.platformWebRTC);
-	initializePlatfWebView(eagruntimeImpl.platformWebView);
-	initializeClientPlatfSP(eagruntimeImpl.clientPlatformSingleplayer);
-	initializeNoServerPlatfSP(eagruntimeImpl.serverPlatformSingleplayer);
 	
 	rootElement.classList.add("_eaglercraftX_root_element");
 	rootElement.style.overflow = "hidden";
@@ -436,12 +424,6 @@ async function initializeContextWorker() {
 	setNoAudioContext(eagruntimeImpl.platformAudio);
 	initNoPlatformInput(eagruntimeImpl.platformInput);
 	setNoGLContext(eagruntimeImpl.platformOpenGL);
-	initializeNoPlatfScreenRecord(eagruntimeImpl.platformScreenRecord);
-	initializeNoPlatfVoiceClient(eagruntimeImpl.platformVoiceClient);
-	initializeNoPlatfWebRTC(eagruntimeImpl.platformWebRTC);
-	initializeNoPlatfWebView(eagruntimeImpl.platformWebView);
-	initializeNoClientPlatfSP(eagruntimeImpl.clientPlatformSingleplayer);
-	initializeServerPlatfSP(eagruntimeImpl.serverPlatformSingleplayer);
 	
 	eagInfo("EagRuntime worker JS context initialization complete");
 }
@@ -535,13 +517,6 @@ function displayUncaughtCrashReport(error) {
 		"\n\nThis exception was not handled by the WASM binary\n";
 	if(typeof window !== "undefined") {
 		displayCrashReport(crashContent, true);
-	}else if(sendIntegratedServerCrash) {
-		eagError("\n{}", crashContent);
-		try {
-			sendIntegratedServerCrash(crashContent, true);
-		}catch(ex) {
-			console.log(ex);
-		}
 	}else {
 		eagError("\n{}", crashContent);
 	}

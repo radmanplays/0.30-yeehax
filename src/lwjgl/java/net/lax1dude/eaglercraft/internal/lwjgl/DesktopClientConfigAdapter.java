@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.json.JSONObject;
-
 import net.lax1dude.eaglercraft.EaglercraftVersion;
 import net.lax1dude.eaglercraft.internal.IClientConfigAdapter;
 import net.lax1dude.eaglercraft.internal.IClientConfigAdapterHooks;
@@ -57,11 +55,6 @@ public class DesktopClientConfigAdapter implements IClientConfigAdapter {
 	@Override
 	public String getResourcePacksDB() {
 		return "resourcePacks";
-	}
-
-	@Override
-	public JSONObject getIntegratedServerOpts() {
-		return new JSONObject("{\"container\":null,\"worldsDB\":\"worlds\"}");
 	}
 
 	@Override

@@ -31,11 +31,7 @@ import org.teavm.jso.dom.html.HTMLElement;
 import org.teavm.jso.dom.html.HTMLFormElement;
 import org.teavm.jso.dom.html.HTMLInputElement;
 import org.teavm.jso.dom.html.TextRectangle;
-import org.teavm.jso.gamepad.Gamepad;
-import org.teavm.jso.gamepad.GamepadButton;
-import org.teavm.jso.gamepad.GamepadEvent;
 
-import net.lax1dude.eaglercraft.GamepadConstants;
 import net.lax1dude.eaglercraft.KeyboardConstants;
 import net.lax1dude.eaglercraft.internal.teavm.ClientMain;
 import net.lax1dude.eaglercraft.internal.teavm.EarlyLoadScreen;
@@ -74,8 +70,6 @@ public class PlatformInput {
 	private static EventListener<?> touchend = null;
 	private static EventListener<?> touchmove = null;
 	private static EventListener<?> touchcancel = null;
-	private static EventListener<?> gamepadconnected = null;
-	private static EventListener<?> gamepaddisconnected = null;
 	private static EventListener<?> keydown = null;
 	private static EventListener<?> keyup = null;
 	private static EventListener<?> wheel = null;
@@ -164,14 +158,6 @@ public class PlatformInput {
 
 	public static int touchOffsetXTeaVM = 0;
 	public static int touchOffsetYTeaVM = 0;
-
-	private static boolean gamepadSupported = false;
-	private static final List<Gamepad> gamepadList = new ArrayList<>();
-	private static Gamepad selectedGamepad = null;
-	private static String selectedGamepadName = null;
-	private static double gamepadTimestamp = -1.0;
-	private static final boolean[] gamepadButtonStates = new boolean[24];
-	private static final float[] gamepadAxisStates = new float[4];
 
 	private static int windowWidth = -1;
 	private static int windowHeight = -1;
@@ -617,32 +603,6 @@ public class PlatformInput {
 				}
 			}, 1000);
 		}
-
-		try {
-			gamepadSupported = gamepadSupported();
-			if(gamepadSupported) {
-				win.addEventListener("gamepadconnected", gamepadconnected = new EventListener<GamepadEvent>() {
-					@Override
-					public void handleEvent(GamepadEvent evt) {
-						enumerateGamepads();
-					}
-				});
-				win.addEventListener("gamepaddisconnected", gamepaddisconnected = new EventListener<GamepadEvent>() {
-					@Override
-					public void handleEvent(GamepadEvent evt) {
-						if(selectedGamepad != null && evt.getGamepad().getIndex() == selectedGamepad.getIndex()) {
-							selectedGamepad = null;
-						}
-						enumerateGamepads();
-					}
-				});
-			}
-		}catch(Throwable t) {
-			gamepadSupported = false;
-			PlatformRuntime.logger.error("Gamepad detected as unsupported!");
-		}
-
-		enumerateGamepads();
 	}
 
 	@JSFunctor
@@ -1292,14 +1252,6 @@ public class PlatformInput {
 			canvas.removeEventListener("mouseleave", mouseleave);
 			mouseleave = null;
 		}
-		if(gamepadconnected != null) {
-			win.removeEventListener("gamepadconnected", gamepadconnected);
-			gamepadconnected = null;
-		}
-		if(gamepaddisconnected != null) {
-			win.removeEventListener("gamepaddisconnected", gamepaddisconnected);
-			gamepaddisconnected = null;
-		}
 		if(keydown != null) {
 			win.removeEventListener("keydown", keydown);
 			keydown = null;
@@ -1415,7 +1367,6 @@ public class PlatformInput {
 	public static void clearEvenBuffers() {
 		mouseEvents.clear();
 		keyEvents.clear();
-		net.lax1dude.eaglercraft.v1_8.Gamepad.clearEventBuffer();
 	}
 
 	@JSBody(params = {}, script = "return window.matchMedia(\"(display-mode: fullscreen)\");")
@@ -1545,190 +1496,6 @@ public class PlatformInput {
 
 	@JSBody(params = { "doc", "el" }, script = "return doc.activeElement === el;")
 	private static native boolean isActiveElement(HTMLDocument doc, HTMLElement el);
-
-	private static void enumerateGamepads() {
-		if(!gamepadSupported) return;
-		if(selectedGamepad != null) {
-			selectedGamepad = updateGamepad(selectedGamepad);
-			if(selectedGamepad == null || !TeaVMUtils.isTruthy(selectedGamepad) || !selectedGamepad.isConnected()) {
-				selectedGamepad = null;
-			}
-		}
-		List<Gamepad> oldList = null;
-		if(!gamepadList.isEmpty()) {
-			oldList = new ArrayList<>(gamepadList);
-			gamepadList.clear();
-		}
-		Gamepad[] gamepads = Navigator.getGamepads();
-		if(gamepads != null && gamepads.length > 0) {
-			for(int i = 0; i < gamepads.length; ++i) {
-				Gamepad g = gamepads[i];
-				if(TeaVMUtils.isTruthy(g) && g.isConnected() && "standard".equals(g.getMapping())) {
-					gamepadList.add(g);
-				}
-			}
-		}
-		if(selectedGamepad != null) {
-			selectedGamepadName = selectedGamepad.getId();
-		}
-		if(oldList == null) {
-			if(!gamepadList.isEmpty()) {
-				for(int i = 0, l = gamepadList.size(); i < l; ++i) {
-					PlatformRuntime.logger.info("Found controller: {}", gamepadList.get(i).getId());
-				}
-			}
-		}else {
-			if(gamepadList.isEmpty()) {
-				for(int i = 0, l = oldList.size(); i < l; ++i) {
-					PlatformRuntime.logger.info("Lost controller: {}", oldList.get(i).getId());
-				}
-			}else {
-				Map<String,Integer> oldDevCounts = new HashMap<>();
-				for(Gamepad gg : oldList) {
-					String s = gg.getId();
-					Integer i = oldDevCounts.get(s);
-					if(i != null) {
-						oldDevCounts.put(s, Integer.valueOf(i.intValue() + 1));
-					}else {
-						oldDevCounts.put(s, Integer.valueOf(1));
-					}
-				}
-				Map<String,Integer> newDevCounts = new HashMap<>();
-				for(Gamepad gg : gamepadList) {
-					String s = gg.getId();
-					Integer i = newDevCounts.get(s);
-					if(i != null) {
-						newDevCounts.put(s, Integer.valueOf(i.intValue() + 1));
-					}else {
-						newDevCounts.put(s, Integer.valueOf(1));
-					}
-				}
-				for(Entry<String,Integer> etr : oldDevCounts.entrySet()) {
-					Integer i = newDevCounts.get(etr.getKey());
-					if(i == null) {
-						for(int j = 0, l = etr.getValue().intValue(); j < l; ++j) {
-							PlatformRuntime.logger.info("Lost controller: {}", etr.getKey());
-						}
-					}else {
-						int j = i.intValue();
-						int k = etr.getValue().intValue();
-						if(k != j) {
-							if(k < j) {
-								for(int m = 0, l = j - k; m < l; ++m) {
-									PlatformRuntime.logger.info("Found controller: {}", etr.getKey());
-								}
-							}else {
-								for(int m = 0, l = k - j; m < l; ++m) {
-									PlatformRuntime.logger.info("Lost controller: {}", etr.getKey());
-								}
-							}
-						}
-					}
-				}
-				for(Entry<String,Integer> etr : newDevCounts.entrySet()) {
-					Integer i = oldDevCounts.get(etr.getKey());
-					if(i == null) {
-						for(int j = 0, l = etr.getValue().intValue(); j < l; ++j) {
-							PlatformRuntime.logger.info("Found controller: {}", etr.getKey());
-						}
-					}
-				}
-			}
-			
-		}
-	}
-
-	public static int gamepadGetValidDeviceCount() {
-		if(!gamepadSupported) return 0;
-		return gamepadList.size();
-	}
-
-	public static String gamepadGetDeviceName(int deviceId) {
-		if(gamepadSupported && deviceId >= 0 && deviceId < gamepadList.size()) {
-			return gamepadList.get(deviceId).getId();
-		}else {
-			return "Unknown";
-		}
-	}
-
-	public static void gamepadSetSelectedDevice(int deviceId) {
-		if(!gamepadSupported) return;
-		gamepadReset();
-		if(deviceId >= 0 && deviceId < gamepadList.size()) {
-			selectedGamepad = gamepadList.get(deviceId);
-			gamepadTimestamp = -1.0;
-			if(!TeaVMUtils.isTruthy(selectedGamepad) || !selectedGamepad.isConnected()) {
-				selectedGamepad = null;
-			}
-		}else {
-			selectedGamepad = null;
-		}
-	}
-
-	private static void gamepadReset() {
-		for(int i = 0; i < gamepadButtonStates.length; ++i) {
-			gamepadButtonStates[i] = false;
-		}
-		for(int i = 0; i < gamepadAxisStates.length; ++i) {
-			gamepadAxisStates[i] = 0.0f;
-		}
-	}
-
-	@JSBody(params = { }, script = "return (typeof navigator.getGamepads === \"function\");")
-	private static native boolean gamepadSupported();
-
-	@JSBody(params = { "gp" }, script = "return navigator.getGamepads()[gp.index];")
-	private static native Gamepad updateGamepad(Gamepad gp);
-
-	public static void gamepadUpdate() {
-		if(!gamepadSupported) return;
-		if(selectedGamepad != null) {
-			selectedGamepad = updateGamepad(selectedGamepad);
-			if(selectedGamepad == null || !TeaVMUtils.isTruthy(selectedGamepad) || !selectedGamepad.isConnected()) {
-				gamepadReset();
-				selectedGamepad = null;
-				return;
-			}
-			double ts = selectedGamepad.getTimestamp();
-			if(ts != gamepadTimestamp) {
-				gamepadTimestamp = ts;
-				gamepadReset();
-				GamepadButton[] btns = selectedGamepad.getButtons();
-				for(int i = 0; i < btns.length; ++i) {
-					int j = GamepadConstants.getEaglerButtonFromBrowser(i);
-					if(j >= 0 && j < gamepadButtonStates.length) {
-						gamepadButtonStates[j] = btns[i].isPressed();
-					}
-				}
-				double[] axes = selectedGamepad.getAxes();
-				for(int i = 0; i < axes.length; ++i) {
-					if(i >= 4) {
-						break;
-					}
-					gamepadAxisStates[i] = (float)axes[i];
-				}
-			}
-		}else {
-			gamepadReset();
-		}
-	}
-
-	public static boolean gamepadIsValid() {
-		if(!gamepadSupported) return false;
-		return selectedGamepad != null;
-	}
-
-	public static String gamepadGetName() {
-		return gamepadSupported && selectedGamepad != null ? selectedGamepadName : "Unknown";
-	}
-
-	public static boolean gamepadGetButtonState(int button) {
-		return gamepadSupported && selectedGamepad != null && button >= 0 && button < gamepadButtonStates.length ? gamepadButtonStates[button] : false;
-	}
-
-	public static float gamepadGetAxis(int axis) {
-		return gamepadSupported && selectedGamepad != null && axis >= 0 && axis < gamepadAxisStates.length ? gamepadAxisStates[axis] : 0.0f;
-	}
 
 	public static float getDPI() {
 		return windowDPI;

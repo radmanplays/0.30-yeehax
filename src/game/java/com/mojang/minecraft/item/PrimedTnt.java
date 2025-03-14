@@ -15,10 +15,8 @@ import net.lax1dude.eaglercraft.opengl.WorldRenderer;
 import net.lax1dude.eaglercraft.Random;
 import org.lwjgl.opengl.GL11;
 
-public class PrimedTnt extends Entity
-{
-	public PrimedTnt(Level level1, float x, float y, float z)
-	{
+public class PrimedTnt extends Entity {
+	public PrimedTnt(Level level1, float x, float y, float z) {
 		super(level1);
 
 		setSize(0.98F, 0.98F);
@@ -27,7 +25,7 @@ public class PrimedTnt extends Entity
 
 		setPos(x, y, z);
 
-		float unknown0 = (float)(Math.random() * 3.1415927410125732D * 2.0D);
+		float unknown0 = (float) (Math.random() * 3.1415927410125732D * 2.0D);
 
 		xd = -MathHelper.sin(unknown0 * 3.1415927F / 180.0F) * 0.02F;
 		yd = 0.2F;
@@ -43,8 +41,7 @@ public class PrimedTnt extends Entity
 	}
 
 	@Override
-	public void tick()
-	{
+	public void tick() {
 		xo = x;
 		yo = y;
 		zo = z;
@@ -57,17 +54,14 @@ public class PrimedTnt extends Entity
 		yd *= 0.98F;
 		zd *= 0.98F;
 
-		if(onGround)
-		{
+		if (onGround) {
 			xd *= 0.7F;
 			zd *= 0.7F;
 			yd *= -0.5F;
 		}
 
-		if(!defused)
-		{
-			if(life-- > 0)
-			{
+		if (!defused) {
+			if (life-- > 0) {
 				SmokeParticle smokeParticle = new SmokeParticle(level, x, y + 0.6F, z);
 
 				level.particleEngine.spawnParticle(smokeParticle);
@@ -79,18 +73,18 @@ public class PrimedTnt extends Entity
 
 				level.explode(null, x, y, z, radius);
 
-				for(int i = 0; i < 100; i++)
-				{
-					float unknown0 = (float)random.nextGaussian() * radius / 4.0F;
-					float unknown1 = (float)random.nextGaussian() * radius / 4.0F;
-					float unknown2 = (float)random.nextGaussian() * radius / 4.0F;
+				for (int i = 0; i < 100; i++) {
+					float unknown0 = (float) random.nextGaussian() * radius / 4.0F;
+					float unknown1 = (float) random.nextGaussian() * radius / 4.0F;
+					float unknown2 = (float) random.nextGaussian() * radius / 4.0F;
 					float unknown3 = MathHelper.sqrt(unknown0 * unknown0 + unknown1 * unknown1 + unknown2 * unknown2);
 					float unknown4 = unknown0 / unknown3 / unknown3;
 					float unknown5 = unknown1 / unknown3 / unknown3;
 
 					unknown3 = unknown2 / unknown3 / unknown3;
 
-					TerrainParticle terrainParticle = new TerrainParticle(level, x + unknown0, y + unknown1, z + unknown2, unknown4, unknown5, unknown3, Block.TNT);
+					TerrainParticle terrainParticle = new TerrainParticle(level, x + unknown0, y + unknown1,
+							z + unknown2, unknown4, unknown5, unknown3, Block.TNT);
 
 					level.particleEngine.spawnParticle(terrainParticle);
 				}
@@ -100,17 +94,17 @@ public class PrimedTnt extends Entity
 	}
 
 	@Override
-	public void render(TextureManager textureManager, float unknown0)
-	{
+	public void render(TextureManager textureManager, float unknown0) {
 		int textureID = textureManager.load("/terrain.png");
 
 		GL11.glBindTexture(3553, textureID);
 
-		float brightness = level.getBrightness((int)x, (int)y, (int)z);
+		float brightness = level.getBrightness((int) x, (int) y, (int) z);
 
 		GL11.glPushMatrix();
 		GL11.glColor4f(brightness, brightness, brightness, 1.0F);
-		GL11.glTranslatef(xo + (x - xo) * unknown0 - 0.5F, yo + (y - yo) * unknown0 - 0.5F, zo + (z - zo) * unknown0 - 0.5F);
+		GL11.glTranslatef(xo + (x - xo) * unknown0 - 0.5F, yo + (y - yo) * unknown0 - 0.5F,
+				zo + (z - zo) * unknown0 - 0.5F);
 		GL11.glPushMatrix();
 
 		Tessellator tessellator = Tessellator.getInstance();
@@ -120,15 +114,13 @@ public class PrimedTnt extends Entity
 
 		GL11.glDisable(3553);
 		GL11.glDisable(2896);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, (float)((life / 4 + 1) % 2) * 0.4F);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, (float) ((life / 4 + 1) % 2) * 0.4F);
 
-		if(life <= 16)
-		{
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, (float)((life + 1) % 2) * 0.6F);
+		if (life <= 16) {
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, (float) ((life + 1) % 2) * 0.6F);
 		}
 
-		if(life <= 2)
-		{
+		if (life <= 2) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.9F);
 		}
 
@@ -145,14 +137,11 @@ public class PrimedTnt extends Entity
 	}
 
 	@Override
-	public void playerTouch(Entity entity)
-	{
-		if(defused)
-		{
-			Player player = (Player)entity;
+	public void playerTouch(Entity entity) {
+		if (defused) {
+			Player player = (Player) entity;
 
-			if(player.addResource(Block.TNT.id))
-			{
+			if (player.addResource(Block.TNT.id)) {
 				TakeEntityAnim takeEntityAnim = new TakeEntityAnim(this.level, this, player);
 
 				level.addEntity(takeEntityAnim);
@@ -164,14 +153,11 @@ public class PrimedTnt extends Entity
 	}
 
 	@Override
-	public void hurt(Entity entity, int damage)
-	{
-		if(!removed)
-		{
+	public void hurt(Entity entity, int damage) {
+		if (!removed) {
 			super.hurt(entity, damage);
 
-			if(entity instanceof Player)
-			{
+			if (entity instanceof Player) {
 				remove();
 
 				Item item = new Item(level, x, y, z, Block.TNT.id);

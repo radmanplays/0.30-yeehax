@@ -229,7 +229,9 @@ public class Quaternion extends Vector implements ReadableVector4f {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.lwjgl.util.vector.Vector#load(net.lax1dude.eaglercraft.internal.buffer.FloatBuffer)
+	 * @see
+	 * org.lwjgl.util.vector.Vector#load(net.lax1dude.eaglercraft.internal.buffer.
+	 * FloatBuffer)
 	 */
 	public Vector load(FloatBuffer buf) {
 		x = buf.get();
@@ -270,7 +272,9 @@ public class Quaternion extends Vector implements ReadableVector4f {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.lwjgl.util.vector.ReadableVector#store(net.lax1dude.eaglercraft.internal.buffer.FloatBuffer)
+	 * @see
+	 * org.lwjgl.util.vector.ReadableVector#store(net.lax1dude.eaglercraft.internal.
+	 * buffer.FloatBuffer)
 	 */
 	public Vector store(FloatBuffer buf) {
 		buf.put(x);

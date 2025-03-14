@@ -51,8 +51,6 @@ public class ObjectFloatIdentityHashMap<KType> extends ObjectFloatHashMap<KType>
 		return v1 == v2;
 	}
 
-	@SuppressWarnings("unchecked")
-
 	/** Creates a hash map from two index-aligned arrays of key-value pairs. */
 	public static <KType> ObjectFloatIdentityHashMap<KType> from(KType[] keys, float[] values) {
 		if (keys.length != values.length) {

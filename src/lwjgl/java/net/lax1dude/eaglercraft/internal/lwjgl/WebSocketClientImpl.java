@@ -14,14 +14,15 @@ import net.lax1dude.eaglercraft.internal.EnumEaglerConnectionState;
 /**
  * Copyright (c) 2024 lax1dude. All Rights Reserved.
  * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- * IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  * 
@@ -29,7 +30,7 @@ import net.lax1dude.eaglercraft.internal.EnumEaglerConnectionState;
 class WebSocketClientImpl extends WebSocketClient {
 
 	private static final Draft perMessageDeflateDraft = new Draft_6455(new PerMessageDeflateExtension());
-	
+
 	protected final DesktopWebSocketClient clientObj;
 
 	WebSocketClientImpl(DesktopWebSocketClient clientObj, URI serverUri) {
@@ -44,7 +45,7 @@ class WebSocketClientImpl extends WebSocketClient {
 	public void onOpen(ServerHandshake arg0) {
 		clientObj.playConnectState = EnumEaglerConnectionState.CONNECTED;
 		DesktopWebSocketClient.logger.info("Connection opened: {}", this.uri.toString());
-		synchronized(clientObj.connectOpenMutex) {
+		synchronized (clientObj.connectOpenMutex) {
 			clientObj.connectOpenMutex.notifyAll();
 		}
 	}
@@ -52,7 +53,7 @@ class WebSocketClientImpl extends WebSocketClient {
 	@Override
 	public void onClose(int arg0, String arg1, boolean arg2) {
 		DesktopWebSocketClient.logger.info("Connection closed: {}", this.uri.toString());
-		if(clientObj.playConnectState != EnumEaglerConnectionState.FAILED) {
+		if (clientObj.playConnectState != EnumEaglerConnectionState.FAILED) {
 			clientObj.playConnectState = EnumEaglerConnectionState.CLOSED;
 		}
 	}
@@ -61,7 +62,7 @@ class WebSocketClientImpl extends WebSocketClient {
 	public void onError(Exception arg0) {
 		DesktopWebSocketClient.logger.error("Exception thrown by websocket \"" + this.getURI().toString() + "\"!");
 		DesktopWebSocketClient.logger.error(arg0);
-		if(clientObj.playConnectState == EnumEaglerConnectionState.CONNECTING) {
+		if (clientObj.playConnectState == EnumEaglerConnectionState.CONNECTING) {
 			clientObj.playConnectState = EnumEaglerConnectionState.FAILED;
 		}
 	}

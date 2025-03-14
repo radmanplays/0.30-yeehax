@@ -18,6 +18,8 @@ package net.lax1dude.eaglercraft.internal;
  */
 public class PlatformIncompatibleException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
+
 	public PlatformIncompatibleException(String s) {
 		super(s);
 	}

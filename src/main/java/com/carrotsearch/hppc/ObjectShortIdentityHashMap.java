@@ -51,8 +51,6 @@ public class ObjectShortIdentityHashMap<KType> extends ObjectShortHashMap<KType>
 		return v1 == v2;
 	}
 
-	@SuppressWarnings("unchecked")
-
 	/** Creates a hash map from two index-aligned arrays of key-value pairs. */
 	public static <KType> ObjectShortIdentityHashMap<KType> from(KType[] keys, short[] values) {
 		if (keys.length != values.length) {
